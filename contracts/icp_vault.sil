@@ -1,0 +1,51 @@
+pragma silverscript ^0.1.0;
+
+// ICP prototype 0.0.0: one KAS UTXO, immutable recipients, two-stage exit.
+// A compromised owner cannot change recipients or skip the pending UTXO.
+// Recovery depends on a separately secured recovery key and timely inclusion.
+contract IcpVault(
+    pubkey owner,
+    pubkey recovery,
+    pubkey recipient,
+    int delay_daa,
+    int max_fee,
+    bool init_pending
+) {
+    bool pending = init_pending;
+
+    function layout() {
+        require(this.activeInputIndex == 0);
+        require(tx.inputs.length == 1);
+        require(tx.outputs.length == 1);
+        require(delay_daa > 0);
+        require(delay_daa <= 4294967295);
+        require(max_fee >= 0);
+        require(tx.outputs[0].value > 0);
+        require(tx.outputs[0].value <= tx.inputs[0].value);
+        require(tx.inputs[0].value - tx.outputs[0].value <= max_fee);
+    }
+
+    entry initiate(sig owner_sig) {
+        layout();
+        require(!pending);
+        require(checkSig(owner_sig, owner));
+        validateOutputState(0, State { pending: true });
+    }
+
+    entry execute(sig owner_sig) {
+        layout();
+        require(pending);
+        require(checkSig(owner_sig, owner));
+        // CSV is relative to the NEW pending UTXO, never the old deposit.
+        require(this.ageDaa >= delay_daa);
+        byte[36] destination = new ScriptPubKeyP2PK(recipient);
+        require(tx.outputs[0].scriptPubKey == byte[](destination));
+    }
+
+    entry recover(sig recovery_sig) {
+        layout();
+        require(checkSig(recovery_sig, recovery));
+        byte[36] destination = new ScriptPubKeyP2PK(recovery);
+        require(tx.outputs[0].scriptPubKey == byte[](destination));
+    }
+}

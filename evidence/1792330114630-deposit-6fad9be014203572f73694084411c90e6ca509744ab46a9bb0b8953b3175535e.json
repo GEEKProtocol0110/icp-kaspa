@@ -1,0 +1,56 @@
+{
+  "id": "6fad9be014203572f73694084411c90e6ca509744ab46a9bb0b8953b3175535e",
+  "node": {
+    "hasUtxoIndex": true,
+    "isSynced": true,
+    "networkId": "testnet-10",
+    "rpcApiRevision": 0,
+    "rpcApiVersion": 1,
+    "serverVersion": "2.1.0",
+    "virtualDaaScore": 599950545
+  },
+  "status": "MEMPOOL_ACCEPTED",
+  "transaction": {
+    "gas": 0,
+    "inputs": [
+      {
+        "computeBudget": 100,
+        "previousOutpoint": {
+          "index": 0,
+          "transactionId": "acf8ef9f04c13e8188115574ea933eef8ddc8d1990ddd3785850c4a3270beaa2"
+        },
+        "sequence": 0,
+        "sigOpCount": 0,
+        "signatureScript": "41e8d9ac0706c3f4a43cf41e52d7aa400b62e50dde671340f0c32ed7b59cb27293306016032082ea2a1803f886f69fe1184b02893271ed133aad490a79735a485801",
+        "verboseData": null
+      }
+    ],
+    "lockTime": 0,
+    "mass": 26871,
+    "outputs": [
+      {
+        "covenant": null,
+        "scriptPublicKey": "0000aa20af805bbdcb915760ecd3c0e7c4cd13e6a7642ff0fa93e1c562871bfed253afec87",
+        "value": 100000000,
+        "verboseData": null
+      },
+      {
+        "covenant": null,
+        "scriptPublicKey": "0000aa20af805bbdcb915760ecd3c0e7c4cd13e6a7642ff0fa93e1c562871bfed253afec87",
+        "value": 100000000,
+        "verboseData": null
+      },
+      {
+        "covenant": null,
+        "scriptPublicKey": "0000203c7d96e58a43a830fc5469cdd92c2241f96c0910e9299ae1e6d1aaddd5867e78ac",
+        "value": 98000000,
+        "verboseData": null
+      }
+    ],
+    "payload": "",
+    "storageMass": 26871,
+    "subnetworkId": "0000000000000000000000000000000000000000",
+    "verboseData": null,
+    "version": 1
+  }
+}

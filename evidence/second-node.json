@@ -1,0 +1,58 @@
+{
+  "endpoint": "wss://muon-10.kaspa.blue/kaspa/testnet-10/wrpc/borsh",
+  "observation": {
+    "node": {
+      "hasUtxoIndex": true,
+      "isSynced": true,
+      "networkId": "testnet-10",
+      "rpcApiRevision": 0,
+      "rpcApiVersion": 1,
+      "serverVersion": "2.1.0",
+      "virtualDaaScore": 599951625
+    },
+    "utxos": [
+      {
+        "address": "kaspatest:qrn45mvv2s5zuarpuzdr8k9auk4e657fz9rwl30acl2fvudqsdpjk6ey7cx93",
+        "outpoint": {
+          "index": 0,
+          "transactionId": "dc7f9a6643e7087014d571d8b3235e02f2af83e27c9b343cd2783d2954c4833d"
+        },
+        "utxoEntry": {
+          "amount": 96000000,
+          "blockDaaScore": 599950831,
+          "covenantId": null,
+          "isCoinbase": false,
+          "scriptPublicKey": "000020e75a6d8c54282e7461e09a33d8bde5ab9d53c91146efc5fdc7d49671a083432bac"
+        }
+      },
+      {
+        "address": "kaspatest:qrcfcwrdl7w8ut3tuvkj665mgl2uctl8zjae5u4esedgy4kmymfdsew9hmsdf",
+        "outpoint": {
+          "index": 0,
+          "transactionId": "c6cade7b912ae57f9df3d9ab4bfa9ff0d9be8535459670be4f0f4f28810aa328"
+        },
+        "utxoEntry": {
+          "amount": 96000000,
+          "blockDaaScore": 599951362,
+          "covenantId": null,
+          "isCoinbase": false,
+          "scriptPublicKey": "000020f09c386dff9c7e2e2be32d2d6a9b47d5cc2fe714bb9a72b9865a8256db26d2d8ac"
+        }
+      },
+      {
+        "address": "kaspatest:qq78m9h93fp6sv8u235umkfvyfqljmqfzr5jnxhpumg64hw4sel8sg877542k",
+        "outpoint": {
+          "index": 2,
+          "transactionId": "6fad9be014203572f73694084411c90e6ca509744ab46a9bb0b8953b3175535e"
+        },
+        "utxoEntry": {
+          "amount": 98000000,
+          "blockDaaScore": 599950552,
+          "covenantId": null,
+          "isCoinbase": false,
+          "scriptPublicKey": "0000203c7d96e58a43a830fc5469cdd92c2241f96c0910e9299ae1e6d1aaddd5867e78ac"
+        }
+      }
+    ]
+  }
+}

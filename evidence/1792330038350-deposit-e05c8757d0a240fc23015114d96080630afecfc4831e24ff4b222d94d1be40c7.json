@@ -1,0 +1,57 @@
+{
+  "error": "RPC Server (remote error) -> Rejected transaction e05c8757d0a240fc23015114d96080630afecfc4831e24ff4b222d94d1be40c7: transaction e05c8757d0a240fc23015114d96080630afecfc4831e24ff4b222d94d1be40c7 is not standard: transaction has 100000 fees which is under the required amount of 1147200 for compute mass 11472",
+  "id": "e05c8757d0a240fc23015114d96080630afecfc4831e24ff4b222d94d1be40c7",
+  "node": {
+    "hasUtxoIndex": true,
+    "isSynced": true,
+    "networkId": "testnet-10",
+    "rpcApiRevision": 0,
+    "rpcApiVersion": 1,
+    "serverVersion": "2.1.0",
+    "virtualDaaScore": 599949778
+  },
+  "status": "REJECTED_OR_UNKNOWN",
+  "transaction": {
+    "gas": 0,
+    "inputs": [
+      {
+        "computeBudget": 100,
+        "previousOutpoint": {
+          "index": 0,
+          "transactionId": "acf8ef9f04c13e8188115574ea933eef8ddc8d1990ddd3785850c4a3270beaa2"
+        },
+        "sequence": 0,
+        "sigOpCount": 0,
+        "signatureScript": "4131524a91a95e84de8912c6e5ebbd35efc837316e1cd8c028b720e6142cb3b22a20a8b6aec6051e9c3f6ddfe8a7719a1169d2b14df0caf9c380af994f7e34ae0201",
+        "verboseData": null
+      }
+    ],
+    "lockTime": 0,
+    "mass": 26677,
+    "outputs": [
+      {
+        "covenant": null,
+        "scriptPublicKey": "0000aa20251e95b155a1f176ea5dbc93b871b8cc98aa33f1a8b3bc9cd26cea0e15713e4587",
+        "value": 100000000,
+        "verboseData": null
+      },
+      {
+        "covenant": null,
+        "scriptPublicKey": "0000aa20251e95b155a1f176ea5dbc93b871b8cc98aa33f1a8b3bc9cd26cea0e15713e4587",
+        "value": 100000000,
+        "verboseData": null
+      },
+      {
+        "covenant": null,
+        "scriptPublicKey": "0000203c7d96e58a43a830fc5469cdd92c2241f96c0910e9299ae1e6d1aaddd5867e78ac",
+        "value": 99900000,
+        "verboseData": null
+      }
+    ],
+    "payload": "",
+    "storageMass": 26677,
+    "subnetworkId": "0000000000000000000000000000000000000000",
+    "verboseData": null,
+    "version": 1
+  }
+}

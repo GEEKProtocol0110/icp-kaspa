@@ -1,0 +1,29 @@
+test_approval_does_not_apply_to_other_transaction (test_watchtower.WatchtowerTests.test_approval_does_not_apply_to_other_transaction) ... ok
+test_changed_destination_is_rejected (test_watchtower.WatchtowerTests.test_changed_destination_is_rejected) ... ok
+test_configuration_drift_does_not_reuse_db (test_watchtower.WatchtowerTests.test_configuration_drift_does_not_reuse_db) ... ok
+test_dry_run_does_not_sign_or_submit (test_watchtower.WatchtowerTests.test_dry_run_does_not_sign_or_submit) ... ok
+test_exact_approval_preserves_legitimate_request (test_watchtower.WatchtowerTests.test_exact_approval_preserves_legitimate_request) ... ok
+test_expired_approval_does_not_suppress_recovery (test_watchtower.WatchtowerTests.test_expired_approval_does_not_suppress_recovery) ... ok
+test_incomplete_chain_page_is_rejected (test_watchtower.WatchtowerTests.test_incomplete_chain_page_is_rejected) ... ok
+test_invalid_accepted_value_rolls_back_entire_batch (test_watchtower.WatchtowerTests.test_invalid_accepted_value_rolls_back_entire_batch) ... ok
+test_late_approval_is_rejected (test_watchtower.WatchtowerTests.test_late_approval_is_rejected) ... ok
+test_malformed_transaction_cannot_advance_cursor (test_watchtower.WatchtowerTests.test_malformed_transaction_cannot_advance_cursor) ... ok
+test_missing_live_utxo_prevents_stale_retry (test_watchtower.WatchtowerTests.test_missing_live_utxo_prevents_stale_retry) ... ok
+test_recovery_submitted_and_confirmed_separately (test_watchtower.WatchtowerTests.test_recovery_submitted_and_confirmed_separately) ... ok
+test_reorg_below_bootstrap_requires_reconciliation (test_watchtower.WatchtowerTests.test_reorg_below_bootstrap_requires_reconciliation) ... ok
+test_reorg_of_intent_stops_rebroadcasts (test_watchtower.WatchtowerTests.test_reorg_of_intent_stops_rebroadcasts) ... ok
+test_reorg_of_recovery_rearms_existing_outbox (test_watchtower.WatchtowerTests.test_reorg_of_recovery_rearms_existing_outbox) ... ok
+test_reorg_removes_orphaned_pending_output (test_watchtower.WatchtowerTests.test_reorg_removes_orphaned_pending_output) ... ok
+test_restart_after_ambiguous_broadcast_reuses_signed_transaction (test_watchtower.WatchtowerTests.test_restart_after_ambiguous_broadcast_reuses_signed_transaction) ... ok
+test_retry_limit_bounds_rebroadcasts (test_watchtower.WatchtowerTests.test_retry_limit_bounds_rebroadcasts) ... ok
+test_signer_cannot_redirect_recovery (test_watchtower.WatchtowerTests.test_signer_cannot_redirect_recovery) ... ok
+test_stale_cursor_is_rejected (test_watchtower.WatchtowerTests.test_stale_cursor_is_rejected) ... ok
+test_unapproved_request_is_recovery_candidate (test_watchtower.WatchtowerTests.test_unapproved_request_is_recovery_candidate) ... ok
+test_unauthorized_execution_is_recorded_as_failure (test_watchtower.WatchtowerTests.test_unauthorized_execution_is_recorded_as_failure) ... ok
+test_unsynced_node_is_fail_closed (test_watchtower.WatchtowerTests.test_unsynced_node_is_fail_closed) ... ok
+test_wrong_network_is_fail_closed (test_watchtower.WatchtowerTests.test_wrong_network_is_fail_closed) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.165s
+
+OK

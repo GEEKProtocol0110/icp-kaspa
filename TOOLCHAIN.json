@@ -1,0 +1,17 @@
+{
+  "silverscript_release": "v1.0.0",
+  "silverscript_commit": "3ed973335b59269293564805cc2c58a14595ec03",
+  "artifact_compiler_version": "0.1.0",
+  "linux_x86_64_archive_sha256": "058ffa17a390526f27280752f864b1bd680217cded14dfc5b7fd168d7e943fb5",
+  "linux_x86_64_binary_sha256": "4d205f9bb095ae6c9027cebdcf748f7ea472f8785b054e94d8124ee7bafb84cc",
+  "rusty_kaspa_commit": "a41a333b08848f41bf737b72592e463a6011b8ac",
+  "rust_used": "1.99.1",
+  "network": "testnet-10",
+  "toccata_activation_daa": 467579632,
+  "source_references": [
+    "https://github.com/kaspanet/silverscript/releases/tag/v1.0.0",
+    "https://github.com/kaspanet/silverscript/blob/3ed973335b59269293564805cc2c58a14595ec03/docs/TUTORIAL.md",
+    "https://github.com/kaspanet/rusty-kaspa/blob/a41a333b08848f41bf737b72592e463a6011b8ac/consensus/core/src/config/params.rs",
+    "https://github.com/kaspanet/rusty-kaspa/blob/a41a333b08848f41bf737b72592e463a6011b8ac/crypto/txscript/src/lib.rs"
+  ]
+}

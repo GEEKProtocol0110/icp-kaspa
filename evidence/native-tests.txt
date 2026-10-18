@@ -1,0 +1,55 @@
+    Finished `test` profile [unoptimized] target(s) in 0.18s
+     Running unittests src/lib.rs (icp-testnet/target/debug/deps/icp_testnet-cb46cf3d4a562cf1)
+
+running 3 tests
+test tests::only_tn10_accepted ... ok
+test tests::activation_boundary ... ok
+test tests::unhealthy_node_rejected ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (icp-testnet/target/debug/deps/icp-4c02c17167555eb9)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/vault_vm.rs (icp-testnet/target/debug/deps/vault_vm-9f27f4b2de22cf15)
+
+running 27 tests
+test extra_input_rejected ... ok
+test disabled_relative_lock_rejected ... ok
+test execute_commits_required_sequence ... ok
+test initiate_cannot_reset_idle ... ok
+test execution_cannot_redirect ... ok
+test initiate_cannot_pay_attacker ... ok
+test initiate_creates_pending ... ok
+test old_idle_deposit_cannot_execute_directly ... ok
+test fee_drain_rejected_on_all_paths ... ok
+test lower_fee_allowed ... ok
+test extra_output_rejected ... ok
+test mutated_signed_transaction_rejected ... ok
+test output_value_cannot_exceed_input ... ok
+test pending_cannot_be_initiated_again ... ok
+test owner_cannot_authorize_recovery ... ok
+test recover_idle ... ok
+test recover_pending ... ok
+test recovery_cannot_authorize_execution ... ok
+test signature_replay_on_different_outpoint_rejected ... ok
+test sequence_below_delay_rejected ... ok
+test vm_alone_does_not_establish_pending_utxo_age ... ok
+test wrong_owner_signature_rejected ... ok
+test wrong_selector_rejected ... ok
+test recovery_cannot_redirect ... ok
+test zero_output_rejected ... ok
+test initiation_cannot_replace_immutable_policy ... ok
+test zero_fee_is_not_an_authorization_bypass ... ok
+
+test result: ok. 27 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests icp_testnet
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
