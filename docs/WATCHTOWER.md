@@ -90,3 +90,13 @@ fresh two-vault deposit. It approves one prepared intent, leaves the other
 unapproved, runs the actual observer/recovery loop, then executes the approved
 withdrawal only after its delay. It refuses to overwrite an existing pilot
 directory. Inspect a partial journal before taking further action.
+
+## Candidate protected recovery
+
+Select `--cli target/debug/icp-protected` explicitly and use a fresh `--db`
+and `--config`; the default remains the live-tested v0 CLI. The v1 descriptor's
+recovery script is the quarantined covenant. Its terminal recovery record adds
+`custody: QUARANTINED`, outpoint and amount, and emits `RECOVERY_QUARANTINED`.
+This records entry into quarantine, not a cold payout. The watcher does not
+monitor later cold releases. See [PROTECTED-RECOVERY.md](PROTECTED-RECOVERY.md)
+for signer roles and setup. The existing funded pilot script is v0 only.

@@ -1,8 +1,23 @@
 # ICP checkpoint - October 18, 2026
 
-**Status: VAULT AND WATCHTOWER LIVE TESTS PASSED ON TESTNET-10.**
+**Status: V1 PROTECTED-RECOVERY CANDIDATE PASSES NATIVE CHECKS; V0 LIVE PROOF PRESERVED.**
 
-## Current result
+## Current candidate
+
+- Branch: feat/protected-recovery. The additive v1 contract and icp-protected
+  CLI do not replace v0 or migrate its deposits.
+- Recovery creates a quarantined successor covenant. Owner and recovery-trigger
+  keys cannot spend that state; cold release needs a separate key and a new,
+  strictly longer delay. Quarantine cannot be repeatedly recovered or rearmed.
+- One explicit role file per signing command; public setup/status/descriptor and
+  broadcast do not load private keys. No v0 combined-key fallback.
+- Native/script, signer, CLI and controller suites pass 85 total local checks.
+  See evidence/protected-verification.md and docs/PROTECTED-RECOVERY.md.
+- V1 has not been funded or live tested. No new test funds were spent.
+- Same-host file separation is not production signer isolation; remote/air-gapped
+  signing and deployment controls remain work.
+
+## Live-tested v0 milestone
 
 - Public repository: https://github.com/GEEKProtocol0110/icp-kaspa
 - CrypTony requested public, open-source development and accepted hosting under
@@ -18,6 +33,8 @@
 - Current total test balances across all session addresses: 2.80 test KAS.
 
 ## Read first
+
+- docs/PROTECTED-RECOVERY.md and evidence/protected-verification.md for v1.
 
 - docs/ICP-Watchtower-Live-Proof.md and evidence/watchtower-live.json.
 - docs/WATCHTOWER.md for arming, exact-intent approval, dry-run/execute mode,
@@ -45,11 +62,12 @@ The watcher is not left running as an unattended hosted service.
 
 ## Remaining work
 
-1. Verify the public repository's GitHub Actions result and keep its checkpoint
-   current. The recorded 54-check local run and funded testnet evidence remain
-   distinct from CI; CI does not sign or broadcast transactions.
-2. Specify and implement a protected recovery covenant rather than a plain P2PK
-   recovery address; isolate recovery authority and signer from the owner role.
+1. Review the v1 candidate and run a fresh funded TN10 lifecycle with independent
+   role files: exact intent approval, automatic quarantine recovery, explicit
+   node rejection before the cold delay, later cold release and a second-node
+   output check. Preserve a new journal; do not reuse v0 pilots.
+2. Provide production signer isolation/transport, protect public configuration,
+   and specify cold-stage rescue/key rotation before expanding custody claims.
 3. Harden deployment: service restart/health, external alerts, database retention,
    deep-reorg/pruning reconciliation and bounded backlog processing.
 4. Add fee estimation within the immutable cap and external adversarial review.

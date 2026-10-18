@@ -1,5 +1,8 @@
 # ICP vault 0.0.0 - prototype specification
 
+This specifies the live-tested v0 contract. The additive protected recovery
+candidate is specified separately in [PROTECTED-RECOVERY.md](PROTECTED-RECOVERY.md).
+
 Engineering proposal derived from the supplied ICP v2 paper. These choices are
 not attributed to, or claimed to be approved by, its author.
 

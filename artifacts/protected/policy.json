@@ -1,0 +1,11 @@
+{
+  "version": "protected-v1",
+  "network": "testnet-10",
+  "owner": "79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+  "recovery": "c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5",
+  "recipient": "f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9",
+  "cold": "e493dbf1c10d80f3581e4904930b1404cc6c13900ee0758474fa94abe8c4cd13",
+  "delay_daa": 600,
+  "cold_delay_daa": 1800,
+  "max_fee": 2000000
+}

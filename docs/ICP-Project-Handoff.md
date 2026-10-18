@@ -1,3 +1,29 @@
+# ICP - protected recovery candidate checkpoint
+
+**October 18, 2026: v1 implemented and locally verified; funded v1 pilot pending.**
+
+Current home: https://github.com/GEEKProtocol0110/icp-kaspa
+Branch: feat/protected-recovery. Read PROJECT-STATUS.md and
+[PROTECTED-RECOVERY.md](PROTECTED-RECOVERY.md) before continuing.
+
+- Additive IcpProtected contract: idle -> pending -> quarantine -> explicit cold
+  exit. Recovery cannot pay P2PK directly, hot keys cannot release quarantine,
+  and the new cold delay cannot be reset through repeated recovery.
+- Separate icp-protected CLI selects one role-specific secret file per signing
+  operation. Public-only commands work without private keys. No migration from
+  v0 and no combined-key fallback are present.
+- 85 local checks pass: 27 original vault, 3 network guards, 20 protected VM,
+  8 signer/policy, 1 CLI and 26 controller. Verification workflow covers both
+  compiler bootstraps and all suites. Public evidence:
+  [protected-verification.md](../evidence/protected-verification.md).
+- No funded v1 transaction was broadcast. V0's two live proofs remain historical
+  evidence for v0, not v1. The private session archive was not modified.
+- Next: review candidate, funded TN10 quarantine/cold-release proof with fresh
+  keys and journal, then production signer deployment and cold-stage rescue/
+  rotation design. Do not claim independent-host isolation from separate files.
+
+## Earlier checkpoints (historical; superseded above)
+
 # ICP - Kaspa Development
 
 

@@ -36,6 +36,7 @@ Linux Codespace if needed. All Rust dependencies are commit-pinned and locked.
 
 ```bash
 python3 scripts/compile.py
+python3 scripts/compile_protected.py --fixtures
 cargo test --locked --features live
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 cargo build --locked --features live
@@ -125,9 +126,22 @@ specification before changing custody behavior. No live RPC, signing or private
 test data is required by CI. Open an issue or pull request with reproducible
 evidence; do not include keys or funded-session backups.
 
-Next: protected recovery covenants, signer separation, service operation and
-external review. See [the project checkpoint](docs/ICP-Project-Handoff.md).
+Next: a funded protected-recovery lifecycle, production signer isolation,
+service operation and external review. See [the project checkpoint](docs/ICP-Project-Handoff.md).
 Pre-publication Git history is preserved in [the import record](docs/IMPORT.md).
 
 The original implementation is MIT licensed. Third-party dependencies and
 source papers retain their own terms; see [NOTICE.md](NOTICE.md).
+
+## Protected recovery candidate
+
+An additive [v1 candidate](docs/PROTECTED-RECOVERY.md) moves recovery into a
+quarantined covenant. Release requires an independent cold key and a new,
+longer relative delay. Its `icp-protected` CLI uses one explicit role-specific
+signer file, with no combined-key fallback. Read-only operations need no keys.
+
+Build its public fixtures with `python3 scripts/compile_protected.py --fixtures`
+before running Cargo tests. The original v0 contract and CLI remain available;
+their live receipts do not cover v1. The candidate has native VM, signer and
+controller tests; a funded v1 testnet lifecycle and production signer isolation
+remain to be completed.

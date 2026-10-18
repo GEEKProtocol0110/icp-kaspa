@@ -1,0 +1,69 @@
+pragma silverscript ^0.1.0;
+
+// Candidate v1. Stages: 0 idle, 1 pending, 2 quarantined.
+contract IcpProtected(
+    pubkey owner,
+    pubkey recovery,
+    pubkey recipient,
+    pubkey cold,
+    int delay_daa,
+    int cold_delay_daa,
+    int max_fee,
+    int init_stage
+) {
+    int stage = init_stage;
+
+    function layout() {
+        require(this.activeInputIndex == 0);
+        require(tx.inputs.length == 1);
+        require(tx.outputs.length == 1);
+        require(stage >= 0);
+        require(stage <= 2);
+        require(owner != recovery);
+        require(owner != recipient);
+        require(owner != cold);
+        require(recovery != recipient);
+        require(recovery != cold);
+        require(recipient != cold);
+        require(delay_daa > 0);
+        require(delay_daa <= 4294967295);
+        require(cold_delay_daa > delay_daa);
+        require(cold_delay_daa <= 4294967295);
+        require(max_fee >= 0);
+        require(tx.outputs[0].value > 0);
+        require(tx.outputs[0].value <= tx.inputs[0].value);
+        require(tx.inputs[0].value - tx.outputs[0].value <= max_fee);
+    }
+
+    entry initiate(sig owner_sig) {
+        layout();
+        require(stage == 0);
+        require(checkSig(owner_sig, owner));
+        validateOutputState(0, State { stage: 1 });
+    }
+
+    entry execute(sig owner_sig) {
+        layout();
+        require(stage == 1);
+        require(checkSig(owner_sig, owner));
+        require(this.ageDaa >= delay_daa);
+        byte[36] destination = new ScriptPubKeyP2PK(recipient);
+        require(tx.outputs[0].scriptPubKey == byte[](destination));
+    }
+
+    entry recover(sig recovery_sig) {
+        layout();
+        require(stage < 2);
+        require(checkSig(recovery_sig, recovery));
+        validateOutputState(0, State { stage: 2 });
+    }
+
+    entry release(sig cold_sig) {
+        layout();
+        require(stage == 2);
+        require(checkSig(cold_sig, cold));
+        require(this.ageDaa >= cold_delay_daa);
+        byte[36] destination = new ScriptPubKeyP2PK(cold);
+        require(tx.outputs[0].scriptPubKey == byte[](destination));
+    }
+}
