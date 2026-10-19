@@ -565,6 +565,21 @@ pub fn verify_record(raw: &[u8]) -> Result<Value> {
     summary(&saved.plan, &saved.transaction)
 }
 
+/// Observation pins use unsigned native semantics, never a signature or VM claim.
+pub fn observation_pin(p: &Plan) -> Result<Value> {
+    p.validate()?;
+    let tx = unsigned(p)?;
+    Ok(
+        serde_json::json!({"mode": MODE, "plan": p, "action": p.action,
+        "transaction_id": tx.id().to_string(), "payload": encode_hex(&tx.payload),
+        "input": {"transaction_id": tx.inputs[0].previous_outpoint.transaction_id.to_string(),
+                  "index": tx.inputs[0].previous_outpoint.index},
+        "outputs": tx.outputs.iter().map(|o| serde_json::json!({"amount":o.value,
+            "script":encode_hex(o.script_public_key.script())})).collect::<Vec<_>>(),
+        "storage_mass": tx.storage_mass(), "unsigned_pin": true}),
+    )
+}
+
 /// Public summary intentionally omits signed transaction bytes and private material.
 pub fn summary(p: &Plan, tx: &Transaction) -> Result<Value> {
     check_prepared(p, tx, &p.entry())?;
@@ -1047,6 +1062,42 @@ mod tests {
             assert_eq!(v["mode"], MODE);
             assert_eq!(v["vm_verified"], true);
         }
+    }
+
+    #[test]
+    fn unsigned_pins_match_signed_ids_without_claiming_vm_or_full_hash() {
+        for p in cases() {
+            let pin = observation_pin(&p).unwrap();
+            let checked = summary(&p, &signed(&p)).unwrap();
+            for field in [
+                "plan",
+                "action",
+                "transaction_id",
+                "input",
+                "outputs",
+                "payload",
+            ] {
+                assert_eq!(pin[field], checked[field]);
+            }
+            assert_eq!(pin["unsigned_pin"], true);
+            for absent in ["native_hash", "vm_verified", "transaction", "signature"] {
+                assert!(pin.get(absent).is_none());
+            }
+            assert!(unsigned(&p).unwrap().inputs[0].signature_script.is_empty());
+        }
+    }
+
+    #[test]
+    fn unsigned_pin_changes_with_context_and_refuses_funded_source() {
+        let mut p = fixture_issue(24_000_000);
+        let original = observation_pin(&p).unwrap();
+        p.context.intent_nonce = "44".repeat(32);
+        assert_ne!(
+            original["transaction_id"],
+            observation_pin(&p).unwrap()["transaction_id"]
+        );
+        p.funding_transaction_id = "22".repeat(32);
+        assert!(observation_pin(&p).is_err());
     }
 
     #[test]

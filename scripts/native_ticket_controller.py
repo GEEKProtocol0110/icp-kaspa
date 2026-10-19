@@ -66,6 +66,9 @@ class Worker:
             raise ModelError('Expected terminal fixture action')
         return json.loads(self.run(action + '-plan', core.canonical(issue)))
 
+    def pin(self, plan):
+        return json.loads(self.run('pin', core.canonical(plan)))
+
     def prepare(self, plan):
         raw = self.run('prepare', core.canonical(plan))
         self.verify(raw.decode())
@@ -85,6 +88,7 @@ class Policy:
     issue_raw: str
     worker_hash: str
     freshness: int = 5
+    observation_pin: str | None = None
 
     def __post_init__(self):
         if type(self.freshness) is not int or not 1 <= self.freshness <= 30:
@@ -92,8 +96,9 @@ class Policy:
 
     @property
     def id(self):
-        return sha(core.canonical(dict(mode=MODE, issue=self.issue_raw,
-                                       worker=self.worker_hash, freshness=self.freshness)))
+        value = dict(mode=MODE, issue=self.issue_raw, worker=self.worker_hash, freshness=self.freshness)
+        if self.observation_pin is not None: value['observation_pin'] = self.observation_pin
+        return sha(core.canonical(value))
 
 
 class FakeNode:
@@ -128,7 +133,7 @@ class Controller:
         self.issue = self.worker.validate(issue)
         if self.issue['action'] != 'issue':
             raise ModelError('Controller requires its original fixture issue plan')
-        self.policy = Policy(core.canonical(self.issue).decode(), self.worker.fingerprint)
+        self.policy = self._make_policy()
         self.root = Path(root)
         authority_path = Path(authority_path)
         ledger_path = self.root / 'ticket.sqlite'
@@ -157,6 +162,9 @@ class Controller:
         except BaseException:
             self.close()
             raise
+
+    def _make_policy(self):
+        return Policy(core.canonical(self.issue).decode(), self.worker.fingerprint)
 
     def close(self):
         if self._journal is not None:

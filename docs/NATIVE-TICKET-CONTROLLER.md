@@ -77,6 +77,7 @@ Thirty-seven Python tests and four additional native tests cover restart,
 concurrent choice, real process death, partial acknowledgment, stale generations,
 corruption, restore, unknown outcomes and scope counterexamples. The separate
 [read-only observer](NATIVE-TICKET-OBSERVER.md) now exists, with synthetic scan
-and reorg tests. It does not feed this controller. Next test their explicit
-integration before any separately authorized TN10 pilot. Real authorization, independently enforced signing, reviewed N0/R0
+and reorg tests. The [connected variant](NATIVE-TICKET-BINDING.md) now gates new
+fixture work on those observations; this original variant still uses fake maps.
+A separately authorized TN10 pilot remains ahead. Real authorization, independently enforced signing, reviewed N0/R0
 wire rules and protected key delivery remain separate gates.
