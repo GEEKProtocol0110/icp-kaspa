@@ -74,6 +74,12 @@ local decryption. An encrypted challenge checks possession of that recipient's
 delivery key. It is a local cryptographic experiment, with no agency integration
 or network delivery. It is not yet connected to the release model.
 
+The [release-service design](RELEASE-SERVICE-DESIGN.md) describes the next bridge:
+keep record keys in a private store, save each authorized delivery before sending,
+and recover that same delivery after a failure. It also requires safeguards
+against an old backup or a second service copy forgetting what was already used.
+These are proposed requirements; the service has not been implemented.
+
 Two limits matter: copied databases can each accept a claim, and a chain change
 can occur after the last check but before delivery. Those limits have explicit
 tests. Real delivery needs additional design, safeguards and review.

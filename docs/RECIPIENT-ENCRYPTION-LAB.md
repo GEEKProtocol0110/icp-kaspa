@@ -145,5 +145,9 @@ release. This lab directly encrypts a message to a recipient; it does not wire
 those gates into the [simulated ledger](RELEASE-LEDGER-MODEL.md). Current vaults,
 funded sessions and live anchor rules are unchanged.
 
+The [release-service design](RELEASE-SERVICE-DESIGN.md) now specifies proposed
+ownership and cross-store recovery boundaries. The next coordinator model keeps
+fake vault responses separate from this lab's real encryption operations.
+
 See [verification](../evidence/recipient-lab-verification.md) for adversarial
 coverage and test counts.

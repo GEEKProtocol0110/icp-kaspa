@@ -1,6 +1,6 @@
 # ICP continuation checkpoint
 
-**October 19, 2026: local recipient-specific encryption experiment implemented.**
+**October 19, 2026: release-service ownership and recovery design proposed.**
 
 For a nontechnical introduction, open [ICP in plain English](PLAIN-ENGLISH.md).
 The [documentation directory](README.md) separates explanations, dated testnet
@@ -8,6 +8,17 @@ evidence, operating guides and research proposals. This handoff preserves the
 engineering and operational detail needed to continue development.
 
 ## Current state
+
+The newest design checkpoint is
+[RELEASE-SERVICE-DESIGN.md](RELEASE-SERVICE-DESIGN.md). It defines a private
+per-version content-key boundary, stable response-operation identity, vault
+candidate outbox, ledger commit, delivery gate and revocation ordering. It
+requires independent writer fencing and continuity checks before recovery from
+backups. No provider, hardware boundary, R0 wire/suite or remote endpoint is
+implemented/adopted by this document. The 302-test implementation is unchanged.
+Next build a synthetic-only coordinator recovery model with separate fake vault,
+fencing/checkpoint authority and delivery gate; keep real keys and native signing
+disconnected. Use its acceptance matrix before attempting a real release service.
 
 The latest module is scripts/recipient_lab.py. Read
 [RECIPIENT-ENCRYPTION-LAB.md](RECIPIENT-ENCRYPTION-LAB.md) for exact domains,

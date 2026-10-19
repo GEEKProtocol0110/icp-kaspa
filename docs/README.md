@@ -54,6 +54,7 @@ signed transaction outboxes and private backups out of the repository.
 | [Transfer anchor observer](TRANSFER-ANCHOR.md) | Trusted-node observation code, a synthetic demo and links to the later testnet run |
 | [Release-ledger model](RELEASE-LEDGER-MODEL.md) | Local accounting/crash/reorg experiment; simulated chain data, no real key delivery |
 | [Read-ticket and key-release draft](READ-TICKET-RELEASE-DRAFT.md) | Proposed release protocol and unresolved implementation gates |
+| [Release-service design](RELEASE-SERVICE-DESIGN.md) | Proposed key ownership, exact-response delivery, revocation, fencing and backup recovery; no implemented service |
 
 For licensing and source provenance, see [NOTICE.md](../NOTICE.md),
 [LICENSE](../LICENSE) and the [import record](IMPORT.md).
