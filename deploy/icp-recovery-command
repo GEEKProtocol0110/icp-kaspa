@@ -1,0 +1,7 @@
+#!/bin/sh
+# Install root-owned, mode 0755. No caller arguments or environment reach Python.
+# Check before env -i so requests for arbitrary SSH commands are refused.
+[ -z "${SSH_ORIGINAL_COMMAND:-}" ] || exit 1
+exec /usr/bin/env -i PATH=/usr/bin:/bin /usr/bin/timeout --signal=KILL 90s \
+    /usr/bin/python3 /opt/icp/scripts/recovery_signer.py \
+    --config /etc/icp-recovery/signer.json

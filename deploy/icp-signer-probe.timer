@@ -1,0 +1,11 @@
+[Unit]
+Description=Check remote recovery signer readiness
+
+[Timer]
+OnBootSec=15
+OnUnitActiveSec=30
+AccuracySec=1
+Unit=icp-signer-probe.service
+
+[Install]
+WantedBy=timers.target

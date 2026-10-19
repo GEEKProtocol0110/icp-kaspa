@@ -1,4 +1,4 @@
-# ICP checkpoint - October 18, 2026
+# ICP checkpoint - October 19, 2026
 
 **Status: V1 PROTECTED RECOVERY PASSED FUNDED TESTNET-10 ACCEPTANCE.**
 
@@ -15,12 +15,31 @@
   2,067 DAA units after quarantine creation (required: 1,800).
 - A second TN10 node observed the quarantine output while locked and the final
   normal/cold outputs. Both vaults exited. No daemon remains running.
-- All 85 offline checks pass. Read docs/ICP-Protected-Recovery-Live-Proof.md and
+- All 105 offline checks pass (59 Rust and 46 Python). Read docs/ICP-Protected-Recovery-Live-Proof.md and
   evidence/protected-live.json for exact IDs, scripts, amounts and observations.
 - This run spent 0.16 test KAS in eight accepted transaction fees. Total remaining
   across old and fresh session addresses: 2.64 test KAS. No real KAS was used.
 - Keys are separate files and signing subprocesses on the same test host. This
   does not demonstrate OS/host isolation, an air gap, quantum safety or an audit.
+
+## Recovery signer and supervision kit (offline verified)
+
+- Recovery-only SSH forced-command endpoint pins the protected-v1 descriptor,
+  independently checks the live pending UTXO on TN10, and returns only a prepared
+  fixed-quarantine transaction. No remote broadcast, arbitrary command or cold
+  release is exposed. The client pins the SSH host key with no local fallback.
+- Existing durable outbox/reorg handling remains; public native operations strip
+  the signer-key environment. Private receipts can live outside read-only public
+  state via ICP_PROTECTED_RECEIPT_DIR.
+- Watcher service has bounded restarts. A separate signer readiness timer avoids
+  blocking scans; read-only health checks report stale scans, stalled DAA, signer
+  outage, dry/local mode, recovery deadlines, exhausted attempts and unauthorized
+  execution. Restarted watchers preserve log cursor and DAA-progress history.
+- Deployment/config templates: deploy/. Instructions and limits:
+  docs/SIGNER-DEPLOYMENT.md. Verification: evidence/signer-verification.md.
+- No host or SSH credentials were supplied. No independent-host installation,
+  live SSH handshake, external alert delivery or new funded run was performed.
+  The 2.64 test KAS balance and existing pilot receipts are unchanged.
 
 ## Live-tested v0 milestone
 
@@ -70,11 +89,12 @@ The watcher is not left running as an unattended hosted service.
 
 ## Remaining work
 
-1. Deploy a recovery-only signer on an independent host/device with authenticated
-   transport, protect public configuration, and define operator access controls.
+1. Install and validate the reviewed signer/supervision kit on independent hosts,
+   verify host/descriptor pins and permissions, wire an approved external alert
+   destination, and journal fresh TN10 acceptance. No hosts are configured yet.
 2. Specify cold-stage rescue, key rotation and lost-key procedures before
    expanding custody claims; the final cold P2PK exit is not ongoing protection.
-3. Harden service restart/health, external alerts, database retention,
+3. Complete external alert acceptance, database retention,
    deep-reorg/pruning reconciliation and bounded backlog processing.
 4. Add fee estimation within the immutable cap, broader node/network failure
    testing, and independent adversarial review.

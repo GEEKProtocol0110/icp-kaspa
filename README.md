@@ -16,9 +16,13 @@ were sequence-rejected; the exact same signed transactions later passed.
 [Protected recovery proof](docs/ICP-Protected-Recovery-Live-Proof.md),
 [earlier watchtower proof](docs/ICP-Watchtower-Live-Proof.md) and
 [v0 vault proof](docs/ICP-Testnet-Live-Proof.md) include transaction IDs.
-All 85 offline checks pass. GitHub Actions reproduces them on pushes and pull
+All 105 offline checks pass. GitHub Actions reproduces them on pushes and pull
 requests. This remains an experimental testnet prototype without an independent
 security audit or production signer isolation.
+
+A recovery-only SSH endpoint and supervised watcher deployment kit are available
+in [SIGNER-DEPLOYMENT.md](docs/SIGNER-DEPLOYMENT.md). Protocol and restart tests pass;
+independent-host installation and external alert delivery remain pending.
 
 ## What works locally
 
