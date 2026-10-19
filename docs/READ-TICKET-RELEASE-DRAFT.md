@@ -12,6 +12,11 @@ of these state/accounting rules. It does not adopt an R0 wire/delivery suite,
 create native tickets or implement real key release. This draft remains a
 proposal; its unimplemented gates still apply.
 
+The later [recipient-encryption lab](RECIPIENT-ENCRYPTION-LAB.md) separately
+tests local HPKE message encryption and identity/delivery-key possession
+binding. It is not connected to the model ledger and does not adopt an R0
+suite, service-owned content-key store or protected remote-release protocol.
+
 **Status: engineering proposal, not implemented or an adopted protocol.**
 This defines the next bounded experiment after the
 [funded transfer anchor](ICP-Transfer-Anchor-Live-Proof.md). It changes no custody

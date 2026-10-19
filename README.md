@@ -63,9 +63,10 @@ these vault rules no longer protect their later transfers.
 | Vault withdrawals and protected recovery | Tested on Kaspa Testnet-10 with test coins, including rejected early payouts | [Protected recovery run](docs/ICP-Protected-Recovery-Live-Proof.md) |
 | Automated recovery monitoring | An earlier testnet run recovered an unapproved withdrawal | [Watchtower run](docs/ICP-Watchtower-Live-Proof.md) |
 | Recording a data commitment on Kaspa | One testnet transaction observed through two node endpoints | [Transfer anchor run](docs/ICP-Transfer-Anchor-Live-Proof.md) |
+| A message encrypted for one recipient | Local HPKE encryption, delivery-key possession checks, sender approval and signed receipts; no network delivery | [Recipient-encryption lab](docs/RECIPIENT-ENCRYPTION-LAB.md) |
 | Encrypted messages and release accounting | Local experiments; the release model uses simulated chain data and a non-secret placeholder | [Transfer lab](docs/TRANSFER-LAB.md) · [Release model](docs/RELEASE-LEDGER-MODEL.md) |
 
-The automated suite contains **265 tests: 68 Rust + 197 Python**.
+The automated suite contains **302 tests: 68 Rust + 234 Python**.
 [GitHub Actions](.github/workflows/verify.yml) checks the build, tests and demos.
 Individual testnet runs are dated evidence, not performance or security
 guarantees; later software changes also have their own offline checks.
@@ -76,6 +77,11 @@ Alongside vaults, ICP is researching how a service could check permission before
 releasing a key to an encrypted record. Kaspa could record commitments and
 transactions; the service would manage private storage, permission checks and
 key delivery.
+
+The [recipient-encryption lab](docs/RECIPIENT-ENCRYPTION-LAB.md) now demonstrates
+real encryption of a fictional message to one verified delivery key. It checks
+separate sender/approver signatures and a recipient acknowledgment. This is a
+local cryptographic experiment; a remote release service is still future work.
 
 The local release model already tests duplicate requests, release limits,
 crashes and blockchain reorganizations. It delivers **no real decryption keys**.
@@ -95,14 +101,16 @@ one authorized release does not mean only one viewing.
 | Build and run the tests | [Developer setup](docs/QUICKSTART.md) |
 | Check progress or continue development | [Project status](PROJECT-STATUS.md) · [Developer handoff](docs/ICP-Project-Handoff.md) |
 
-For a local demo with simulated data and no wallet, run from the repository root:
+For a local encrypted-message demo with fictional data and no wallet, run from
+the repository root:
 
 ```bash
 python3 -m pip install --only-binary=:all: -r requirements-lab.txt
-python3 scripts/release_ledger_model.py
+python3 scripts/recipient_lab.py
 ```
 
-It prints a clearly labeled, non-secret example. It does not contact Kaspa or
+It prints public ciphertext and signed records, with no plaintext or private
+keys. It does not contact Kaspa or
 move funds. For live testnet instructions, use the developer setup guide.
 **Public fixture keys are intentionally known. Never fund fixture addresses.**
 
@@ -110,7 +118,7 @@ move funds. For live testnet instructions, use the developer setup guide.
 
 | Priority | Next work |
 | --- | --- |
-| Private data access | Specify recipient key delivery, transaction formats and ticket/refund rules before enabling real release |
+| Private data access | Independently review delivery/identity binding; specify service-owned key handling and ticket/refund rules before remote release |
 | Reliable operation | Prevent competing service copies from reusing grants; define safe backup/recovery; validate separate signer hosts and alerts |
 | Stronger custody | Specify key replacement and recovery from the cold stage, then test and independently review the design |
 | Longer-term research | Proof systems and broader data-access enforcement, with separate specifications and evidence |

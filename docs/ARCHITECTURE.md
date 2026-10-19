@@ -15,6 +15,7 @@ threat model and paper comparison are in [SECURITY-TARGET.md](SECURITY-TARGET.md
 | Component | What exists | Boundary |
 | --- | --- | --- |
 | [Transfer lab](TRANSFER-LAB.md) | Local encrypted messages, signatures and recipient receipts | Keys are supplied separately; a receipt is a recipient claim |
+| [Recipient lab](RECIPIENT-ENCRYPTION-LAB.md) | HPKE encryption to a distinct pinned delivery key, possession challenge and approver/sender/recipient signatures | One-host local experiment; no remote release, chain gating or quantum claim |
 | [Anchor observer](TRANSFER-ANCHOR.md) | Exact signed-exchange commitment checked against trusted-node scans; a later [TN10 run](ICP-Transfer-Anchor-Live-Proof.md) supplies dated two-endpoint observations | Chain changes can withdraw that observation; it does not authorize key release |
 | [Release ledger](RELEASE-LEDGER-MODEL.md) | Permanent local grant/quota history, model signatures, two fake observations and non-secret placeholders | No native tickets or real key delivery; database copies are not fenced |
 

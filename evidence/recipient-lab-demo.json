@@ -1,0 +1,74 @@
+{
+  "envelope": {
+    "approval": "5fd8023d14e69231a70adb788b1aae0252f816aba2e79275ff8f09ef748e71f6c076ac37b186ac51b3bb1a48209b379b8a3df7a5dcaf2ac3b63c0543401b550b",
+    "binding": {
+      "body": {
+        "challenge_id": "dceaf2e250d8ac1594713e5f149f6231a9e5e455563c1a876aec16f994c34cfd",
+        "delivery_epoch": 0,
+        "delivery_key": "e8cfebd2619089ac357b09bb9009ca2aa7b455b1a38574f68f248d8bf3fa8c6e",
+        "mode": "LOCAL_ONLY_RECIPIENT_ENCRYPTION_NO_CHAIN",
+        "network": "testnet-10",
+        "policy_id": "07c8f8b0b9f9ec3da603e01c409105196ce6d18033c9bf6afdd827efeecf121b",
+        "proof_hash": "aeb24f41eccdd8547b53232d07054a89439eccb90422ae0733be46abd017b77d",
+        "recipient": "916e5898e0fb9c3f9b25a5262115f48293e1a5bddfc5438ddaa1401fa9383394",
+        "registered_at": 102,
+        "suite": "HPKE-BASE-X25519-HKDF-SHA256-AES256GCM",
+        "version": "icp-recipient-lab-v0"
+      },
+      "signature": "af73c5e9c07e9cf46f998309e6c90b0bae776ea850c2228e813c88d35a860cff0213ad1e6accda53e6b72d79fc658e382c0458c50dfaf9bcb961bbdb08274f04"
+    },
+    "ciphertext": "a8f08b2e525cedfbededc70170e9dcf1901960db2f3cb4cd3ff8c220fbcfe67f4ec590682d7d9f2a0562e12c6aa60c091c33524d69f6497dbbb965aee9ef1ded74083cd3f6235ab81b82d3517bee769d447a107cbc8c69e176632d57445baabd32fd8d563501f20685b50a2b290ddbf34fb2f8fc6518",
+    "manifest": {
+      "binding_id": "d9203cc9a7c8ade37a71e4fdc5006d43ba9c0bf1b0896bcb1fda1d0966714fb6",
+      "ciphertext_hash": "e2d2f84f07273b0c3530e800b7568e1cf4d4cbb94114bf3c79e50a915b4cf4b3",
+      "delivery_epoch": 0,
+      "delivery_key": "e8cfebd2619089ac357b09bb9009ca2aa7b455b1a38574f68f248d8bf3fa8c6e",
+      "expires_at": 200,
+      "issued_at": 103,
+      "mode": "LOCAL_ONLY_RECIPIENT_ENCRYPTION_NO_CHAIN",
+      "network": "testnet-10",
+      "plaintext_bytes": 70,
+      "policy_id": "07c8f8b0b9f9ec3da603e01c409105196ce6d18033c9bf6afdd827efeecf121b",
+      "recipient": "916e5898e0fb9c3f9b25a5262115f48293e1a5bddfc5438ddaa1401fa9383394",
+      "record_id": "66dae2cee3785ab4a5dbf4063f92a70613ba26a0c166f0506870aeda8a22f0b5",
+      "record_version": 1,
+      "sender": "f8f919b5ef85ddb0f7f59940231c53b6557df0af7c1d0728763baae39c206f48",
+      "transfer_id": "8c426ddd8072113e8ae7691d39eb6a527fa594b0bdaf7f3e8ceb871b3f7aba86",
+      "version": "icp-recipient-lab-v0"
+    },
+    "sender_signature": "17405b3e504e7593f5195f182549bca9668d4cbfee0c1433da7a7121a68c094b7f6f2534c34476b4a97eebe22d238aaa05afa1aa7bfc2e0482b1817a1c0aa303"
+  },
+  "mode": "LOCAL_ONLY_RECIPIENT_ENCRYPTION_NO_CHAIN",
+  "plaintext_match_local": true,
+  "policy": {
+    "approver": "07ed4f822534d18e50ccd66dbf6bc0428a899535a94ceb10a2c839197b52b0eb",
+    "delivery_epoch": 0,
+    "delivery_key": "e8cfebd2619089ac357b09bb9009ca2aa7b455b1a38574f68f248d8bf3fa8c6e",
+    "max_bytes": 65536,
+    "max_lifetime": 300,
+    "mode": "LOCAL_ONLY_RECIPIENT_ENCRYPTION_NO_CHAIN",
+    "network": "testnet-10",
+    "recipient": "916e5898e0fb9c3f9b25a5262115f48293e1a5bddfc5438ddaa1401fa9383394",
+    "sender": "f8f919b5ef85ddb0f7f59940231c53b6557df0af7c1d0728763baae39c206f48",
+    "suite": "HPKE-BASE-X25519-HKDF-SHA256-AES256GCM",
+    "version": "icp-recipient-lab-v0"
+  },
+  "real_transactions": 0,
+  "receipt": {
+    "body": {
+      "accepted_at": 106,
+      "delivery_epoch": 0,
+      "envelope_id": "88181ed4d211d2e3e3cad8ab0346880033de0b931b1e7cb03ba316fbd9636551",
+      "mode": "LOCAL_ONLY_RECIPIENT_ENCRYPTION_NO_CHAIN",
+      "network": "testnet-10",
+      "policy_id": "07c8f8b0b9f9ec3da603e01c409105196ce6d18033c9bf6afdd827efeecf121b",
+      "recipient": "916e5898e0fb9c3f9b25a5262115f48293e1a5bddfc5438ddaa1401fa9383394",
+      "status": "RECIPIENT_VERIFIED_LOCAL",
+      "transfer_id": "8c426ddd8072113e8ae7691d39eb6a527fa594b0bdaf7f3e8ceb871b3f7aba86",
+      "version": "icp-recipient-lab-v0"
+    },
+    "signature": "7bbd2656aaee371b8b439db5cf0be40d599b93b2813a628fad0d34ff5562ee8f067c1bcc9021b2c467523d0f4109d08912de5d4edc0b3812e806e8b8f1d34b00"
+  },
+  "scenario": "Fictional offices; no agency integration",
+  "wrong_delivery_key_rejected": true
+}

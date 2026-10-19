@@ -15,7 +15,7 @@ cases, not existing customers, certifications or demonstrated deployments.
 | Layer | Intended responsibility | Current state |
 | --- | --- | --- |
 | Custody | Constrained withdrawals, monitoring and quarantine recovery | Experimental TN10 implementation and dated funded evidence |
-| Private data | Encrypted off-chain storage, transport and recipient-specific key delivery | Local encryption/receipt experiment; remote storage/transport/key delivery unimplemented |
+| Private data | Encrypted off-chain storage, transport and recipient-specific key delivery | Local AES transfer and HPKE recipient-encryption experiments; remote storage/transport/release service unimplemented |
 | Access policy | Read-intent tickets, persistent release accounting and proof/state binding | Local signed manifest checks and synthetic durable-ledger model; on-chain tickets, globally fenced accounting and proofs unimplemented |
 | Operations | Independent signer/watcher hosts, external alerts and failure recovery | Offline-tested deployment kit; independent-host acceptance pending |
 
@@ -44,6 +44,15 @@ observations from two endpoints. This supplies no consensus proof and does not
 govern receiver acceptance or key release.
 An acknowledgment is an authenticated recipient claim, not proof of execution
 or factual truth. Local replay rejection does not provide global read limits.
+
+The separate [recipient-encryption lab](RECIPIENT-ENCRYPTION-LAB.md) uses
+library-provided HPKE base encryption, distinct X25519 delivery keys and
+Ed25519 identity/approval signatures. A trusted local registry checks an encrypted
+possession challenge and attests the pinned identity/key binding. No raw
+symmetric key is handed to the recipient caller. This does not establish a
+reviewed R0 delivery suite, secure hardware, real-world identity, network
+delivery or chain-gated release. Later delivery-key compromise exposes earlier
+messages; the design has no demonstrated post-quantum protection.
 
 The [R0 read-ticket/release proposal](READ-TICKET-RELEASE-DRAFT.md) defines a
 candidate service-enforced model, separate native ticket authority, stable
