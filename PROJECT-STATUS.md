@@ -11,9 +11,33 @@ engineering checkpoint first, followed by earlier milestones.
 | At a glance | Current position |
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
-| Data access | Local encryption lab and simulated release accounting; no real key delivery |
-| Automated coverage | 265 tests: 68 Rust + 197 Python |
-| Next engineering work | Define key delivery, service-copy safeguards and native ticket/refund rules |
+| Data access | Local recipient-specific encryption and simulated release accounting; no remote release service |
+| Automated coverage | 302 tests: 68 Rust + 234 Python |
+| Next engineering work | Review delivery/identity binding; define service-owned keys, copy safeguards and native ticket/refund rules |
+
+## Local recipient-encryption lab
+
+- scripts/recipient_lab.py uses the pinned library's HPKE implementation to
+  encrypt a fictional message to a separate X25519 delivery key. Ed25519 roles
+  approve the exact envelope, authenticate the sender and sign receipt claims.
+- A trusted local registry checks a fresh encrypted possession challenge and
+  commits an approver certificate plus used challenge atomically. Receiver
+  replay receipts persist before plaintext return; concurrent connections and
+  restarts preserve local claims. Databases pin policy and component role.
+- The new namespace and documented wire/context choices are separate from
+  lab-v0, the simulated release ledger and R0. No raw symmetric key is passed
+  to the recipient caller. No RPC, transport server, native ticket or real-key
+  attachment to simulated grants is implemented.
+- All 234 Python tests pass locally, including 37 new cases. The full 302-test
+  checkpoint runs Rust/build/template verification in GitHub CI. The demo and
+  public transcript contain fictional data, public metadata and ciphertext.
+- Explicit limits include ordinary one-host memory, trusted policy/clock,
+  unfenced database copies, later delivery-key compromise exposing history,
+  recipient copying and forgeable receipt claims by the recipient-key holder.
+  No independent application audit, forward-secrecy or quantum-safety claim.
+- Read docs/RECIPIENT-ENCRYPTION-LAB.md and evidence/recipient-lab-verification.md.
+  Next: independent review and service-owned key/recovery design before R0
+  integration or protected remote release. No funded session changed.
 
 ## Synthetic release-ledger model
 
@@ -31,7 +55,7 @@ engineering checkpoint first, followed by earlier milestones.
   halt. Two copied databases can still claim independently; a reorg after the
   final sample can precede dispatch. Both limits have counterexample tests.
 - 44 new tests include concurrency and actual subprocess crashes around response
-  commits. Current suite: 265 checks (68 Rust + 197 Python). Python runs locally;
+  commits. At that checkpoint: 265 checks (68 Rust + 197 Python). Python runs locally;
   required Rust/build/template checks run in GitHub CI on the milestone PR.
 - Read docs/RELEASE-LEDGER-MODEL.md and evidence/release-ledger-model-verification.md.
   Next: review wire/recipient-delivery requirements, service fencing/recovery

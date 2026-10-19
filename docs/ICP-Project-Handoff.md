@@ -1,6 +1,6 @@
 # ICP continuation checkpoint
 
-**October 19, 2026: synthetic release-ledger state/accounting experiment implemented.**
+**October 19, 2026: local recipient-specific encryption experiment implemented.**
 
 For a nontechnical introduction, open [ICP in plain English](PLAIN-ENGLISH.md).
 The [documentation directory](README.md) separates explanations, dated testnet
@@ -9,13 +9,24 @@ engineering and operational detail needed to continue development.
 
 ## Current state
 
+The latest module is scripts/recipient_lab.py. Read
+[RECIPIENT-ENCRYPTION-LAB.md](RECIPIENT-ENCRYPTION-LAB.md) for exact domains,
+schemas, HPKE choice and limits. It encrypts fictional messages to a pinned
+X25519 delivery key after a local possession check and approver certificate;
+separate Ed25519 signatures approve sending and authenticate receipt claims.
+All 234 Python tests pass locally; full CI covers 302 tests (68 Rust + 234 Python).
+This is a standalone local experiment, not an R0 wire adoption or remote release
+service. Do not connect real keys to model grants or reuse dated anchor evidence.
+Next: independent review and service-owned key, fencing/recovery and native
+ticket/refund design. Current custody/live sessions remain unchanged.
+
 The release design reference is docs/READ-TICKET-RELEASE-DRAFT.md: a proposed
 service-enforced read-ticket/release model with exact recipient/key binding,
 one durable response per grant, source/claim persistence, quota semantics and
 separate reorg/disclosure history. scripts/release_ledger_model.py now implements
 the synthetic local state/accounting experiment with fake chain observations and
 non-secret placeholders. Read docs/RELEASE-LEDGER-MODEL.md and its verification
-record: 44 new tests; 265 total (68 Rust + 197 Python). Remote delivery is still
+record at that checkpoint: 44 new tests; 265 total (68 Rust + 197 Python). Remote delivery is still
 unimplemented; wire/crypto, ticket/refund and service-recovery gates remain.
 Next specify/review those gates. Do not attach real keys or native broadcast
 adapters to the model. Snapshot copies are not fenced; an observation cannot

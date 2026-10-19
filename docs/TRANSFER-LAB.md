@@ -4,6 +4,10 @@ Status: local research code, version `icp-transfer-lab-v0`. This additive module
 is separate from the vault/watchtower. It has no RPC, funding, transaction
 submission, chain-anchor verifier, STARK program or custody-key access.
 
+The later [recipient-encryption lab](RECIPIENT-ENCRYPTION-LAB.md) is a separate
+namespace using HPKE for recipient-specific encryption and local delivery-key
+binding. This older module retains its out-of-band AES-key assumption.
+
 The separate [transfer anchor observer](TRANSFER-ANCHOR.md) now supplies a
 read-only commitment tracker for trusted-node scan responses. Synthetic fixtures
 and a later [funded TN10 run](ICP-Transfer-Anchor-Live-Proof.md) are recorded

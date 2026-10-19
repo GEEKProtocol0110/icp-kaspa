@@ -63,10 +63,16 @@ requests. Private documents and decryption keys would stay outside the public
 chain. A proposed ticket controlled by an ordinary spending key would not
 enforce all those permission rules by itself; the service would enforce them.
 
-The local experiment tests that a request cannot claim the same grant twice,
+The local release model tests that a request cannot claim the same grant twice,
 that crashes do not erase saved accounting, and that a chain reorganization
 does not refund an already used grant. It uses simulated chain observations
 and a non-secret placeholder instead of a real key.
+
+A separate [recipient-encryption lab](RECIPIENT-ENCRYPTION-LAB.md) now encrypts
+a fictional message to one pinned recipient key and checks the sender before
+local decryption. An encrypted challenge checks possession of that recipient's
+delivery key. It is a local cryptographic experiment, with no agency integration
+or network delivery. It is not yet connected to the release model.
 
 Two limits matter: copied databases can each accept a claim, and a chain change
 can occur after the last check but before delivery. Those limits have explicit
@@ -86,7 +92,7 @@ original document is factually true.
 | Simulation or model | Invented chain observations or placeholders exercise the rules; they are not live-chain evidence |
 | Proposal or research | A direction being specified; a working, secure deployment has not been established |
 
-There are **265 automated tests** today. Passing tests helps catch mistakes; it
+There are **302 automated tests** today. Passing tests helps catch mistakes; it
 does not replace an independent security review or prove production readiness.
 The project is still an experimental Testnet-10 prototype.
 
