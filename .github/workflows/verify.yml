@@ -23,6 +23,7 @@ jobs:
       - run: python3 scripts/recipient_lab.py
       - run: python3 scripts/release_coordinator_model.py
       - run: python3 scripts/signed_coordinator_lab.py
+      - run: python3 scripts/bound_response_lab.py
       - run: sh -n deploy/icp-recovery-command
       - run: systemd-analyze verify deploy/*.service deploy/*.timer
       - run: cargo build --locked --features live --bins --example prepare_transfer_anchor

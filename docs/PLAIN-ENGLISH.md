@@ -88,6 +88,13 @@ and signed revocation. These checks run together with the recovery simulation.
 The recipient is a configured signing key, while delivery-key ownership and
 record/chain facts are still fixtures. No real decryption key is released.
 
+The latest [key-binding and response-record lab](BOUND-RESPONSE-LAB.md) also
+checks that the recipient can answer an encrypted challenge with the separate
+delivery key. It saves a service signature with each exact dummy response, so
+retries recover the same signed record. This encrypts the registration challenge
+only; the returned placeholder bundle is public test data, not a protected
+message or decryption key. Real key delivery is still future work.
+
 The older model allows copied databases to accept separate claims. The new
 simulation adds a trusted witness, but restoring that witness with every
 store still loses history. Both models also recognize that a chain change
@@ -108,7 +115,7 @@ original document is factually true.
 | Simulation or model | Invented chain observations or placeholders exercise the rules; they are not live-chain evidence |
 | Proposal or research | A direction being specified; a working, secure deployment has not been established |
 
-There are **402 automated tests** today. Passing tests helps catch mistakes; it
+There are **444 automated tests** today. Passing tests helps catch mistakes; it
 does not replace an independent security review or prove production readiness.
 The project is still an experimental Testnet-10 prototype.
 

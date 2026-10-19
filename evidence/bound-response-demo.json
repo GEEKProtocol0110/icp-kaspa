@@ -1,0 +1,290 @@
+{
+  "admission": {
+    "challenge": {
+      "body": {
+        "admission_hash": null,
+        "authority": "model:authority-f3e28060316b6bceca08ab67cc02c03d",
+        "binding": "model:x25519-1dd6523095dfddf0e96d7f05ab005ed686663b551b462cef9a5d8635185ce8fb",
+        "budget": "model:budget",
+        "delivery_epoch": 0,
+        "expires_at": 130,
+        "generation": 1,
+        "grant": "model:grant",
+        "issued_at": 100,
+        "mode": "LOCAL_SIGNED_COORDINATOR_SYNTHETIC_RESPONSES_NO_CHAIN",
+        "network": "testnet-10-simulation",
+        "nonce": "model:challenge-f9b0b19e3d47a0c72da6b56a23162756",
+        "permission_hash": "bd746ffd707e7a9f10d1ebc838f446e3ace20b4b16e16fecb50afb51931dbcb4",
+        "policy_epoch": 0,
+        "policy_id": "bc629c3daeba9d2d7eacb9a7970240591247d6d19722962eccbd5464d7c8d150",
+        "purpose": "reserve",
+        "recipient_key": "e5df4b38eb9ff790910ed574d9b09ef081f85a575b4f3e53a0f7b15ef27fc828",
+        "request": "model:approved-recipient-request",
+        "response_hash": null,
+        "service": "model:service",
+        "version": "icp-signed-coordinator-lab-v0"
+      },
+      "signature": "abea11e2f2268279a88471a5244c9c0132d6842f7330d923fd352f89fc87757b52481405f116a915d85a5c37bb2c1018de65e2a1ea5dd31289e244bf0b575c04"
+    },
+    "signature": "76cd68e818776ac9f46dab78c20373921e45848ef6486f56b88ec6ab8abc866c6ae6c26ebb8d60b518fe80cbee7cbee53e1b71955ad3066552907cdc8713c60c"
+  },
+  "broadcasts": 0,
+  "bundle": {
+    "binding": {
+      "approval": {
+        "proof": {
+          "body": {
+            "budget": "model:budget",
+            "challenge_hash": "a1d88a23d7d63a307842b71cd4f64f4339f2d22972944e073d766c7b385e3e25",
+            "config_id": "6183f77b0be89fcccda61349a5f931e1b8b9dd7cc9cb4370f2b4b9afb516e7a6",
+            "mode": "LOCAL_DELIVERY_BINDING_ATTESTATION_SYNTHETIC_NO_CHAIN",
+            "network": "testnet-10-simulation",
+            "nonce": "model:binding-1ce59d50b2ebedc54504007f0d7a1f71",
+            "policy_id": "bc629c3daeba9d2d7eacb9a7970240591247d6d19722962eccbd5464d7c8d150",
+            "service": "model:service",
+            "token_hash": "eb1be956fcb67b41cf0ef63c110240bc5f5b950e58fe6020cf1b1dff61795b11",
+            "version": "icp-bound-response-lab-v0"
+          },
+          "signature": "4b84fce6c287cefcabe4f486001763375e84bbce203c86c778d05af5cc8851ae8826d7aee7404cb9ef1e089213086efa8e6fbb2385fad512c8680aba2814af0c"
+        },
+        "signature": "0495185c23e5bc59fda1a1513390fc0284d1b73a218b3232c5250e3ab34581a2172b41ab8590c95985c8d6ec8ecc1c7c383d21030bab6abaa55e7ff3b224600b"
+      },
+      "certificate": {
+        "body": {
+          "approval_hash": "c27933c091bebe10611ef424c0c68bc77ece19da53d14ada602583c4f648a278",
+          "authority": "model:authority-f3e28060316b6bceca08ab67cc02c03d",
+          "budget": "model:budget",
+          "config_id": "6183f77b0be89fcccda61349a5f931e1b8b9dd7cc9cb4370f2b4b9afb516e7a6",
+          "generation": 1,
+          "mode": "LOCAL_DELIVERY_BINDING_ATTESTATION_SYNTHETIC_NO_CHAIN",
+          "network": "testnet-10-simulation",
+          "nonce": "model:binding-1ce59d50b2ebedc54504007f0d7a1f71",
+          "policy_id": "bc629c3daeba9d2d7eacb9a7970240591247d6d19722962eccbd5464d7c8d150",
+          "registered_at": 100,
+          "service": "model:service",
+          "version": "icp-bound-response-lab-v0"
+        },
+        "signature": "cf00d11f825ee49a426247d811c93d148a553aeb6d49e1c0d26ae9eb473a1880b849481995da10899bdff3c11e2ac5a80fe5b855ddd5339f8a6f9868f36e7d0b"
+      },
+      "challenge": {
+        "body": {
+          "authority": "model:authority-f3e28060316b6bceca08ab67cc02c03d",
+          "budget": "model:budget",
+          "config_id": "6183f77b0be89fcccda61349a5f931e1b8b9dd7cc9cb4370f2b4b9afb516e7a6",
+          "delivery_epoch": 0,
+          "delivery_key": "019a579515d40a7896a942634f47557f6aab3fdaf2a342732cdac917ad59f33c",
+          "encrypted_token": "0a603aee0ac87bc2e79889b99732131f3bb5856d83f44ccce30d2fcd5e93b816774ee8195f0a1c95c5ceb0705f9f646dba0c96f86319db97a8aaaa2537129949921ace460acb585ffb3dad3ded07e495",
+          "expires_at": 130,
+          "generation": 1,
+          "issued_at": 100,
+          "mode": "LOCAL_DELIVERY_BINDING_ATTESTATION_SYNTHETIC_NO_CHAIN",
+          "network": "testnet-10-simulation",
+          "nonce": "model:binding-1ce59d50b2ebedc54504007f0d7a1f71",
+          "policy_id": "bc629c3daeba9d2d7eacb9a7970240591247d6d19722962eccbd5464d7c8d150",
+          "recipient": "e5df4b38eb9ff790910ed574d9b09ef081f85a575b4f3e53a0f7b15ef27fc828",
+          "service": "model:service",
+          "suite": "HPKE-BASE-X25519-HKDF-SHA256-AES256GCM",
+          "version": "icp-bound-response-lab-v0"
+        },
+        "signature": "9ba504f56aa306a1706e50bfd6fb4e968e56102b1cb5a58d7a5a5e743d69377b54e37ac8a52897abf4ced4a5b763598459e5861240ec6b3dfd5e34945fb4010d"
+      }
+    },
+    "context": {
+      "admission_hash": "72b9c8403ecd41e4238b37d121e71e3793e04a8ecb198e0a1e6d5f8d4f938016",
+      "binding": "model:x25519-1dd6523095dfddf0e96d7f05ab005ed686663b551b462cef9a5d8635185ce8fb",
+      "budget": "model:budget",
+      "challenge": "model:request-challenge",
+      "cipher": "model:cipher-digest",
+      "consume": "model:exact-consume",
+      "delivery_epoch": 0,
+      "expires": 200,
+      "grant": "model:grant",
+      "not_before": 100,
+      "permission_hash": "bd746ffd707e7a9f10d1ebc838f446e3ace20b4b16e16fecb50afb51931dbcb4",
+      "policy_epoch": 0,
+      "recipient": "model:recipient",
+      "record": "model:record/version-1",
+      "request": "model:approved-recipient-request",
+      "service": "model:service",
+      "size": 128,
+      "ticket": "model:issue/outpoint-0",
+      "window_end": 180,
+      "window_start": 100
+    },
+    "record": {
+      "body": {
+        "admission_hash": "72b9c8403ecd41e4238b37d121e71e3793e04a8ecb198e0a1e6d5f8d4f938016",
+        "authority": "model:authority-f3e28060316b6bceca08ab67cc02c03d",
+        "binding_hash": "ac88b6a86d655bb1de5823e854cdfee410c65b558ed1c9da3db027c8e01d4faf",
+        "budget": "model:budget",
+        "config_id": "6183f77b0be89fcccda61349a5f931e1b8b9dd7cc9cb4370f2b4b9afb516e7a6",
+        "context_hash": "2821e0451ada0a839857da504b3c2e43c7279c35b443360a848c2ed9b3ef44a1",
+        "deadline": 180,
+        "delivery_epoch": 0,
+        "delivery_key": "019a579515d40a7896a942634f47557f6aab3fdaf2a342732cdac917ad59f33c",
+        "ledger_checkpoint": "ea5b29c596273282acddcc603ca864c6f844a8898bc22c923c0aa5d08e4e19b7",
+        "mode": "LOCAL_DELIVERY_BINDING_ATTESTATION_SYNTHETIC_NO_CHAIN",
+        "network": "testnet-10-simulation",
+        "not_before": 100,
+        "operation": [
+          "model:service",
+          "model:budget",
+          "model:grant"
+        ],
+        "permission_hash": "bd746ffd707e7a9f10d1ebc838f446e3ace20b4b16e16fecb50afb51931dbcb4",
+        "policy_epoch": 0,
+        "policy_id": "bc629c3daeba9d2d7eacb9a7970240591247d6d19722962eccbd5464d7c8d150",
+        "prepared_at": 100,
+        "prepared_generation": 1,
+        "response_hash": "4b58eeec6eec523a8fe72ca2dd9f597869138d2472131e8d366bd370190edf5d",
+        "service": "model:service",
+        "suite": "HPKE-BASE-X25519-HKDF-SHA256-AES256GCM",
+        "version": "icp-bound-response-lab-v0"
+      },
+      "signature": "709ba7e111744c08b58ad9c4634df21fd7886f0810678a97cacaca47d26b447636c1e030b0388c7e8ab3f907648c3cadb11ff6a7332177bb6ae2f02c76cc3503"
+    },
+    "response": {
+      "context": "2821e0451ada0a839857da504b3c2e43c7279c35b443360a848c2ed9b3ef44a1",
+      "mode": "SYNTHETIC_COORDINATOR_NO_KEYS_NO_CHAIN",
+      "operation": [
+        "model:service",
+        "model:budget",
+        "model:grant"
+      ],
+      "placeholder": "a6f9a55449c4b0784098288113118553"
+    }
+  },
+  "config": {
+    "delivery_epoch": 0,
+    "delivery_key": "019a579515d40a7896a942634f47557f6aab3fdaf2a342732cdac917ad59f33c",
+    "policy": {
+      "approver": "7f290e6b55572f53a803d01af5accb40c3e00da17fcd6d45f729e3abc010bb1d",
+      "binding_label": "model:x25519-1dd6523095dfddf0e96d7f05ab005ed686663b551b462cef9a5d8635185ce8fb",
+      "budget": "model:budget",
+      "byte_limit": 1024,
+      "challenge_lifetime": 30,
+      "challenge_limit": 16,
+      "count_limit": 4,
+      "freshness": 5,
+      "recipient": "e5df4b38eb9ff790910ed574d9b09ef081f85a575b4f3e53a0f7b15ef27fc828",
+      "recipient_label": "model:recipient",
+      "revoker": "6172c0c31d9f538e308f94863bd72039597512f33a7bd93bf66a550e6605ab05",
+      "sender": "e7c537fee25983663d3dc5eefa280fadaf900eb23e7b3de358526ca3bbb98d20",
+      "service": "model:service",
+      "service_signer": "c2a7822395a0dd84cb843872ec728aa5852743488d78d2f69ce5881058b4b032"
+    }
+  },
+  "content_keys": 0,
+  "identical_retry": true,
+  "mode": "LOCAL_DELIVERY_BINDING_ATTESTATION_SYNTHETIC_NO_CHAIN",
+  "permission": {
+    "approval": "53a1627c03ad45beaefeb11a862a3202a1e2ca6d9f6c997080f15b0cb328642eb582d4393b521867e06c267a17e9359af0c04fc42097088ff5a6fd5d46b0a40e",
+    "body": {
+      "budget": "model:budget",
+      "context": {
+        "binding": "model:x25519-1dd6523095dfddf0e96d7f05ab005ed686663b551b462cef9a5d8635185ce8fb",
+        "challenge": "model:request-challenge",
+        "cipher": "model:cipher-digest",
+        "consume": "model:exact-consume",
+        "delivery_epoch": 0,
+        "expires": 200,
+        "grant": "model:grant",
+        "not_before": 100,
+        "policy_epoch": 0,
+        "recipient": "model:recipient",
+        "record": "model:record/version-1",
+        "request": "model:approved-recipient-request",
+        "size": 128,
+        "ticket": "model:issue/outpoint-0",
+        "window_end": 180,
+        "window_start": 100
+      },
+      "mode": "LOCAL_SIGNED_COORDINATOR_SYNTHETIC_RESPONSES_NO_CHAIN",
+      "network": "testnet-10-simulation",
+      "policy_id": "bc629c3daeba9d2d7eacb9a7970240591247d6d19722962eccbd5464d7c8d150",
+      "recipient_key": "e5df4b38eb9ff790910ed574d9b09ef081f85a575b4f3e53a0f7b15ef27fc828",
+      "service": "model:service",
+      "version": "icp-signed-coordinator-lab-v0"
+    },
+    "sender_signature": "7c3bc1715616b1851fc76d049e5ab5b0da2e9b5f7afc3ecde2f854c9042a2905e810516a8c5f686371ca944d0557b8ec3e667f3a61c1f6f2943f30f57a774b0d"
+  },
+  "registration": {
+    "approval": {
+      "proof": {
+        "body": {
+          "budget": "model:budget",
+          "challenge_hash": "a1d88a23d7d63a307842b71cd4f64f4339f2d22972944e073d766c7b385e3e25",
+          "config_id": "6183f77b0be89fcccda61349a5f931e1b8b9dd7cc9cb4370f2b4b9afb516e7a6",
+          "mode": "LOCAL_DELIVERY_BINDING_ATTESTATION_SYNTHETIC_NO_CHAIN",
+          "network": "testnet-10-simulation",
+          "nonce": "model:binding-1ce59d50b2ebedc54504007f0d7a1f71",
+          "policy_id": "bc629c3daeba9d2d7eacb9a7970240591247d6d19722962eccbd5464d7c8d150",
+          "service": "model:service",
+          "token_hash": "eb1be956fcb67b41cf0ef63c110240bc5f5b950e58fe6020cf1b1dff61795b11",
+          "version": "icp-bound-response-lab-v0"
+        },
+        "signature": "4b84fce6c287cefcabe4f486001763375e84bbce203c86c778d05af5cc8851ae8826d7aee7404cb9ef1e089213086efa8e6fbb2385fad512c8680aba2814af0c"
+      },
+      "signature": "0495185c23e5bc59fda1a1513390fc0284d1b73a218b3232c5250e3ab34581a2172b41ab8590c95985c8d6ec8ecc1c7c383d21030bab6abaa55e7ff3b224600b"
+    },
+    "certificate": {
+      "body": {
+        "approval_hash": "c27933c091bebe10611ef424c0c68bc77ece19da53d14ada602583c4f648a278",
+        "authority": "model:authority-f3e28060316b6bceca08ab67cc02c03d",
+        "budget": "model:budget",
+        "config_id": "6183f77b0be89fcccda61349a5f931e1b8b9dd7cc9cb4370f2b4b9afb516e7a6",
+        "generation": 1,
+        "mode": "LOCAL_DELIVERY_BINDING_ATTESTATION_SYNTHETIC_NO_CHAIN",
+        "network": "testnet-10-simulation",
+        "nonce": "model:binding-1ce59d50b2ebedc54504007f0d7a1f71",
+        "policy_id": "bc629c3daeba9d2d7eacb9a7970240591247d6d19722962eccbd5464d7c8d150",
+        "registered_at": 100,
+        "service": "model:service",
+        "version": "icp-bound-response-lab-v0"
+      },
+      "signature": "cf00d11f825ee49a426247d811c93d148a553aeb6d49e1c0d26ae9eb473a1880b849481995da10899bdff3c11e2ac5a80fe5b855ddd5339f8a6f9868f36e7d0b"
+    },
+    "challenge": {
+      "body": {
+        "authority": "model:authority-f3e28060316b6bceca08ab67cc02c03d",
+        "budget": "model:budget",
+        "config_id": "6183f77b0be89fcccda61349a5f931e1b8b9dd7cc9cb4370f2b4b9afb516e7a6",
+        "delivery_epoch": 0,
+        "delivery_key": "019a579515d40a7896a942634f47557f6aab3fdaf2a342732cdac917ad59f33c",
+        "encrypted_token": "0a603aee0ac87bc2e79889b99732131f3bb5856d83f44ccce30d2fcd5e93b816774ee8195f0a1c95c5ceb0705f9f646dba0c96f86319db97a8aaaa2537129949921ace460acb585ffb3dad3ded07e495",
+        "expires_at": 130,
+        "generation": 1,
+        "issued_at": 100,
+        "mode": "LOCAL_DELIVERY_BINDING_ATTESTATION_SYNTHETIC_NO_CHAIN",
+        "network": "testnet-10-simulation",
+        "nonce": "model:binding-1ce59d50b2ebedc54504007f0d7a1f71",
+        "policy_id": "bc629c3daeba9d2d7eacb9a7970240591247d6d19722962eccbd5464d7c8d150",
+        "recipient": "e5df4b38eb9ff790910ed574d9b09ef081f85a575b4f3e53a0f7b15ef27fc828",
+        "service": "model:service",
+        "suite": "HPKE-BASE-X25519-HKDF-SHA256-AES256GCM",
+        "version": "icp-bound-response-lab-v0"
+      },
+      "signature": "9ba504f56aa306a1706e50bfd6fb4e968e56102b1cb5a58d7a5a5e743d69377b54e37ac8a52897abf4ced4a5b763598459e5861240ec6b3dfd5e34945fb4010d"
+    }
+  },
+  "rpc_calls": 0,
+  "status": {
+    "charges": {
+      "100": {
+        "bytes": 128,
+        "count": 1,
+        "end": 180
+      }
+    },
+    "committed": true,
+    "grant": "model:grant",
+    "mode": "SYNTHETIC_COORDINATOR_NO_KEYS_NO_CHAIN",
+    "possible_disclosure": true,
+    "prepared": true,
+    "reserved": true,
+    "response_hash": "4b58eeec6eec523a8fe72ca2dd9f597869138d2472131e8d366bd370190edf5d",
+    "revoked": false,
+    "used": true
+  },
+  "verified_record": "748f86b7e0fe549a02f7fbfa60638eadbc784d8ed86313af1d2393b5209b9103"
+}

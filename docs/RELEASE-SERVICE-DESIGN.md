@@ -13,6 +13,9 @@ authentication fixtures; it does not implement this complete service. The
 separate [signed coordinator lab](SIGNED-COORDINATOR-LAB.md) now adds conventional
 permission, recipient-request and revocation signatures to those boundaries,
 while responses, record/chain facts and delivery bindings remain synthetic.
+The subsequent [bound response lab](BOUND-RESPONSE-LAB.md) checks encryption-key
+possession and saves service response signatures over non-secret placeholders;
+it still performs no real content-key delivery or native ticket operation.
 
 ## In plain English
 

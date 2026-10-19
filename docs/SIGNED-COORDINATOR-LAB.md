@@ -8,6 +8,11 @@ recovery model. Responses remain non-secret placeholders. It has no content
 keys, encryption, native tickets, RPC, transport or remote endpoint. Its encoding
 is an experimental lab format, **not an adopted or reviewed R0 wire protocol**.
 
+A separate [bound response lab](BOUND-RESPONSE-LAB.md) now adds a real
+cryptographic delivery-key possession check and durable signed response records
+to these boundaries. This document describes the original signed lab; its
+model binding label remains a fixture unless that separate layer is used.
+
 ## In plain English
 
 Two separate signing roles approve the exact permission. The recipient then
@@ -161,8 +166,7 @@ accepted dispatch cannot recall bytes. A person who eventually learns real
 plaintext/key material can copy it. No consensus proof, factual-truth proof,
 quantum safety, audit completion or mainnet/production readiness is established.
 
-Next: review these signed boundaries, define a verifiable recipient delivery-key
-binding and response-attestation contract, and test that contract with synthetic
-responses. Protected real-key storage/delivery, independent enforcement,
-authenticated transport and native ticket/refund implementation remain separate
-acceptance milestones.
+Next: review these signed boundaries and the separate
+[bound response experiment](BOUND-RESPONSE-LAB.md). Native ticket/consume/refund
+bindings, protected real-key storage/delivery, independent enforcement and
+authenticated transport remain separate acceptance milestones.
