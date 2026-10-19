@@ -6,6 +6,8 @@
   repository-relative links in project documentation.
 - Testnet-10 only. Never add a mainnet switch as a routine change.
 - Read PROJECT-STATUS.md and docs/VAULT-SPEC.md before changing custody rules.
+- Read docs/SECURITY-TARGET.md and the relevant v0/v1 specification. Keep the
+  current compromise model separate from proposed stronger authorization rules.
 - Keep .secrets/, runtime/, signed outboxes, databases and private session backups out of Git.
 - Public test fixtures deliberately use known keys; never fund them.
 - An owner signature is not evidence of legitimate withdrawal intent.

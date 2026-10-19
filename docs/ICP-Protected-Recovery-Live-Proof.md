@@ -65,12 +65,19 @@ owner in the new public policy, and refuses an existing funding receipt. On an
 ambiguous result, inspect the existing receipt and live outpoint before acting.
 Never rerun this completed pilot directory.
 
-All 85 offline checks still pass. This funded run supplements native checks;
-it is not an independent audit, adversarial public-network reorg/outage test,
+At the time of this funded run, all 85 offline checks passed. This run
+supplements native checks; it is not an independent audit, adversarial public-network reorg/outage test,
 production response SLA or quantum-safety proof. Roles use separate files and
-signing subprocesses on the same test host; OS/host isolation and authenticated
-remote or air-gapped signing remain deployment work. The watcher does not
-monitor later cold releases; this pilot checked that release explicitly.
-There is no cold-stage rescue, key rotation, permanently hosted watcher or
-external alert destination. See [PROTECTED-RECOVERY.md](PROTECTED-RECOVERY.md)
+signing subprocesses on the same test host. OS/host isolation and authenticated
+remote or air-gapped signing were not established by that run. The watcher at
+that checkpoint did not monitor later cold releases; the pilot checked that
+release explicitly.
+
+Subsequent software added quarantine-through-cold-exit tracking and an
+offline-tested recovery-only SSH kit. Those updates do not retroactively expand
+this funded proof. Current tests and deployment limits are in
+[PROJECT-STATUS.md](../PROJECT-STATUS.md), [WATCHTOWER.md](WATCHTOWER.md) and
+[SIGNER-DEPLOYMENT.md](SIGNER-DEPLOYMENT.md). There is still no cold-stage rescue,
+key rotation, permanently hosted watcher or configured external alert destination.
+See [PROTECTED-RECOVERY.md](PROTECTED-RECOVERY.md)
 for the surviving-authority assumptions.

@@ -51,8 +51,10 @@ validation. Script-engine success alone cannot prove wall-clock maturity or
 node acceptance. Test both the script condition and node age rejection.
 
 Recovery exits custody into a fixed P2PK address; this is a limited prototype
-choice, not the paper's recursive cold citadel. Recovering into an additional
-covenant and quantum-safe authority require separate specification.
+choice. The paper proposes protected cold recovery and key rotation but does
+not specify a recursive cold state machine. Recovering into another covenant
+and defining a surviving authority require separate specification. See
+[the security target and paper mapping](SECURITY-TARGET.md).
 
 ## Watcher policy
 

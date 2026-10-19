@@ -41,6 +41,10 @@ P2PK value leaves the covenant on explicit cold release. This is neither a
 recursive recovery tower nor a quantum-safe scheme. It is not independently
 audited and has not been approved as production custody.
 
+Normal execution also exits to P2PK. The covenant's destination, delay and fee
+constraints end at both terminal outputs. See [SECURITY-TARGET.md](SECURITY-TARGET.md)
+for the compromise matrix, native follow-on-spend tests and paper discrepancies.
+
 ## Separate signer files
 
 The new `icp-protected` CLI accepts exactly one explicit signer file per signing
@@ -152,8 +156,10 @@ target/debug/icp-protected broadcast runtime/protected/PREPARED_RECEIPT.json
 ```
 
 Cold preparation currently needs a TN10 RPC connection to retrieve the exact
-UTXO; air-gapped signing and an authenticated remote signer protocol remain
-future work. Preparing a sequence-locked transaction before maturity is
+UTXO; air-gapped signing and an authenticated remote **cold** signer protocol
+remain future work. A recovery-only SSH adapter is already available in
+[SIGNER-DEPLOYMENT.md](SIGNER-DEPLOYMENT.md); it cannot sign cold release.
+Preparing a sequence-locked transaction before maturity is
 possible, but the node must reject early broadcast. A native VM cannot prove
 actual UTXO age. The recorded pilot demonstrated explicit early rejection and
 later acceptance for both exits, plus a second-node output check. It did not

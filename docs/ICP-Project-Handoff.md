@@ -1,8 +1,14 @@
 # ICP continuation checkpoint
 
-**October 19, 2026: bounded chain catch-up and repository refresh implemented.**
+**October 19, 2026: custody-boundary tests and paper-alignment checkpoint added.**
 
 ## Current state
+
+Read docs/SECURITY-TARGET.md first for the current compromise matrix, source
+paper mapping and unresolved next-generation design gates. The broader direction
+includes institutional custody and controlled access to encrypted off-chain
+data; the data/proof/key-release subsystem is not implemented. Block rate alone
+is not evidence of application capacity or exclusive feasibility.
 
 Internal Command Protocol is a standalone Kaspa testnet-10 project. Use
 project-level attribution and repository-relative links. The original source
@@ -63,8 +69,12 @@ later P2PK spends are not monitored by this watcher.
 - New controller tests cover quarantine, cold exit, restart, reorg, rejected
   destinations/amounts/layout, durable recovery status and legacy-state refusal.
   Earlier verification is recorded in evidence/quarantine-verification.md.
-- Current verification: 138 tests (59 Rust, 79 Python), including 19 new
+- The catch-up checkpoint passed 138 tests (59 Rust, 79 Python), including 19 new
   batching/backlog/restart/logging tests. See evidence/chain-batching-verification.md.
+- Current verification: 141 tests (62 Rust, 79 Python). Three new native tests
+  verify actual terminal-output spends and a linked recovery-to-P2PK path using
+  public role keys. The old covenant's destination, delay and fee constraints end
+  at both normal and cold payouts. See evidence/custody-boundary-verification.md.
 
 ## Signer/supervisor boundary
 
@@ -79,6 +89,13 @@ host isolation. The cold key belongs on a separately controlled device. Keep
 owner and recipient keys off watcher/signer service accounts.
 
 ## Continue from here
+
+Resolve the security target's surviving-authority, continued-custody, rotation
+and timing gates before choosing new contract behavior. The paper's stronger
+all-credential/quantum claims are not established by operational tests. A literal
+script-equality invariant also needs path-specific successor predicates. The
+paper does not specify a recursive cold state machine. Existing funded v1
+policies remain immutable; no design change is adopted by this checkpoint.
 
 1. Reconcile any existing DB against the new quarantine-tracking requirements.
    Use a fresh independently journaled test session for new acceptance.

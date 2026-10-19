@@ -3,6 +3,10 @@
 ICP combines on-chain custody constraints with an off-chain observer and a
 restricted recovery signer. The current network is Kaspa Testnet-10.
 
+The broader custody/data-access direction, compromise matrix and source-paper
+mapping are in [SECURITY-TARGET.md](SECURITY-TARGET.md). Data access and key
+release remain proposed subsystems rather than implemented services.
+
 ## Responsibilities and trust
 
 | Component | Responsibility | Boundary |
@@ -23,8 +27,8 @@ quarantine accepts only cold-key release to the fixed cold script after a new,
 longer delay. Each path enforces one input, one positive output and its fee cap.
 
 The owner cannot reset a pending clock or redirect a payout. Recovery cannot
-return to the hot states. The cold P2PK exit ends covenant protection; its later
-spends are outside the watcher's custody tracking. See
+return to the hot states. Both normal and cold P2PK exits end covenant protection;
+their later spends are outside the watcher's custody tracking. See
 [the v1 specification](PROTECTED-RECOVERY.md) for exact invariants.
 
 ## Observation and action
