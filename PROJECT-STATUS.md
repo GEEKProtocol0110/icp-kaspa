@@ -22,8 +22,8 @@ engineering checkpoint first, followed by earlier milestones.
   semantics. It checks exact ticket UTXOs and reverses accepted-chain events.
 - Separate per-endpoint databases, fresh scans after restart, bounded local
   reply checks, successor depth and positive branch-linked UTXO samples block
-  stale or incomplete status. Two matching hostnames are required for paired
-  observations; different names do not establish operator independence.
+  stale or incomplete status. Paired observations must match and come from
+  distinct hostnames; different names do not establish operator independence.
 - 38 new Python and eight Rust tests bring local verification to 562
   (108 Rust + 454 Python). Reorgs reset observations without changing the
   controller's branch, charge or outbox. Read the
