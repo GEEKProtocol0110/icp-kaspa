@@ -13,7 +13,8 @@ The companion [transfer anchor observer](TRANSFER-ANCHOR.md) consumes the same
 native scan envelope in a separate database. It pins the exact signed exchange
 commitment/transaction, follows reorgs and checks selected-chain successors,
 sampled-target catch-up and local freshness. It supplies no signing, key release
-or receiver acceptance gate. Current anchor evidence is synthetic only.
+or receiver acceptance gate. A [funded TN10 run](ICP-Transfer-Anchor-Live-Proof.md)
+adds dated two-endpoint observations alongside the synthetic fixtures.
 
 ## Responsibilities and trust
 

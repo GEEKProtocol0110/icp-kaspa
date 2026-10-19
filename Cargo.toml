@@ -34,6 +34,12 @@ name = "fund_protected_pilot"
 path = "examples/fund_protected_pilot.rs"
 required-features = ["live"]
 
+[[example]]
+name = "prepare_transfer_anchor"
+path = "examples/prepare_transfer_anchor.rs"
+required-features = ["live"]
+test = true
+
 [profile.dev]
 debug = 0
 

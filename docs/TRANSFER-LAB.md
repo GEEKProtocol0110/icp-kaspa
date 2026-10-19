@@ -5,8 +5,9 @@ is separate from the vault/watchtower. It has no RPC, funding, transaction
 submission, chain-anchor verifier, STARK program or custody-key access.
 
 The separate [transfer anchor observer](TRANSFER-ANCHOR.md) now supplies a
-read-only commitment tracker for trusted-node scan responses. Its current
-evidence is synthetic; it changes neither this module's receiver acceptance
+read-only commitment tracker for trusted-node scan responses. Synthetic fixtures
+and a later [funded TN10 run](ICP-Transfer-Anchor-Live-Proof.md) are recorded
+separately. It changes neither this module's receiver acceptance
 nor the out-of-band key-delivery assumption.
 
 The experiment turns the before-send/after-receive idea into a bounded exchange:
