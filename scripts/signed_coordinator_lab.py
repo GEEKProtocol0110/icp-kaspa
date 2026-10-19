@@ -383,10 +383,13 @@ def demo():
         model.reserve(grant, request); model.observe(context.grant)
         model.authorize(context.grant); model.prepare(context.grant); model.commit(context.grant)
         response_hash = model.status(context.grant)['response_hash']
-        first = model.dispatch(answer(policy, grant, model.challenge(grant, 'retrieve'), keys[2], 100, expected_response_hash=response_hash))
+        retrieval = answer(policy, grant, model.challenge(grant, 'retrieve'), keys[2], 100, expected_response_hash=response_hash)
+        first = model.dispatch(retrieval)
         second = model.dispatch(answer(policy, grant, model.challenge(grant, 'retrieve'), keys[2], 100, expected_response_hash=response_hash))
-        model.revoke(revocation(policy, grant, keys[3], 1, 100, 130, 'model:revocation-1'))
-        result = dict(mode=MODE, permission=decode(grant), admission_request=decode(request),
+        revoked = revocation(policy, grant, keys[3], 1, 100, 130, 'model:revocation-1')
+        model.revoke(revoked)
+        result = dict(mode=MODE, policy=asdict(policy), permission=decode(grant), admission_request=decode(request),
+                      retrieval_request=decode(retrieval), revocation=decode(revoked),
                       identical_retry=first == second, status=model.status(context.grant),
                       content_keys=0, rpc_calls=0, broadcasts=0)
         model.close()
