@@ -1,6 +1,6 @@
 # ICP continuation checkpoint
 
-**October 19, 2026: delivery-key possession and durable response attestations implemented as a local lab.**
+**October 19, 2026: native ticket/consume/refund design added; latest executable layer remains the local bound response lab.**
 
 For a nontechnical introduction, open [ICP in plain English](PLAIN-ENGLISH.md).
 The [documentation directory](README.md) separates explanations, dated testnet
@@ -8,6 +8,18 @@ evidence, operating guides and research proposals. This handoff preserves the
 engineering and operational detail needed to continue development.
 
 ## Current state
+
+The latest design is [NATIVE-TICKET-DESIGN.md](NATIVE-TICKET-DESIGN.md), with
+review scope in [its checkpoint record](../evidence/native-ticket-design-review.md).
+It selects the proposed N0 issue/two-output and terminal/one-output layouts,
+fixed experimental fees, noncircular commitments, irreversible branch selection
+and never-reserved-only refunds. Refund recovers coins, never permissions/quota.
+Native IDs do not identify every saved field; pin complete outboxes separately.
+Service fencing/expiry cannot retract copied signed spends. No native ticket
+implementation or funded run was added; the 447-test code is unchanged.
+Next build a separate offline N0 native preparer and adversarial mutation tests
+using fabricated UTXOs/public keys. Freeze closed schemas and vectors there.
+Do not add RPC, broadcast, real keys or a model-grant connection in that step.
 
 The latest module is scripts/bound_response_lab.py. Read
 [BOUND-RESPONSE-LAB.md](BOUND-RESPONSE-LAB.md) and
@@ -27,9 +39,10 @@ Only the enrollment token is encrypted: response bundles remain non-secret,
 unencrypted fixtures, with a relay counterexample. There is no content key,
 real record validation, RPC, native ticket/refund, transport or protected host
 boundary. Independent authority history/clock/admin trust and final-sample races
-remain. Earlier lab encodings are not R0 adoption. Next review these formats and
-specify native ticket/consume/refund bindings before real-key integration;
-protected storage/delivery and independent enforcement remain separate gates.
+remain. Earlier lab encodings are not R0 adoption. The native design above
+now specifies an initial proposal; review and offline implementation precede
+real-key integration. Protected storage/delivery and independent enforcement
+remain separate gates.
 
 The earlier signed module is scripts/signed_coordinator_lab.py. Read
 [SIGNED-COORDINATOR-LAB.md](SIGNED-COORDINATOR-LAB.md) and

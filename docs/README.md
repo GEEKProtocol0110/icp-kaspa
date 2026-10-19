@@ -57,6 +57,7 @@ signed transaction outboxes and private backups out of the repository.
 | [Signed coordinator lab](SIGNED-COORDINATOR-LAB.md) | Signed permissions, recipient challenges and revocations integrated with synthetic recovery; dummy responses |
 | [Release-coordinator model](RELEASE-COORDINATOR-MODEL.md) | Separate fake vault/ledger/delivery recovery and independent checkpoint/fencing simulation; no real keys |
 | [Read-ticket and key-release draft](READ-TICKET-RELEASE-DRAFT.md) | Proposed release protocol and unresolved implementation gates |
+| [Native ticket design](NATIVE-TICKET-DESIGN.md) | Proposed TN10 issue/consume/refund layout, permanent branch choice and recovery rules; no native implementation |
 | [Release-service design](RELEASE-SERVICE-DESIGN.md) | Proposed key ownership, exact-response delivery, revocation, fencing and backup recovery; no implemented service |
 
 For licensing and source provenance, see [NOTICE.md](../NOTICE.md),

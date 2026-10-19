@@ -13,7 +13,28 @@ engineering checkpoint first, followed by earlier milestones.
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
 | Automated coverage | 447 tests: 68 Rust + 379 Python |
-| Next engineering work | Review binding/response formats; specify native ticket/consume/refund bindings, protected key ownership and independent enforcement |
+| Next engineering work | Implement and mutation-test native ticket preparation offline; review wire formats, protected key ownership and independent enforcement |
+
+## Native ticket design checkpoint
+
+- [docs/NATIVE-TICKET-DESIGN.md](docs/NATIVE-TICKET-DESIGN.md) proposes N0:
+  one funding input creates a dedicated P2PK ticket plus change; consume or
+  refund spends the exact ticket to one pinned return destination at fixed fees.
+- Commitment ordering avoids future-ID self-reference. Pinned native source
+  review distinguishes transaction IDs and signature commitments from complete
+  saved signatures, storage mass and V1 compute budgets.
+- The authoritative ledger permanently chooses consumption at reservation or
+  refund at unused expiry/revocation closure, before signing. Refund is forbidden
+  after reservation, consumption planning or response history. It resets no quota.
+- Unknown effects reconcile read-only. Reorgs preserve branch, claims, closure,
+  charges and disclosure history. P2PK key loss has no independent rescue, and
+  copied signed transactions cannot be recalled by fencing or service expiry.
+- Documentation-only milestone: existing 447-test implementation is unchanged.
+  No native ticket code, broadcast, funded run or real-key connection is added.
+  See [evidence/native-ticket-design-review.md](evidence/native-ticket-design-review.md)
+  for review scope and validation. This is not independent security review.
+- Next: offline native preparer, strict closed schemas/vectors and mutation tests
+  with public fixture keys; no RPC, broadcast or release-model connection.
 
 ## Delivery-key binding and signed response checkpoint
 
