@@ -1,6 +1,6 @@
 # ICP continuation checkpoint
 
-**October 19, 2026: release-service ownership and recovery design proposed.**
+**October 19, 2026: synthetic coordinator recovery and fencing model implemented.**
 
 For a nontechnical introduction, open [ICP in plain English](PLAIN-ENGLISH.md).
 The [documentation directory](README.md) separates explanations, dated testnet
@@ -9,23 +9,31 @@ engineering and operational detail needed to continue development.
 
 ## Current state
 
-The newest design checkpoint is
-[RELEASE-SERVICE-DESIGN.md](RELEASE-SERVICE-DESIGN.md). It defines a private
-per-version content-key boundary, stable response-operation identity, vault
-candidate outbox, ledger commit, delivery gate and revocation ordering. It
-requires independent writer fencing and continuity checks before recovery from
-backups. No provider, hardware boundary, R0 wire/suite or remote endpoint is
-implemented/adopted by this document. The 302-test implementation is unchanged.
-Next build a synthetic-only coordinator recovery model with separate fake vault,
-fencing/checkpoint authority and delivery gate; keep real keys and native signing
-disconnected. Use its acceptance matrix before attempting a real release service.
+The latest module is scripts/release_coordinator_model.py. Read
+[RELEASE-COORDINATOR-MODEL.md](RELEASE-COORDINATOR-MODEL.md) and
+[its verification record](../evidence/release-coordinator-verification.md).
+Separate ledger/vault/delivery SQLite journals pin an independent authority
+identity. Active writer generations, exact acknowledgments and cross-store
+response checks gate recovery and dispatch. Fifty-two new tests bring the suite
+to 354 (68 Rust + 286 Python), including real process termination and restore
+counterexamples. Keep the authority outside component backup/restore operations.
 
-The latest module is scripts/recipient_lab.py. Read
+All responses remain non-secret placeholders. Admission, request authentication,
+record/ticket/chain facts and administration are trusted synthetic fixtures;
+no existing cryptographic lab or native effect is integrated. Restoring the
+witness with all stores permits nonce reuse; accepted dispatch cannot recall
+bytes. No production fencing provider, protected vault, remote endpoint or R0
+wire/suite is selected. Next review recovery and specify/test signed R0
+authorization/retrieval/revocation while responses remain synthetic. Real key
+storage, independent enforcement and native ticket/refund need separate gates.
+The governing proposal remains [RELEASE-SERVICE-DESIGN.md](RELEASE-SERVICE-DESIGN.md).
+
+The earlier recipient module is scripts/recipient_lab.py. Read
 [RECIPIENT-ENCRYPTION-LAB.md](RECIPIENT-ENCRYPTION-LAB.md) for exact domains,
 schemas, HPKE choice and limits. It encrypts fictional messages to a pinned
 X25519 delivery key after a local possession check and approver certificate;
 separate Ed25519 signatures approve sending and authenticate receipt claims.
-All 234 Python tests pass locally; full CI covers 302 tests (68 Rust + 234 Python).
+That checkpoint passed 234 Python tests; its full CI covered 302 tests (68 Rust + 234 Python).
 This is a standalone local experiment, not an R0 wire adoption or remote release
 service. Do not connect real keys to model grants or reuse dated anchor evidence.
 Next: independent review and service-owned key, fencing/recovery and native

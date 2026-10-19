@@ -1,0 +1,25 @@
+{
+  "broadcasts": 0,
+  "identical_retry": true,
+  "mode": "SYNTHETIC_COORDINATOR_NO_KEYS_NO_CHAIN",
+  "real_keys": 0,
+  "rpc_calls": 0,
+  "status": {
+    "charges": {
+      "100": {
+        "bytes": 128,
+        "count": 1,
+        "end": 180
+      }
+    },
+    "committed": true,
+    "grant": "model:grant",
+    "mode": "SYNTHETIC_COORDINATOR_NO_KEYS_NO_CHAIN",
+    "possible_disclosure": true,
+    "prepared": true,
+    "reserved": true,
+    "response_hash": "85451179f89149fd494df3e34d8f3ed40d021844aab009f4e391a746c8ed4e6d",
+    "revoked": true,
+    "used": true
+  }
+}

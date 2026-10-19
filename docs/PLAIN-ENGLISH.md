@@ -74,15 +74,19 @@ local decryption. An encrypted challenge checks possession of that recipient's
 delivery key. It is a local cryptographic experiment, with no agency integration
 or network delivery. It is not yet connected to the release model.
 
-The [release-service design](RELEASE-SERVICE-DESIGN.md) describes the next bridge:
-keep record keys in a private store, save each authorized delivery before sending,
-and recover that same delivery after a failure. It also requires safeguards
-against an old backup or a second service copy forgetting what was already used.
-These are proposed requirements; the service has not been implemented.
+The [release-service design](RELEASE-SERVICE-DESIGN.md) describes keeping record
+keys private, saving each authorized delivery before sending, and recovering
+that same delivery after a failure. A new [recovery simulation](RELEASE-COORDINATOR-MODEL.md)
+now tests those steps across separate fake vault, ledger and delivery stores.
+An independent fake checkpoint store blocks old writers and detects older
+component backups. Everything it delivers is a non-secret placeholder;
+permission and recipient authentication are supplied by the test harness.
 
-Two limits matter: copied databases can each accept a claim, and a chain change
-can occur after the last check but before delivery. Those limits have explicit
-tests. Real delivery needs additional design, safeguards and review.
+The older model allows copied databases to accept separate claims. The new
+simulation adds a trusted witness, but restoring that witness with every
+store still loses history. Both models also recognize that a chain change
+or revocation after the final delivery decision cannot recall bytes. Real
+release needs production safeguards, authenticated integration and review.
 
 **One key release is not one viewing.** Once someone has a decryption key,
 they can keep reading or copy the data. A later expiry or chain change cannot
@@ -98,7 +102,7 @@ original document is factually true.
 | Simulation or model | Invented chain observations or placeholders exercise the rules; they are not live-chain evidence |
 | Proposal or research | A direction being specified; a working, secure deployment has not been established |
 
-There are **302 automated tests** today. Passing tests helps catch mistakes; it
+There are **354 automated tests** today. Passing tests helps catch mistakes; it
 does not replace an independent security review or prove production readiness.
 The project is still an experimental Testnet-10 prototype.
 
