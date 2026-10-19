@@ -60,6 +60,13 @@ Its recovery-only signer cannot authorize `release`. A new watcher database is
 required for the new descriptor. Cold release is an explicit operator
 action and is never performed by the watcher.
 
+The watcher now keeps the exact quarantine UTXO under observation until an
+accepted spend reaches the pinned cold script. It preserves the original
+recovery confirmation, records the cold exit separately and restores quarantine
+on a release reorganization. This is observation, not independent operator
+approval or a new rescue mechanism. Older databases with untracked quarantine
+records require explicit reconciliation as described in WATCHTOWER.md.
+
 ## Build and public setup
 
 ```bash

@@ -97,6 +97,27 @@ Select `--cli target/debug/icp-protected` explicitly and use a fresh `--db`
 and `--config`; the default remains the live-tested v0 CLI. The v1 descriptor's
 recovery script is the quarantined covenant. Its terminal recovery record adds
 `custody: QUARANTINED`, outpoint and amount, and emits `RECOVERY_QUARANTINED`.
-This records entry into quarantine, not a cold payout. The watcher does not
-monitor later cold releases. See [PROTECTED-RECOVERY.md](PROTECTED-RECOVERY.md)
+The exact quarantine outpoint remains in the tracked outputs with stage
+`quarantined`. A later accepted spend must retain the value/fee/layout bounds
+and pay the descriptor's fixed cold script. The watcher then records
+`custody: COLD_RELEASED`, release transaction/outpoint, amount and acceptance DAA,
+and emits `COLD_RELEASE_OBSERVED`. The original recovery transaction ID remains
+unchanged so its outbox stays CONFIRMED. Removing the release block restores
+quarantine; removing recovery as well restores the pending recovery action.
+
+Cold release is observed, not approved or signed by the watcher. Its cold key
+and actual relative age are enforced by the existing covenant and trusted
+node. Final P2PK spends are outside this watcher's custody tracking. Health
+reports include branch-current `quarantined_outputs` and
+`cold_releases_observed` counts; these do not establish independent finality.
+
+An older database may contain a QUARANTINED terminal record without its tracked
+output. This version refuses that state rather than inventing missed cold
+history. Health reports `QUARANTINE_TRACKING_INCOMPLETE`. Preserve a SQLite
+backup and reconcile accepted-chain history from before recovery under operator
+review; do not delete the database, edit it to pass checks, or assume arming
+from the current tip reconstructs past releases. Old rollback snapshots with
+the same gap also stop atomically for reconciliation.
+
+See [PROTECTED-RECOVERY.md](PROTECTED-RECOVERY.md)
 for signer roles and setup. The existing funded pilot script is v0 only.

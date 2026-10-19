@@ -128,7 +128,8 @@ def main():
                 accepted=call('cold_release_after_delay',read,'broadcast',early_cold['path'])
                 if accepted['id']!=early_cold['id']:raise RuntimeError('Cold payout changed from its early-rejected transaction')
                 wait_output(early_cold['id'],config['cold_spk'],24_000_000);released=True
-            if executed and released and terminal.get(deposits[0],{}).get('kind')=='EXECUTED':
+            cold_observation=terminal.get(deposits[1],{})
+            if executed and released and terminal.get(deposits[0],{}).get('kind')=='EXECUTED' and cold_observation.get('custody')=='COLD_RELEASED' and cold_observation.get('release_transaction_id')==early_cold['id']:
                 if len(journal['actions'])!=1 or journal['actions'][0]['status']!='CONFIRMED':raise RuntimeError('Automatic recovery not chain-confirmed')
                 final=read.snapshot()
                 if any(u['utxoEntry']['scriptPublicKey'] in [config['idle_spk'],config['pending_spk'],config['recovery_spk']] for u in final['utxos']):raise RuntimeError('A pilot vault output remains live')

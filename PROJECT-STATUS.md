@@ -2,6 +2,18 @@
 
 **Status: V1 PROTECTED RECOVERY PASSED FUNDED TESTNET-10 ACCEPTANCE.**
 
+## Quarantine custody tracking update
+
+- The protected watcher now retains exact quarantine outputs through accepted
+  cold release and restores them after chain reorganization. Original recovery
+  confirmation/outbox status survives the later cold exit.
+- Health reports branch-current custody counts and incomplete legacy tracking.
+  Legacy DBs or rollback snapshots with untracked quarantine require explicit
+  reconciliation; no automatic historical reconstruction is attempted.
+- The pilot requires the exact cold-exit observation before its success gate.
+  This change does not modify contracts or submit funded transactions. Read
+  docs/WATCHTOWER.md and evidence/quarantine-verification.md before upgrading.
+
 ## Current result
 
 - PR #1 merged the additive v1 contract and icp-protected CLI. V0 remains the
@@ -15,7 +27,7 @@
   2,067 DAA units after quarantine creation (required: 1,800).
 - A second TN10 node observed the quarantine output while locked and the final
   normal/cold outputs. Both vaults exited. No daemon remains running.
-- All 105 offline checks pass (59 Rust and 46 Python). Read docs/ICP-Protected-Recovery-Live-Proof.md and
+- All 119 offline checks pass (59 Rust and 60 Python). Read docs/ICP-Protected-Recovery-Live-Proof.md and
   evidence/protected-live.json for exact IDs, scripts, amounts and observations.
 - This run spent 0.16 test KAS in eight accepted transaction fees. Total remaining
   across old and fresh session addresses: 2.64 test KAS. No real KAS was used.
@@ -43,12 +55,9 @@
 
 ## Live-tested v0 milestone
 
-- Public repository: https://github.com/GEEKProtocol0110/icp-kaspa
-- CrypTony requested public, open-source development and accepted hosting under
-  Michael's account. The original implementation uses MIT; upstream licenses
-  and the supplied papers retain their own terms. See NOTICE.md.
-- Pre-publication source history is preserved in docs/history/pre-github.bundle;
-  see docs/IMPORT.md. GitHub Actions reproduces the offline verification suite.
+- The original implementation uses MIT; upstream licenses and the supplied
+  papers retain their own terms. See NOTICE.md and docs/IMPORT.md.
+- GitHub Actions reproduces the offline verification suite.
 - The vault's initial live lifecycle passed, including an early payout rejection.
 - The next live test approved one exact intent before broadcast and automatically
   recovered another unapproved intent in one attempt. The approved withdrawal

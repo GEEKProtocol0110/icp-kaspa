@@ -49,6 +49,11 @@ class Store:
                 raise WatchError('Invalid pinned script')
         if not 0 < integer(config['delay_daa']) < 2**32 or integer(config['max_fee']) == 0:
             raise WatchError('Invalid pinned limits')
+        if config.get('version') == 'protected-v1':
+            if not isinstance(config.get('cold_spk'), str) or not re.fullmatch('[0-9a-f]+',config['cold_spk']):
+                raise WatchError('Invalid pinned cold script')
+            if not config['delay_daa'] < integer(config.get('cold_delay_daa')) < 2**32:
+                raise WatchError('Invalid pinned cold delay')
         self.config = config
         self.db = sqlite3.connect(path)
         self.db.row_factory = sqlite3.Row
@@ -64,7 +69,13 @@ class Store:
         digest=hashlib.sha256(json.dumps(config,sort_keys=True).encode()).hexdigest()
         previous=self.get('config')
         if previous and previous != digest:
+            self.db.close()
             raise WatchError('Configuration changed; refusing to reuse watcher state')
+        try:
+            self.validate_custody(self.state())
+        except Exception:
+            self.db.close()
+            raise
         with self.db:
             self.put('config',digest)
     def get(self,k):
@@ -76,6 +87,19 @@ class Store:
         return json.loads(self.get('state') or '{"outputs":{},"terminal":{}}')
     def audit(self,kind,data):
         self.db.execute('INSERT INTO audit(kind,data) VALUES(?,?)',(kind,json.dumps(data,sort_keys=True)))
+    def validate_custody(self,state):
+        if self.config.get('version') != 'protected-v1':
+            return
+        for root,terminal in state['terminal'].items():
+            if terminal.get('custody') == 'QUARANTINED':
+                output=state['outputs'].get(terminal.get('outpoint'))
+                if not output or output.get('stage')!='quarantined' or output.get('root')!=root or output.get('amount')!=terminal.get('amount'):
+                    raise WatchError('Untracked quarantine; reconcile accepted-chain history before resuming')
+        for outpoint,output in state['outputs'].items():
+            if output.get('stage') == 'quarantined':
+                terminal=state['terminal'].get(output['root'],{})
+                if terminal.get('custody')!='QUARANTINED' or terminal.get('outpoint')!=outpoint:
+                    raise WatchError('Quarantine does not match its recorded recovery')
     def arm(self,anchor,deposits):
         if self.get('tip'):
             raise WatchError('Watcher already armed')
@@ -122,11 +146,21 @@ class Store:
             authorized=bool(approval and approval['root']==source['root'] and daa<=approval['expires'])
             state['outputs'][pending]={'stage':'pending','root':source['root'],'amount':value,'accepted_daa':daa,'authorized':authorized}
             self.audit('INTENT',{'pending':pending,'authorized':authorized,'root':source['root'],'daa':daa})
-        elif spk==self.config['recovery_spk']:
+        elif source['stage'] in ('idle','pending') and spk==self.config['recovery_spk']:
             state['terminal'][source['root']]={'kind':'RECOVERED','transaction_id':ident,'daa':daa}
             if self.config.get('version')=='protected-v1':
                 state['terminal'][source['root']].update({'custody':'QUARANTINED','outpoint':ident+':0','amount':value})
+                state['outputs'][ident+':0']={'stage':'quarantined','root':source['root'],'amount':value,'accepted_daa':daa,'authorized':False}
                 self.audit('RECOVERY_QUARANTINED',{'root':source['root'],'outpoint':ident+':0','amount':value})
+        elif source['stage']=='quarantined' and self.config.get('version')=='protected-v1' and spk==self.config['cold_spk']:
+            # Retain the original recovery ID/kind: its durable outbox remains
+            # CONFIRMED after a later cold exit. Release is observed, not signed
+            # or authorized by the watcher; the node enforces its cold delay.
+            terminal=state['terminal'][source['root']]
+            terminal.update({'custody':'COLD_RELEASED','release_transaction_id':ident,
+                             'release_outpoint':ident+':0','release_amount':value,'release_daa':daa})
+            self.audit('COLD_RELEASE_OBSERVED',{'root':source['root'],'quarantine':hits[0],
+                                             'outpoint':ident+':0','amount':value,'daa':daa})
         elif source['stage']=='pending' and spk==self.config['recipient_spk']:
             state['terminal'][source['root']]={'kind':'EXECUTED' if source['authorized'] else 'UNAUTHORIZED_EXECUTION','transaction_id':ident,'daa':daa}
             if not source['authorized']:
@@ -158,6 +192,7 @@ class Store:
                 for transaction in b['acceptedTransactions']:
                     self._transaction(state,transaction,daa)
                 self.db.execute('INSERT INTO blocks VALUES(?,?,?)',(h,tip,undo));tip=h
+            self.validate_custody(state)
             self.put('tip',tip);self.put('state',json.dumps(state))
             self._reconcile_actions(state)
     def _reconcile_actions(self,state):
