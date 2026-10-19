@@ -38,7 +38,7 @@ paper to the current implementation and its unresolved design choices.
 
 **Current stage: experimental Testnet-10 prototype.** The v0 vault/watchtower
 and protected-v1 lifecycle have passed funded TN10 acceptance runs. The latest
-suite passes **170 offline tests: 62 Rust + 108 Python**. Independent
+suite covers **198 offline tests: 62 Rust + 136 Python**. Independent
 security review and production operation remain ahead.
 
 ## The custody lifecycle
@@ -67,6 +67,7 @@ V0's recovery goes directly to its fixed recovery address.
 | Custody tracking | Exact quarantine output through cold release; branch-aware rollback | Offline controller/restart/reorg tests |
 | Chain catch-up | Bounded local batches, recovery checks between batches, backlog health | 19 new offline tests |
 | Local transfer lab | Encrypted manifests, separate approver/sender signatures, recipient attestations and local replay checks | 29 offline tests; no chain anchor or key delivery |
+| Transfer anchor observer | Exact signed-transfer commitment, pinned transaction, successor threshold and reorg undo | 28 offline tests and synthetic demo; live anchoring pending |
 | Signer deployment kit | Recovery-only SSH endpoint, pinned policy/transport, supervised services | Offline protocol and restart tests; separate-host deployment pending |
 
 Both native CLIs enforce TN10 node identity and activation checks. A broadcast
@@ -121,6 +122,13 @@ and read [TRANSFER-LAB.md](docs/TRANSFER-LAB.md). It uses conventional signature
 and an out-of-band symmetric-key assumption. Its receipt authenticates a
 recipient claim; it does not prove remote decryption, factual truth or a Kaspa
 confirmation. This module changes no custody rule.
+
+The companion [transfer anchor observer](docs/TRANSFER-ANCHOR.md) consumes the
+native read-only accepted-chain scan format. It checks an exact commitment,
+selected-chain successors, catch-up and freshness, and withdraws observations
+after reorgs. Run `python3 scripts/transfer_anchor.py` for the synthetic demo.
+No transfer anchor has been submitted on TN10; protected key delivery remains
+future work.
 
 ## Explore the project
 

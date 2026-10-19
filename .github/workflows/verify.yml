@@ -18,5 +18,6 @@ jobs:
       - run: 'python3 -m pip install --only-binary=:all: -r requirements-lab.txt'
       - run: python3 -m unittest discover -s tests -p 'test_*.py' -v
       - run: python3 scripts/transfer_lab.py
+      - run: python3 scripts/transfer_anchor.py
       - run: sh -n deploy/icp-recovery-command
       - run: systemd-analyze verify deploy/*.service deploy/*.timer

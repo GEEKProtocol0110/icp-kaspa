@@ -1,6 +1,6 @@
 # ICP continuation checkpoint
 
-**October 19, 2026: local send/receive verification experiment added.**
+**October 19, 2026: read-only transfer commitment observer added.**
 
 ## Current state
 
@@ -11,6 +11,14 @@ data. A local encrypted manifest/receipt experiment is now in scripts/transfer_l
 and docs/TRANSFER-LAB.md. On-chain data tickets, proof enforcement and protected
 key delivery remain unimplemented. Block rate alone
 is not evidence of application capacity or exclusive feasibility.
+
+The companion scripts/transfer_anchor.py now tracks an exact signed-transfer
+payload/transaction ID in trusted-node accepted-chain scans. Its separate DB
+retains reorg history and pins policy/bootstrap/observation settings; restart,
+RPC failure, stale data or catch-up backlog prevent usable status. Read
+docs/TRANSFER-ANCHOR.md. The public demo is synthetic, with no live anchor,
+key release or changed receiver acceptance. Next live gate is a separately
+journaled TN10 anchor with independent second-node observation.
 
 Internal Command Protocol is a standalone Kaspa testnet-10 project. Use
 project-level attribution and repository-relative links. The original source
@@ -77,12 +85,15 @@ later P2PK spends are not monitored by this watcher.
   verify actual terminal-output spends and a linked recovery-to-P2PK path using
   public role keys. The old covenant's destination, delay and fee constraints end
   at both normal and cold payouts. See evidence/custody-boundary-verification.md.
-- Current verification: 170 tests (62 Rust, 108 Python). The 29 new local lab
+- The local-lab checkpoint passed 170 tests (62 Rust, 108 Python). The 29 local lab
   checks cover encrypted exchange binding, distinct roles, strict input/expiry,
   replay/restart/concurrency, receipt substitution and explicit attestation/DB
   limits. Public transcript: evidence/transfer-lab-demo.json. No new funded run.
   See evidence/transfer-lab-verification.md and install requirements-lab.txt
   before running the complete Python suite.
+- Current suite: 198 checks (62 Rust, 136 Python), including 28 new anchor tests.
+  All Python tests pass locally. The refreshed host lacks Cargo/rustup; required
+  Rust verification runs in GitHub CI. See evidence/transfer-anchor-verification.md.
 
 ## Signer/supervisor boundary
 

@@ -9,6 +9,12 @@ mapping are in [SECURITY-TARGET.md](SECURITY-TARGET.md). The separate
 experiment. On-chain data access and protected key release remain proposed
 subsystems rather than implemented services.
 
+The companion [transfer anchor observer](TRANSFER-ANCHOR.md) consumes the same
+native scan envelope in a separate database. It pins the exact signed exchange
+commitment/transaction, follows reorgs and checks selected-chain successors,
+sampled-target catch-up and local freshness. It supplies no signing, key release
+or receiver acceptance gate. Current anchor evidence is synthetic only.
+
 ## Responsibilities and trust
 
 | Component | Responsibility | Boundary |

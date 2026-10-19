@@ -16,5 +16,7 @@
 - Run cargo fmt --check, cargo test --locked --features live and the Python unittest suite.
 - Install requirements-lab.txt before the full Python suite. The transfer lab
   is local-only: do not treat its signed receipt as a chain or execution proof.
+- Transfer-anchor status is a revocable trusted-node observation. Keep its DB
+  separate, require fresh scans and never use synthetic fixtures as live proof.
 - Live tests require a separate journal and must reconcile failed or unknown outcomes before retrying.
 - Keep receipts, limitations and the project checkpoint current; do not claim quantum safety or audit completion.

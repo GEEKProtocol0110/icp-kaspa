@@ -4,6 +4,11 @@ Status: local research code, version `icp-transfer-lab-v0`. This additive module
 is separate from the vault/watchtower. It has no RPC, funding, transaction
 submission, chain-anchor verifier, STARK program or custody-key access.
 
+The separate [transfer anchor observer](TRANSFER-ANCHOR.md) now supplies a
+read-only commitment tracker for trusted-node scan responses. Its current
+evidence is synthetic; it changes neither this module's receiver acceptance
+nor the out-of-band key-delivery assumption.
+
 The experiment turns the before-send/after-receive idea into a bounded exchange:
 an explicit policy approver authorizes a ciphertext-bound manifest, the sender
 signs that same exchange, and the recipient decrypts/authenticates it before
