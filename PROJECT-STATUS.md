@@ -1,6 +1,19 @@
 # ICP checkpoint - October 19, 2026
 
-**Status: V1 PROTECTED RECOVERY PASSED FUNDED TESTNET-10 ACCEPTANCE.**
+**Experimental Kaspa Testnet-10 prototype.** Vault withdrawals and protected
+recovery have been tested with test coins. Real data-key delivery is still being
+designed.
+
+New here? Read [ICP in plain English](docs/PLAIN-ENGLISH.md) or browse the
+[documentation directory](docs/README.md). This page records the current
+engineering checkpoint first, followed by earlier milestones.
+
+| At a glance | Current position |
+| --- | --- |
+| Vault and recovery | Dated testnet runs and automated verification |
+| Data access | Local encryption lab and simulated release accounting; no real key delivery |
+| Automated coverage | 265 tests: 68 Rust + 197 Python |
+| Next engineering work | Define key delivery, service-copy safeguards and native ticket/refund rules |
 
 ## Synthetic release-ledger model
 
@@ -53,7 +66,7 @@
 - New native preparation and journaled pilot preserve signed bytes before
   submission, pin/claim the source, reject replacement runs and resume reads
   without signing or broadcasting. Existing custody sessions were not rerun.
-- Current suite: 221 checks (68 Rust + 153 Python). The pre-live 220-check
+- At that checkpoint: 221 checks (68 Rust + 153 Python). The pre-live 220-check
   checkpoint passed GitHub CI; the added public evidence consistency test
   passes locally with all 153 Python tests. Native sources are unchanged since
   that verified build. Final workflow results are recorded on PR #9.

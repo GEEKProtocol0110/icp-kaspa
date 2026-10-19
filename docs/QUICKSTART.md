@@ -1,5 +1,11 @@
 # Build and run on Testnet-10
 
+[Project home](../README.md) · [Plain-English introduction](PLAIN-ENGLISH.md) · [Documentation](README.md)
+
+This is the developer guide. It starts with offline checks, then explains a
+fresh testnet session. To understand the project without installing anything,
+read the plain-English introduction.
+
 Start with offline verification. Public fixture keys are intentionally known:
 **never fund fixture addresses**. Generate fresh test-only keys for a live run.
 Keep `.secrets/`, `runtime/`, signed outboxes and databases out of Git.

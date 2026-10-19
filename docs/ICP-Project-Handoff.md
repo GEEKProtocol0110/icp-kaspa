@@ -2,6 +2,11 @@
 
 **October 19, 2026: synthetic release-ledger state/accounting experiment implemented.**
 
+For a nontechnical introduction, open [ICP in plain English](PLAIN-ENGLISH.md).
+The [documentation directory](README.md) separates explanations, dated testnet
+evidence, operating guides and research proposals. This handoff preserves the
+engineering and operational detail needed to continue development.
+
 ## Current state
 
 The release design reference is docs/READ-TICKET-RELEASE-DRAFT.md: a proposed

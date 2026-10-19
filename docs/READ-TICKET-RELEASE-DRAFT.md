@@ -1,5 +1,12 @@
 # Read tickets and recipient key release: R0 design draft
 
+[Plain-English introduction](PLAIN-ENGLISH.md) · [Documentation](README.md)
+
+This is a technical proposal for checking permission before a service releases
+a key to an encrypted record. It describes what must be approved, recorded and
+rechecked. A ticket would be a transaction witness; the service would still
+enforce access rules. Real key delivery has not been implemented.
+
 The subsequent [synthetic ledger model](RELEASE-LEDGER-MODEL.md) tests a subset
 of these state/accounting rules. It does not adopt an R0 wire/delivery suite,
 create native tickets or implement real key release. This draft remains a
