@@ -2,6 +2,28 @@
 
 **Status: V1 PROTECTED RECOVERY PASSED FUNDED TESTNET-10 ACCEPTANCE.**
 
+## Synthetic release-ledger model
+
+- scripts/release_ledger_model.py implements the draft's local state/accounting
+  experiment using a strict FakeChain adapter and non-secret response placeholders.
+  It performs no RPC, native ticket preparation, encryption or content-key delivery.
+- Model-specific approver/sender signatures and recipient challenges bind exact
+  immutable grants. One SQLite transaction claims each grant/nonce, charges the
+  fixed-window count/byte budget and saves the exact consumption plan.
+- Submission intent is durable before one fake effect. Unknown/crashed attempts
+  reconcile only. Responses are stored before retrieval; fresh authenticated
+  retries preserve identical bytes and the original deadline/window.
+- Reorgs, expiry and revocation block delivery without deleting used grants,
+  response/disclosure history or quota. Clock errors/backward movement latch a
+  halt. Two copied databases can still claim independently; a reorg after the
+  final sample can precede dispatch. Both limits have counterexample tests.
+- 44 new tests include concurrency and actual subprocess crashes around response
+  commits. Current suite: 265 checks (68 Rust + 197 Python). Python runs locally;
+  required Rust/build/template checks run in GitHub CI on the milestone PR.
+- Read docs/RELEASE-LEDGER-MODEL.md and evidence/release-ledger-model-verification.md.
+  Next: review wire/recipient-delivery requirements, service fencing/recovery
+  and native ticket/refund rules. No funded ticket or remote release is enabled.
+
 ## Read-ticket and key-release design draft
 
 - docs/READ-TICKET-RELEASE-DRAFT.md specifies the proposed next experiment's
@@ -15,8 +37,8 @@
 - This is a proposal, not implemented enforcement. A plain P2PK ticket would
   leave policy/expiry/budget enforcement at the service. Cryptographic delivery,
   wire formats, ticket/refund transactions and stronger on-chain rules have
-  explicit gates. Next: a synthetic local ledger/fake-chain model.
-- Existing 221-check code and live evidence are unchanged. No test keys, data
+  explicit gates. The subsequent synthetic model is described above.
+- At that design checkpoint the 221-check code and live evidence were unchanged. No test keys, data
   keys, tickets or funded transactions were created for this documentation step.
 
 ## Funded transfer anchor observed

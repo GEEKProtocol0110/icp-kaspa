@@ -1,5 +1,10 @@
 # Read tickets and recipient key release: R0 design draft
 
+The subsequent [synthetic ledger model](RELEASE-LEDGER-MODEL.md) tests a subset
+of these state/accounting rules. It does not adopt an R0 wire/delivery suite,
+create native tickets or implement real key release. This draft remains a
+proposal; its unimplemented gates still apply.
+
 **Status: engineering proposal, not implemented or an adopted protocol.**
 This defines the next bounded experiment after the
 [funded transfer anchor](ICP-Transfer-Anchor-Live-Proof.md). It changes no custody

@@ -16,7 +16,7 @@ cases, not existing customers, certifications or demonstrated deployments.
 | --- | --- | --- |
 | Custody | Constrained withdrawals, monitoring and quarantine recovery | Experimental TN10 implementation and dated funded evidence |
 | Private data | Encrypted off-chain storage, transport and recipient-specific key delivery | Local encryption/receipt experiment; remote storage/transport/key delivery unimplemented |
-| Access policy | Read-intent tickets, persistent release accounting and proof/state binding | Local signed policy/manifest checks; on-chain tickets, global accounting and proofs unimplemented |
+| Access policy | Read-intent tickets, persistent release accounting and proof/state binding | Local signed manifest checks and synthetic durable-ledger model; on-chain tickets, globally fenced accounting and proofs unimplemented |
 | Operations | Independent signer/watcher hosts, external alerts and failure recovery | Offline-tested deployment kit; independent-host acceptance pending |
 
 Sensitive records and decryption keys are not proposed as public ledger data.
@@ -50,6 +50,12 @@ candidate service-enforced model, separate native ticket authority, stable
 grant/budget accounting and irreversible disclosure history. A P2PK witness
 does not enforce those access rules on chain. The proposal changes no current
 security claim and explicitly leaves the all-secret/quantum target unresolved.
+
+The [synthetic ledger model](RELEASE-LEDGER-MODEL.md) now exercises local
+grant/quota persistence, authenticated retries and reorg/crash boundaries using
+fake chain views and non-secret placeholders. It delivers no content key.
+Copied databases and reorgs after the final sample have explicit counterexample
+tests; neither global uniqueness nor atomic chain-to-delivery behavior is claimed.
 
 ## Implemented protected-v1 claim
 
@@ -101,7 +107,7 @@ do not automatically represent bugs against the narrower implemented target.
 | Section 3.1: broadcast-time detection | Watcher acts on accepted virtual-chain changes | Deliberate observation choice; no mempool detection claim |
 | Section 8: identical input/output script on every spend | State transitions preserve a template with changed state; payouts use explicit destinations | Replace literal equality with path-specific successor predicates |
 | Section 8: EXECUTE locktime from creation DAA | Fresh pending output with relative CSV | Specify the intent anchor, DAA units and contextual maturity rule explicitly |
-| Sections 5/8: read tickets and release velocity | No data-release state or persistent counter | Separate unimplemented subsystem; define global/window semantics |
+| Sections 5/8: read tickets and release velocity | Synthetic local ledger with permanent grant charges and fixed windows; no native tickets or real key release | Service fencing/recovery, wire/delivery and native ticket/refund rules remain gates |
 | Sections 6/8: STARK-bound key release/DAG Zippers | No ICP circuit, proof-binding or key-delivery protocol | Missing integration, not blanket absence of upstream verification capability |
 | Section 4: immediate irreversible defensive ordering | Trusted-node observations and explicit reorg rollback | No immediate-finality or mandatory-majority-attack claim |
 

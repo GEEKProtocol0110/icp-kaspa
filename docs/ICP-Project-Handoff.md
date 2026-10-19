@@ -1,15 +1,20 @@
 # ICP continuation checkpoint
 
-**October 19, 2026: journaled funded transfer anchor passed two-endpoint observation.**
+**October 19, 2026: synthetic release-ledger state/accounting experiment implemented.**
 
 ## Current state
 
-The next design checkpoint is docs/READ-TICKET-RELEASE-DRAFT.md: a proposed
+The release design reference is docs/READ-TICKET-RELEASE-DRAFT.md: a proposed
 service-enforced read-ticket/release model with exact recipient/key binding,
 one durable response per grant, source/claim persistence, quota semantics and
-separate reorg/disclosure history. It is not implemented or a new custody rule.
-Build a synthetic local ledger/fake-chain experiment before remote delivery;
-wire/crypto, ticket/refund and service-recovery gates remain explicit.
+separate reorg/disclosure history. scripts/release_ledger_model.py now implements
+the synthetic local state/accounting experiment with fake chain observations and
+non-secret placeholders. Read docs/RELEASE-LEDGER-MODEL.md and its verification
+record: 44 new tests; 265 total (68 Rust + 197 Python). Remote delivery is still
+unimplemented; wire/crypto, ticket/refund and service-recovery gates remain.
+Next specify/review those gates. Do not attach real keys or native broadcast
+adapters to the model. Snapshot copies are not fenced; an observation cannot
+prevent a later reorg from preceding dispatch. Both are explicit test limits.
 
 Read docs/SECURITY-TARGET.md first for the current compromise matrix, source
 paper mapping and unresolved next-generation design gates. The broader direction
@@ -104,7 +109,7 @@ later P2PK spends are not monitored by this watcher.
 - The observer checkpoint covered 198 checks (62 Rust, 136 Python), including 28 anchor tests.
   All Python tests pass locally. The refreshed host lacks Cargo/rustup; required
   Rust verification runs in GitHub CI. See evidence/transfer-anchor-verification.md.
-- Current suite: 221 checks (68 Rust, 153 Python). The pre-live 220-check build
+- Funded-anchor checkpoint: 221 checks (68 Rust, 153 Python). The pre-live 220-check build
   passed CI and supplied the checksummed binaries used for the live run; the
   published-evidence consistency check brings Python to 153 passing tests.
   The exact 0.24-test-KAS donor output was spent once, returning 0.22 with a

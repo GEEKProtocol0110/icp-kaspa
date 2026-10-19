@@ -1,0 +1,39 @@
+{
+  "fake_submissions": 1,
+  "keys_delivered": 0,
+  "mode": "SYNTHETIC_RELEASE_MODEL_NO_KEYS_NO_CHAIN",
+  "real_transactions": 0,
+  "response": {
+    "consumption": "model:68c333884f3131d77bc04d7500fb0ef61464d50b467f0cf9249cb1de13e4220a",
+    "delivery_epoch": 0,
+    "delivery_tag": "0707070707070707070707070707070707070707070707070707070707070707",
+    "grant": "0606060606060606060606060606060606060606060606060606060606060606",
+    "kind": "NON_SECRET_RESPONSE_PLACEHOLDER",
+    "mode": "SYNTHETIC_RELEASE_MODEL_NO_KEYS_NO_CHAIN",
+    "network": "testnet-10-model",
+    "nonce": "1c6dd6e55c4f8a2e5261a5a530338371",
+    "policy": "5be535f7a8dcd6f75beb530faca4b74357ab5129ee335eb0d3485ba01fa4d916",
+    "recipient": "639e4c1c42644f73bc41373e4674f9b5413d77c5d7763b0dabcba9d53bcdc426",
+    "record": {
+      "bytes": 128,
+      "cipher_hash": "0404040404040404040404040404040404040404040404040404040404040404",
+      "context": "0505050505050505050505050505050505050505050505050505050505050505",
+      "id": "0303030303030303030303030303030303030303030303030303030303030303",
+      "version": 1
+    },
+    "request": "924f217387351d1d572f8431c348192fc2f572cffc6ebd27c2e5a5572bfbe4f8",
+    "service": "0101010101010101010101010101010101010101010101010101010101010101",
+    "ticket": "model:ae69064bd7f1bc5f38b7eafd9c8a72ede1a32bc48c748bedfcf85bf14b475dde:0"
+  },
+  "status": {
+    "attempts": 1,
+    "deadline": 160,
+    "id": "0606060606060606060606060606060606060606060606060606060606060606",
+    "possible_disclosure": 1,
+    "request": "924f217387351d1d572f8431c348192fc2f572cffc6ebd27c2e5a5572bfbe4f8",
+    "response_hash": "94ae5e98e1c5b438e0f212c76b32b107805dec9d6c0e4be9f05702d4cc17f158",
+    "revoked": 0,
+    "state": "RESPONSE_COMMITTED",
+    "window": 0
+  }
+}

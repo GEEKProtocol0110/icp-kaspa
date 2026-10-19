@@ -15,6 +15,12 @@ witness; access authorization, delivery and quotas would remain service-enforced
 Irreversible grant/disclosure history must not roll back with chain observations.
 This proposal is not an implemented component or a change to custody contracts.
 
+The separate [synthetic release ledger](RELEASE-LEDGER-MODEL.md) implements a
+local state/accounting model of that proposal. It uses model-only signatures,
+two fake observations and non-secret response placeholders. Its irreversible
+SQLite grant/quota history is separate from reversible observations. It is not
+a release service, native ticket adapter or source of real content keys.
+
 The companion [transfer anchor observer](TRANSFER-ANCHOR.md) consumes the same
 native scan envelope in a separate database. It pins the exact signed exchange
 commitment/transaction, follows reorgs and checks selected-chain successors,
