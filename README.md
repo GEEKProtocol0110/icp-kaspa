@@ -39,12 +39,13 @@ paper to the current implementation and its unresolved design choices.
 The [read-ticket and key-release draft](docs/READ-TICKET-RELEASE-DRAFT.md)
 defines a proposed service-enforced experiment: exact grant/recipient binding,
 durable one-use accounting, consumed-ticket observations and crash/reorg rules.
-It is a design proposal; remote key release and on-chain access enforcement
-remain unimplemented.
+The [synthetic release ledger](docs/RELEASE-LEDGER-MODEL.md) now tests those
+state/accounting rules with fake chain views and non-secret placeholders.
+Remote key release and on-chain access enforcement remain unimplemented.
 
 **Current stage: experimental Testnet-10 prototype.** The v0 vault/watchtower
 and protected-v1 lifecycle have passed funded TN10 acceptance runs. The latest
-suite covers **221 offline tests: 68 Rust + 153 Python**. Independent
+suite covers **265 offline tests: 68 Rust + 197 Python**. Independent
 security review and production operation remain ahead.
 
 ## The custody lifecycle
@@ -74,6 +75,7 @@ V0's recovery goes directly to its fixed recovery address.
 | Chain catch-up | Bounded local batches, recovery checks between batches, backlog health | 19 new offline tests |
 | Local transfer lab | Encrypted manifests, separate approver/sender signatures, recipient attestations and local replay checks | 29 offline tests; no chain anchor or key delivery |
 | Transfer anchor observer + pilot | Exact commitment, self-return funding, one-attempt journal, two-node observation and reorg undo | Offline failure tests + funded TN10 anchor observed with 29/20 selected-chain successors |
+| Synthetic release ledger | Atomic grant/quota claims, one saved placeholder, authenticated retries and permanent disclosure history | 44 offline tests; fake chain only, no content keys or real tickets |
 | Signer deployment kit | Recovery-only SSH endpoint, pinned policy/transport, supervised services | Offline protocol and restart tests; separate-host deployment pending |
 
 Both native CLIs enforce TN10 node identity and activation checks. A broadcast
@@ -139,6 +141,12 @@ fee. These are dated trusted-node observations. Protected key delivery remains
 future work; the [pilot runbook](docs/TRANSFER-ANCHOR-PILOT.md) covers restart
 and read-only reconciliation.
 
+Run `python3 scripts/release_ledger_model.py` for the separate
+[synthetic ledger experiment](docs/RELEASE-LEDGER-MODEL.md). Its crash,
+concurrency, expiry and reorg tests exercise permanent grant accounting.
+Copied databases and reorgs after the final observation have explicit
+counterexample tests; this model supplies no global fencing or key delivery.
+
 ## Explore the project
 
 | Start here | Purpose |
@@ -160,7 +168,7 @@ Source lives in `contracts/`, `src/` and `scripts/`; verification lives in
 | Horizon | Work |
 | --- | --- |
 | Now | Reproducible covenant vaults, protected recovery, durable watchtower, quarantine tracking and bounded local catch-up |
-| Next | Model the [proposed read-ticket/release ledger](docs/READ-TICKET-RELEASE-DRAFT.md) with synthetic data; settle custody authority/rotation gates and validate independent hosting on TN10 |
+| Next | Review/freeze release wire and recipient-delivery requirements; specify service fencing/recovery and native ticket/refund rules before remote delivery or funded tickets; settle custody authority/rotation and independent hosting |
 | Harden | Cold-stage rescue and rotation specification, pruning/deep-reorg reconciliation, retention, fee estimation and adversarial review |
 | Research | Data-release tickets, proof systems, DAG Zippers and STATIC; separately specified before implementation |
 
