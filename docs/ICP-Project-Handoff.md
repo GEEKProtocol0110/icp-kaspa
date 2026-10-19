@@ -1,3 +1,32 @@
+# ICP - funded protected recovery checkpoint
+
+**V1 funded TN10 acceptance passed. PR #1 is merged.**
+
+Read PROJECT-STATUS.md and
+[ICP-Protected-Recovery-Live-Proof.md](ICP-Protected-Recovery-Live-Proof.md).
+Public home: https://github.com/GEEKProtocol0110/icp-kaspa
+
+- The actual watcher preserved an approved intent and quarantined an unapproved
+  intent in one attempt after 236 DAA units (normal delay: 600).
+- Both early normal/cold payouts were explicitly rejected for sequence locks.
+  The same signed normal and cold transactions later passed. Cold acceptance
+  was 2,067 DAA units after quarantine creation, above the 1,800 requirement.
+- A second synced TN10 node observed the quarantine output while locked and the
+  exact final normal/cold UTXOs. No pilot covenant output remains live.
+- All 85 offline checks still pass. Eight accepted transactions spent 0.16 test
+  KAS in fees, leaving 2.64 test KAS across old and fresh session addresses.
+- Harness: scripts/protected_pilot.py. Bounded funding example:
+  examples/fund_protected_pilot.rs. Neither completed journal may be rerun.
+- Public evidence excludes signature scripts and signed outbox payloads. The
+  private test-session backup preserves complete receipts, SQLite state and
+  all old/fresh role keys. No private key or backup belongs in Git.
+- Next: independent-host signer deployment/transport, cold-stage rescue and
+  rotation design, supervised watcher health/alerts, reorg/pruning/backlog
+  hardening, fee estimation and external adversarial review. Same-host role
+  files are not production isolation; no quantum-safety or mainnet claim.
+
+## Earlier checkpoints (historical; superseded above)
+
 # ICP - protected recovery candidate checkpoint
 
 **October 18, 2026: v1 implemented and locally verified; funded v1 pilot pending.**

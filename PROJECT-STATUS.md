@@ -1,21 +1,26 @@
 # ICP checkpoint - October 18, 2026
 
-**Status: V1 PROTECTED-RECOVERY CANDIDATE PASSES NATIVE CHECKS; V0 LIVE PROOF PRESERVED.**
+**Status: V1 PROTECTED RECOVERY PASSED FUNDED TESTNET-10 ACCEPTANCE.**
 
-## Current candidate
+## Current result
 
-- Branch: feat/protected-recovery. The additive v1 contract and icp-protected
-  CLI do not replace v0 or migrate its deposits.
-- Recovery creates a quarantined successor covenant. Owner and recovery-trigger
-  keys cannot spend that state; cold release needs a separate key and a new,
-  strictly longer delay. Quarantine cannot be repeatedly recovered or rearmed.
-- One explicit role file per signing command; public setup/status/descriptor and
-  broadcast do not load private keys. No v0 combined-key fallback.
-- Native/script, signer, CLI and controller suites pass 85 total local checks.
-  See evidence/protected-verification.md and docs/PROTECTED-RECOVERY.md.
-- V1 has not been funded or live tested. No new test funds were spent.
-- Same-host file separation is not production signer isolation; remote/air-gapped
-  signing and deployment controls remain work.
+- PR #1 merged the additive v1 contract and icp-protected CLI. V0 remains the
+  default; existing deposits are not migrated and custody rules were not changed
+  for the funded run.
+- The fresh v1 pilot passed: one exact approved intent paid normally; the actual
+  watcher moved the other intent into quarantine in one attempt after 236 DAA
+  units, within the 600-DAA normal delay.
+- The node explicitly sequence-rejected both early payouts. The exact signed
+  normal and cold transactions later passed; the cold payout UTXO was accepted
+  2,067 DAA units after quarantine creation (required: 1,800).
+- A second TN10 node observed the quarantine output while locked and the final
+  normal/cold outputs. Both vaults exited. No daemon remains running.
+- All 85 offline checks pass. Read docs/ICP-Protected-Recovery-Live-Proof.md and
+  evidence/protected-live.json for exact IDs, scripts, amounts and observations.
+- This run spent 0.16 test KAS in eight accepted transaction fees. Total remaining
+  across old and fresh session addresses: 2.64 test KAS. No real KAS was used.
+- Keys are separate files and signing subprocesses on the same test host. This
+  does not demonstrate OS/host isolation, an air gap, quantum safety or an audit.
 
 ## Live-tested v0 milestone
 
@@ -30,9 +35,11 @@
   recovered another unapproved intent in one attempt. The approved withdrawal
   completed after its delay. Both new vault outputs have exited.
 - 54 local checks passed: 27 script tests, 3 network guards, 24 watchtower tests.
-- Current total test balances across all session addresses: 2.80 test KAS.
+- V0 milestone balance was 2.80 test KAS before the subsequent v1 pilot.
 
 ## Read first
+
+- docs/ICP-Protected-Recovery-Live-Proof.md and evidence/protected-live.json.
 
 - docs/PROTECTED-RECOVERY.md and evidence/protected-verification.md for v1.
 
@@ -46,7 +53,8 @@
 
 The source package excludes live private keys and operator databases. The
 private session archive includes .secrets/keys.json and runtime/, including
-runtime/watchtower-pilot/watch.sqlite and the completed journals. Restore only
+runtime/watchtower-pilot/watch.sqlite and runtime/protected-pilot/watch.sqlite,
+all fresh v1 role files and the completed journals. Restore only
 in a private test environment; never publish that archive or use these keys
 for real funds. The repository's .gitignore excludes all of those paths.
 
@@ -57,19 +65,18 @@ file. The signer still loads conventional keys on the same test host.
 Use scripts/with_proxy.py with ICP_UPSTREAM_URL for this environment's normal
 proxy. Exact previously resolved public TN10 endpoints are recorded in evidence.
 The native runner rechecks network identity and node health before broadcasts.
-Do not rerun either completed live pilot directory. Inspect and reconcile first.
+Do not rerun any completed live pilot directory. Inspect and reconcile first.
 The watcher is not left running as an unattended hosted service.
 
 ## Remaining work
 
-1. Review the v1 candidate and run a fresh funded TN10 lifecycle with independent
-   role files: exact intent approval, automatic quarantine recovery, explicit
-   node rejection before the cold delay, later cold release and a second-node
-   output check. Preserve a new journal; do not reuse v0 pilots.
-2. Provide production signer isolation/transport, protect public configuration,
-   and specify cold-stage rescue/key rotation before expanding custody claims.
-3. Harden deployment: service restart/health, external alerts, database retention,
+1. Deploy a recovery-only signer on an independent host/device with authenticated
+   transport, protect public configuration, and define operator access controls.
+2. Specify cold-stage rescue, key rotation and lost-key procedures before
+   expanding custody claims; the final cold P2PK exit is not ongoing protection.
+3. Harden service restart/health, external alerts, database retention,
    deep-reorg/pruning reconciliation and bounded backlog processing.
-4. Add fee estimation within the immutable cap and external adversarial review.
-5. Keep data tickets, STARKs, DAG Zippers and STATIC as separately specified
-   future components. No claim of mainnet or quantum-safe readiness.
+4. Add fee estimation within the immutable cap, broader node/network failure
+   testing, and independent adversarial review.
+5. Keep data tickets, STARKs, DAG Zippers and STATIC separately specified.
+   There is no mainnet-readiness or quantum-safety claim.

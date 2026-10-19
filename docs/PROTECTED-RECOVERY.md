@@ -1,9 +1,10 @@
-# Protected recovery candidate v1
+# Protected recovery v1 - testnet prototype
 
-This candidate is separate from the live-tested v0 contract. It uses the same
+This implementation is separate from the original v0 contract. It uses the same
 pinned compiler and node revision. Existing deposits cannot migrate themselves;
-v0 has no migration entrypoint. Do not infer funded-network acceptance from VM
-tests of v1.
+v0 has no migration entrypoint. A funded v1 lifecycle is recorded in
+[ICP-Protected-Recovery-Live-Proof.md](ICP-Protected-Recovery-Live-Proof.md);
+that measured run supplements the native checks.
 
 ## Custody rules
 
@@ -114,8 +115,8 @@ after inspection. Setup and public artifacts are trusted operator inputs.
 Keep them consistent across hosts and verify the full descriptor out of band.
 The loader rejects different immutable templates across the three state files.
 
-No v1 funding was used for this milestone. The following commands are the
-funded-test interface for a later acceptance run, not a record of completion:
+The following commands are the interface for a fresh session. The completed
+funded acceptance run has its own journal and proof; do not rerun that directory:
 
 ```bash
 ICP_SIGNER_KEY_FILE=.secrets/owner/key.json target/debug/icp-protected deposit 30000000
@@ -147,10 +148,31 @@ Cold preparation currently needs a TN10 RPC connection to retrieve the exact
 UTXO; air-gapped signing and an authenticated remote signer protocol remain
 future work. Preparing a sequence-locked transaction before maturity is
 possible, but the node must reject early broadcast. A native VM cannot prove
-actual UTXO age; the funded acceptance test still needs to demonstrate that
-rejection and later acceptance, confirmation and reorg handling on the network.
+actual UTXO age. The recorded pilot demonstrated explicit early rejection and
+later acceptance for both exits, plus a second-node output check. It did not
+induce a public-network reorganization or outage.
 
 The fixed cold P2PK payout remains an explicit exit, not indefinite protection.
 There is no key rotation, lost-key rescue or cold-stage emergency cancellation.
 All fixture keys in `artifacts/protected/` and the VM tests are public and must
 never receive funds. The v0 live receipts do not establish v1 acceptance.
+
+## Automated pilot
+
+`scripts/protected_pilot.py` orchestrates the two-deposit run using a fresh
+`runtime/protected-pilot/session`, separate `.secrets/protected-pilot/ROLE/key.json`
+files, and a confirmed 0.70-test-KAS funding output. Its funding receipt must be
+`runtime/protected-pilot/funding-receipt.json`. Public setup and private-key
+backup must happen before funding. It refuses an existing journal; after any
+unknown outcome, reconcile the recorded IDs and exact UTXOs before acting.
+
+The optional `fund_protected_pilot` Cargo example reads an explicit public plan:
+`policy` (path), `source_public_key`, `source_outpoint`, `source_amount`, `amount`
+and `receipt` (new path). Its one donor role file is selected explicitly with
+`ICP_SIGNER_KEY_FILE`; it never reads a combined legacy key bundle. It permits
+one pinned test-only P2PK source of at most 1 test KAS and funds only the owner
+in that new policy. It requires `ICP_RPC_URL` or the existing proxy wrapper.
+Build with `cargo build --locked --features live --example fund_protected_pilot`.
+The pilot runs via `python3 scripts/protected_pilot.py` (or the proxy wrapper).
+Its public evidence omits signature scripts and signed outbox payloads; raw
+receipts, SQLite state and role keys stay in the private session backup.

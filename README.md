@@ -9,13 +9,16 @@ A small Kaspa covenant vault derived from the ICP whitepaper. This is a separate
 project from Geek Protocol. Engineering choices are documented in
 [the specification](docs/VAULT-SPEC.md).
 
-**Status:** vault and watchtower live tests passed on testnet-10. The watchtower
-automatically recovered an unapproved intent while preserving an explicitly
-approved withdrawal. [Watchtower proof](docs/ICP-Watchtower-Live-Proof.md) and
-[earlier vault proof](docs/ICP-Testnet-Live-Proof.md) include transaction IDs.
-The recorded local run passed 54 checks. GitHub Actions reproduces the offline
-checks on pushes and pull requests. This is an experimental testnet prototype;
-it has not received an independent security audit.
+**Status:** the v0 vault/watchtower and protected-v1 recovery lifecycle passed
+funded testnet-10 runs. V1 kept recovery inside a quarantine covenant and
+released it with a separate cold key after a new delay. Both early payouts
+were sequence-rejected; the exact same signed transactions later passed.
+[Protected recovery proof](docs/ICP-Protected-Recovery-Live-Proof.md),
+[earlier watchtower proof](docs/ICP-Watchtower-Live-Proof.md) and
+[v0 vault proof](docs/ICP-Testnet-Live-Proof.md) include transaction IDs.
+All 85 offline checks pass. GitHub Actions reproduces them on pushes and pull
+requests. This remains an experimental testnet prototype without an independent
+security audit or production signer isolation.
 
 ## What works locally
 
@@ -126,22 +129,23 @@ specification before changing custody behavior. No live RPC, signing or private
 test data is required by CI. Open an issue or pull request with reproducible
 evidence; do not include keys or funded-session backups.
 
-Next: a funded protected-recovery lifecycle, production signer isolation,
+Next: production signer isolation, cold-stage rescue/rotation,
 service operation and external review. See [the project checkpoint](docs/ICP-Project-Handoff.md).
 Pre-publication Git history is preserved in [the import record](docs/IMPORT.md).
 
 The original implementation is MIT licensed. Third-party dependencies and
 source papers retain their own terms; see [NOTICE.md](NOTICE.md).
 
-## Protected recovery candidate
+## Protected recovery v1
 
-An additive [v1 candidate](docs/PROTECTED-RECOVERY.md) moves recovery into a
+The additive [v1 implementation](docs/PROTECTED-RECOVERY.md) moves recovery into a
 quarantined covenant. Release requires an independent cold key and a new,
 longer relative delay. Its `icp-protected` CLI uses one explicit role-specific
 signer file, with no combined-key fallback. Read-only operations need no keys.
 
 Build its public fixtures with `python3 scripts/compile_protected.py --fixtures`
 before running Cargo tests. The original v0 contract and CLI remain available;
-their live receipts do not cover v1. The candidate has native VM, signer and
-controller tests; a funded v1 testnet lifecycle and production signer isolation
-remain to be completed.
+their live receipts do not cover v1. Its own funded acceptance run is recorded
+in the protected recovery proof above. The automated harness is
+`scripts/protected_pilot.py`; it refuses an existing journal. Production signer
+isolation and cold-stage rescue/rotation remain work.
