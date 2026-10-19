@@ -115,5 +115,18 @@ class WatchtowerTests(unittest.TestCase):
     def test_configuration_drift_does_not_reuse_db(self):
         changed=copy.deepcopy(CONFIG);changed['recovery_spk']='ee'
         with self.assertRaises(WatchError):Store(self.path,changed)
+    def test_protected_recovery_records_quarantine_not_cold_payout(self):
+        self.store.db.close()
+        config={**CONFIG,'version':'protected-v1','cold_spk':'ee','cold_delay_daa':1800}
+        self.store=Store(Path(self.tmp.name)/'protected.sqlite',config);self.store.arm(H(10),[utxo()])
+        self.pending();a=Adapter();act(self.store,a,True,100)
+        self.store.apply(response(H(11),H(12),[transaction(PENDING,H(3),'cc',9800)]))
+        terminal=self.store.state()['terminal'][ROOT]
+        self.assertEqual(terminal['custody'],'QUARANTINED');self.assertEqual(terminal['outpoint'],H(3)+':0')
+        self.assertEqual(terminal['amount'],9800)
+        self.assertEqual(self.store.db.execute('SELECT status FROM actions').fetchone()[0],'CONFIRMED')
+        self.assertEqual(self.store.db.execute("SELECT COUNT(*) FROM audit WHERE kind='RECOVERY_QUARANTINED'").fetchone()[0],1)
+    def test_protected_version_cannot_reuse_legacy_database(self):
+        with self.assertRaises(WatchError):Store(self.path,{**CONFIG,'version':'protected-v1'})
 
 if __name__=='__main__':unittest.main()

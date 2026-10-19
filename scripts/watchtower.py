@@ -123,6 +123,9 @@ class Store:
             self.audit('INTENT',{'pending':pending,'authorized':authorized,'root':source['root'],'daa':daa})
         elif spk==self.config['recovery_spk']:
             state['terminal'][source['root']]={'kind':'RECOVERED','transaction_id':ident,'daa':daa}
+            if self.config.get('version')=='protected-v1':
+                state['terminal'][source['root']].update({'custody':'QUARANTINED','outpoint':ident+':0','amount':value})
+                self.audit('RECOVERY_QUARANTINED',{'root':source['root'],'outpoint':ident+':0','amount':value})
         elif source['stage']=='pending' and spk==self.config['recipient_spk']:
             state['terminal'][source['root']]={'kind':'EXECUTED' if source['authorized'] else 'UNAUTHORIZED_EXECUTION','transaction_id':ident,'daa':daa}
             if not source['authorized']:
@@ -240,13 +243,14 @@ def arm(adapter,db,config,deposits):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('command',choices=['arm','run','authorize','status'])
+    p.add_argument('--cli',type=Path,help='Explicit native CLI, e.g. target/debug/icp-protected')
     p.add_argument('--db',type=Path,default=ROOT/'runtime/watchtower.sqlite');p.add_argument('--config',type=Path,default=ROOT/'runtime/watchtower-config.json')
     p.add_argument('--deposit',action='append',default=[]);p.add_argument('--pending');p.add_argument('--expires-daa',type=int)
     p.add_argument('--execute',action='store_true');p.add_argument('--once',action='store_true');p.add_argument('--poll',type=float,default=1)
     a=p.parse_args();a.db.parent.mkdir(parents=True,exist_ok=True)
     with Path(str(a.db)+'.lock').open('a') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
-        native=Native()
+        native=Native([str(a.cli.resolve())] if a.cli else None)
         if a.command=='arm':
             store=arm(native,a.db,a.config,a.deposit)
         else:

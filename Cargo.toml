@@ -24,6 +24,11 @@ name = "icp"
 path = "src/main.rs"
 required-features = ["live"]
 
+[[bin]]
+name = "icp-protected"
+path = "src/protected_main.rs"
+required-features = ["live"]
+
 [profile.dev]
 debug = 0
 
