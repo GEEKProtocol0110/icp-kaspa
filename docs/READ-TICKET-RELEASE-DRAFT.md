@@ -45,6 +45,13 @@ cannot silently become R0 approvals. The current lab hands the AES key to its
 caller; R0 needs a new ownership boundary that retains the content key at the
 owner/service and does not pass it directly to the recipient before release.
 
+Each independently authorized record version needs its own fresh content key.
+Reusing a key across records or versions lets one grant unlock data outside its
+intended scope. Recipient-specific wrapping does not repair that reuse. R0
+grants access to the entire pinned ciphertext; field-level access needs separate
+encryption scopes. A new version must not remain decryptable with an old grant's
+key merely because its hash, nonce or associated data changed.
+
 The proposed objects below must be covered by strict, bounded schemas. The
 wire specification and cryptographic suite are implementation gates, not
 implicit choices in this document.
@@ -164,6 +171,9 @@ window is `floor((reserved_at - origin) / window_seconds)` for nonnegative
 offsets. Reserve one grant and the exact original ciphertext byte length,
 including its authentication tag. All new grants in that budget share the
 same count/byte limits, including grants for the same record or other recipients.
+Persist the last accepted service time. A backward clock step or uncertainty
+about clock/ledger continuity halts new reservations and dispatch until explicit
+reconciliation; changing clocks or window parameters must not reset counters.
 
 Reservation, limit checks, unique claims and the consume outbox are atomic.
 Do not automatically refund a charge after timeout, expiry or reorg. Failures
@@ -191,6 +201,7 @@ machine; per-service counters cannot be advertised as that limit.
 | Adversarial/failure case | Required result |
 | --- | --- |
 | Alter record version, ciphertext, delivery key, policy, service or network | Fail before consume submission or key-response dispatch |
+| Reuse one record/version's content key for another authorization scope | Refuse registration; an old grant must not decrypt the new scope |
 | Valid sender signature without separate approval; wrong recipient identity | No reservation or key response |
 | Replay a challenge or race two requests for one grant/outpoint | One durable reservation/consume plan; no second grant |
 | Same request after restart or lost response | Reconcile exact outbox; recover identical committed response only when still eligible |
