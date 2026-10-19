@@ -30,6 +30,9 @@ def health(path, max_age=15, max_stall=30, now=None, require_remote=True):
             issues.append('SIGNER_UNAVAILABLE')
         if meta.get('health_error'):
             issues.append('WATCH_ERROR')
+        progress = json.loads(meta.get('scan_progress', '{}'))
+        if progress and (progress.get('remaining_blocks', 0) or not progress.get('target_reached')):
+            issues.append('CHAIN_BACKLOG')
         if any(t.get('kind') == 'UNAUTHORIZED_EXECUTION' for t in state.get('terminal', {}).values()):
             issues.append('UNAUTHORIZED_EXECUTION')
         outputs = state.get('outputs', {})
@@ -56,7 +59,7 @@ def health(path, max_age=15, max_stall=30, now=None, require_remote=True):
             if beat.get('daa', 0) >= output['accepted_daa'] + json.loads(meta.get('health_limits', '{}')).get('delay_daa', 0):
                 issues.append('RECOVERY_DEADLINE_REACHED')
         return {'healthy': not issues, 'issues': sorted(set(issues)),
-                'heartbeat': beat, 'tip': meta.get('tip'),
+                'heartbeat': beat, 'tip': meta.get('tip'), 'scan_progress': progress,
                 'custody': {'quarantined_outputs': len(quarantined),
                             'cold_releases_observed': sum(t.get('custody') == 'COLD_RELEASED'
                                                          for t in state.get('terminal', {}).values())}}
