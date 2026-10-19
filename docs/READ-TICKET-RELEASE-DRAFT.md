@@ -145,6 +145,12 @@ after dispatch cannot erase a key already received or a message in flight.
 The existing `AnchorTracker` rolls back observation history. It must not be
 used as the authoritative irreversible release ledger.
 
+No atomic transaction spans Kaspa, the service ledger and network delivery.
+A reorg can occur after the final chain sample and before response dispatch.
+Freshness/successor checks reduce exposure under the chosen observation policy;
+they do not eliminate that race. Record possible disclosure when a later scan
+reveals it, preserve the original grant and never compensate by reissuing a key.
+
 ## Replay and budget semantics
 
 One fenced service authority owns one authoritative ledger. Across policy/key
@@ -192,6 +198,7 @@ machine; per-service counters cannot be advertised as that limit.
 | Grant or budget window expires between validation and commit | Atomic commit refuses; no automatic quota refund/replacement |
 | Crash at each persistence/submission/response boundary | No pre-commit response exposure; ambiguous chain outcome reconciled before further action |
 | Rollback before/after response commit | Revoke current eligibility; preserve permanent claims/charges and possible-disclosure flag |
+| Reorg after the final sample but before dispatch | Recognized observation race; later detection marks possible disclosure without refund/reissue |
 | Rotate policy/delivery key or restore an older DB | No relabeling of old grants or counter reset; uncertain recovery stops |
 | Recipient forges its own receipt without decrypting | Receipt remains a claim; no additional authorization is created |
 | Caller already has the content key or service runtime is compromised | Documented boundary violation; do not claim policy can prevent decryption |
