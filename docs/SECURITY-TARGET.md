@@ -91,6 +91,13 @@ Its independent authority remains a trusted local fake: joint restore can lose
 history, direct worker use bypasses the controller, and no actual approval,
 consensus observation or production signer enforcement is supplied.
 
+The separate [ticket observer](NATIVE-TICKET-OBSERVER.md) recomputes native IDs
+and checks exact accepted transaction semantics, positive ticket UTXOs and
+reversible chain depth. Freshness and two-host agreement are trusted-node
+observations, not consensus proofs, permission or signer enforcement. Tests
+use synthetic scans; no RPC was called for this milestone and the controller
+still uses its separate fake acceptance model.
+
 The [release-service design](RELEASE-SERVICE-DESIGN.md) proposes a private key
 vault, authoritative grant/response ledger and delivery gate, with independent
 writer fencing and recovery checkpoints. It makes encrypted candidate responses

@@ -15,7 +15,7 @@ jobs:
       - run: python3 scripts/compile_protected.py --fixtures
       - run: cargo fmt --check
       - run: cargo test --locked --features live
-      - run: cargo build --locked --features live --example native_ticket_worker
+      - run: cargo build --locked --features live --example native_ticket_worker --example ticket_read
       - run: 'python3 -m pip install --only-binary=:all: -r requirements-lab.txt'
       - run: python3 -m unittest discover -s tests -p 'test_*.py' -v
       - run: python3 scripts/transfer_lab.py
@@ -27,6 +27,7 @@ jobs:
       - run: python3 scripts/bound_response_lab.py
       - run: cargo run --locked --features live --example native_ticket_lab
       - run: python3 scripts/native_ticket_controller.py
+      - run: python3 scripts/native_ticket_observer.py
       - run: sh -n deploy/icp-recovery-command
       - run: systemd-analyze verify deploy/*.service deploy/*.timer
       - run: cargo build --locked --features live --bins --example prepare_transfer_anchor

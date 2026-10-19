@@ -1,6 +1,6 @@
 # ICP continuation checkpoint
 
-**October 19, 2026: persistent native fixture branch/outbox recovery implemented.**
+**October 19, 2026: separate read-only native ticket observer implemented.**
 
 For a nontechnical introduction, open [ICP in plain English](PLAIN-ENGLISH.md).
 The [documentation directory](README.md) separates explanations, dated testnet
@@ -9,7 +9,25 @@ engineering and operational detail needed to continue development.
 
 ## Current state
 
-The latest milestone is [NATIVE-TICKET-CONTROLLER.md](NATIVE-TICKET-CONTROLLER.md):
+The latest milestone is [NATIVE-TICKET-OBSERVER.md](NATIVE-TICKET-OBSERVER.md).
+scripts/native_ticket_observer.py maintains separate reversible per-node history;
+examples/ticket_read.rs only projects native transactions or reads scans/UTXOs.
+Build both ticket_read and native_ticket_worker before the Python suite; CI and
+the quickstart include them. New native projection tests reject copied IDs over
+changed bodies. Scan tests cover depth, exact live-UTXO shape, reorgs, restart,
+clock continuity, partial pages, unknown spends and two-node disagreement.
+
+Full local verification is 562 tests (108 Rust + 454 Python). The demo and
+38 new Python tests use synthetic chain records; this milestone makes no RPC
+calls or broadcasts. The demo creates no signatures; tests may prepare public
+known-key native fixtures. Observation is not a
+permission, consensus proof or new release decision. The controller remains
+separate with FakeNode acceptance. Next: explicitly integrate observer facts
+with that fixture controller, preserving irreversible branch/charge/outbox
+history across reversible scans. Read
+[the verification record](../evidence/native-ticket-observer-verification.md).
+
+The preceding milestone is [NATIVE-TICKET-CONTROLLER.md](NATIVE-TICKET-CONTROLLER.md):
 scripts/native_ticket_controller.py uses the existing journal/authority model
 to persist branch choice before signing and recover exact private native
 outboxes. examples/native_ticket_worker.rs validates/prepares/verifies bounded

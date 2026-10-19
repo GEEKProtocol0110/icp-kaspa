@@ -59,6 +59,7 @@ signed transaction outboxes and private backups out of the repository.
 | [Read-ticket and key-release draft](READ-TICKET-RELEASE-DRAFT.md) | Proposed release protocol and unresolved implementation gates |
 | [Native ticket design](NATIVE-TICKET-DESIGN.md) | Proposed TN10 issue/consume/refund policy, permanent branch choice and recovery rules; native layouts tested separately in the lab |
 | [Native ticket lab](NATIVE-TICKET-LAB.md) | Working offline native layout/signature experiment and mutation tests; fabricated inputs, no RPC or real authorization |
+| [Native ticket observer](NATIVE-TICKET-OBSERVER.md) | Read-only native projections, exact UTXOs and reversible trusted-node history; synthetic evidence, no controller integration |
 | [Native ticket controller](NATIVE-TICKET-CONTROLLER.md) | Persistent fixture branch/outbox recovery with native verification, crash tests and synthetic views; no RPC or real authorization |
 | [Release-service design](RELEASE-SERVICE-DESIGN.md) | Proposed key ownership, exact-response delivery, revocation, fencing and backup recovery; no implemented service |
 

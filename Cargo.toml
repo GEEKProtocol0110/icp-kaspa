@@ -41,6 +41,14 @@ path = "examples/prepare_transfer_anchor.rs"
 required-features = ["live"]
 test = true
 
+## The ticket adapter has only read/projection commands; no signing entrypoint.
+
+[[example]]
+name = "ticket_read"
+path = "examples/ticket_read.rs"
+required-features = ["live"]
+test = true
+
 [profile.dev]
 debug = 0
 
