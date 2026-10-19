@@ -1,0 +1,192 @@
+{
+  "examples": [
+    {
+      "action": "issue",
+      "commitment": "a148cad59256a1b587cdc16e00477ae7ad72782caaba60d653acea57ed83077e",
+      "compute_budget": 100,
+      "fee": 2000000,
+      "input": {
+        "index": 0,
+        "transaction_id": "1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      "mode": "OFFLINE_NATIVE_FIXTURES_NO_CHAIN_NO_AUTHORIZATION",
+      "native_hash": "053ce738b9e590798684d7db30938df2786cf07663b2602431c25de80071c601",
+      "outputs": [
+        {
+          "amount": 12000000,
+          "script": "20c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5ac"
+        },
+        {
+          "amount": 10000000,
+          "script": "2079be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798ac"
+        }
+      ],
+      "payload": "4943502d52542d49535355452d544e31302d4c41423000a148cad59256a1b587cdc16e00477ae7ad72782caaba60d653acea57ed83077e",
+      "plan": {
+        "action": "issue",
+        "admission": null,
+        "closure": null,
+        "context": {
+          "budget": "model:budget",
+          "ciphertext": "2323232323232323232323232323232323232323232323232323232323232323",
+          "ciphertext_bytes": 128,
+          "delivery_binding": "2424242424242424242424242424242424242424242424242424242424242424",
+          "delivery_epoch": 0,
+          "dual_approval": "2525252525252525252525252525252525252525252525252525252525252525",
+          "expires": 200,
+          "grant": "model:grant",
+          "intent_nonce": "2020202020202020202020202020202020202020202020202020202020202020",
+          "not_before": 100,
+          "policy": "2121212121212121212121212121212121212121212121212121212121212121",
+          "policy_epoch": 0,
+          "record": "2222222222222222222222222222222222222222222222222222222222222222",
+          "service": "model:service"
+        },
+        "funding_amount": 24000000,
+        "funding_index": 0,
+        "funding_key": "79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+        "funding_transaction_id": "1111111111111111111111111111111111111111111111111111111111111111",
+        "issuance": null,
+        "mode": "OFFLINE_NATIVE_FIXTURES_NO_CHAIN_NO_AUTHORIZATION",
+        "namespace": "icp-native-ticket-lab-v0",
+        "network": "testnet-10",
+        "profile": "n0-layout-lab-v0",
+        "return_key": "f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9",
+        "ticket_key": "c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5"
+      },
+      "storage_mass": 141667,
+      "transaction_id": "e974a1344d5e9bfacf0dbe9bbf2b2277741a4a177739e2defe7d88d87c396356",
+      "vm_verified": true
+    },
+    {
+      "action": "consume",
+      "commitment": "b3ce3f9ef17faf642ca636837fe5ddf9718987d8b0bb0daea0c76254952de42e",
+      "compute_budget": 100,
+      "fee": 2000000,
+      "input": {
+        "index": 0,
+        "transaction_id": "e974a1344d5e9bfacf0dbe9bbf2b2277741a4a177739e2defe7d88d87c396356"
+      },
+      "mode": "OFFLINE_NATIVE_FIXTURES_NO_CHAIN_NO_AUTHORIZATION",
+      "native_hash": "77e844f15464ba2c1c379cda0182cfdf4d81b9bdc057f01f4ce57998574bd2a8",
+      "outputs": [
+        {
+          "amount": 10000000,
+          "script": "20f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9ac"
+        }
+      ],
+      "payload": "4943502d52542d434f4e53554d452d544e31302d4c41423000b3ce3f9ef17faf642ca636837fe5ddf9718987d8b0bb0daea0c76254952de42e",
+      "plan": {
+        "action": "consume",
+        "admission": {
+          "original_deadline": 170,
+          "request_digest": "2626262626262626262626262626262626262626262626262626262626262626",
+          "window_end": 180,
+          "window_start": 100
+        },
+        "closure": null,
+        "context": {
+          "budget": "model:budget",
+          "ciphertext": "2323232323232323232323232323232323232323232323232323232323232323",
+          "ciphertext_bytes": 128,
+          "delivery_binding": "2424242424242424242424242424242424242424242424242424242424242424",
+          "delivery_epoch": 0,
+          "dual_approval": "2525252525252525252525252525252525252525252525252525252525252525",
+          "expires": 200,
+          "grant": "model:grant",
+          "intent_nonce": "2020202020202020202020202020202020202020202020202020202020202020",
+          "not_before": 100,
+          "policy": "2121212121212121212121212121212121212121212121212121212121212121",
+          "policy_epoch": 0,
+          "record": "2222222222222222222222222222222222222222222222222222222222222222",
+          "service": "model:service"
+        },
+        "funding_amount": 24000000,
+        "funding_index": 0,
+        "funding_key": "79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+        "funding_transaction_id": "1111111111111111111111111111111111111111111111111111111111111111",
+        "issuance": {
+          "amount": 12000000,
+          "output_index": 0,
+          "script": "20c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5ac",
+          "transaction_id": "e974a1344d5e9bfacf0dbe9bbf2b2277741a4a177739e2defe7d88d87c396356"
+        },
+        "mode": "OFFLINE_NATIVE_FIXTURES_NO_CHAIN_NO_AUTHORIZATION",
+        "namespace": "icp-native-ticket-lab-v0",
+        "network": "testnet-10",
+        "profile": "n0-layout-lab-v0",
+        "return_key": "f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9",
+        "ticket_key": "c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5"
+      },
+      "storage_mass": 16667,
+      "transaction_id": "3672944cee2c2c117debc0b8f7a03fbaa3e3c7ab49fa02450591ee14258b954c",
+      "vm_verified": true
+    },
+    {
+      "action": "refund",
+      "commitment": "79e4485ad1a0c71bc0938dfff56d000ed3d8aa16bc724a0ada0522806b5418cf",
+      "compute_budget": 100,
+      "fee": 2000000,
+      "input": {
+        "index": 0,
+        "transaction_id": "e974a1344d5e9bfacf0dbe9bbf2b2277741a4a177739e2defe7d88d87c396356"
+      },
+      "mode": "OFFLINE_NATIVE_FIXTURES_NO_CHAIN_NO_AUTHORIZATION",
+      "native_hash": "179b55ba1a69fd892ac95baeccbfda1db6e7043b776e073f289dab43d9393bf3",
+      "outputs": [
+        {
+          "amount": 10000000,
+          "script": "20f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9ac"
+        }
+      ],
+      "payload": "4943502d52542d524546554e442d544e31302d4c4142300079e4485ad1a0c71bc0938dfff56d000ed3d8aa16bc724a0ada0522806b5418cf",
+      "plan": {
+        "action": "refund",
+        "admission": null,
+        "closure": {
+          "cleanup_approval": "2828282828282828282828282828282828282828282828282828282828282828",
+          "closure_digest": "2727272727272727272727272727272727272727272727272727272727272727",
+          "reason": "expired",
+          "sequence": 1
+        },
+        "context": {
+          "budget": "model:budget",
+          "ciphertext": "2323232323232323232323232323232323232323232323232323232323232323",
+          "ciphertext_bytes": 128,
+          "delivery_binding": "2424242424242424242424242424242424242424242424242424242424242424",
+          "delivery_epoch": 0,
+          "dual_approval": "2525252525252525252525252525252525252525252525252525252525252525",
+          "expires": 200,
+          "grant": "model:grant",
+          "intent_nonce": "2020202020202020202020202020202020202020202020202020202020202020",
+          "not_before": 100,
+          "policy": "2121212121212121212121212121212121212121212121212121212121212121",
+          "policy_epoch": 0,
+          "record": "2222222222222222222222222222222222222222222222222222222222222222",
+          "service": "model:service"
+        },
+        "funding_amount": 24000000,
+        "funding_index": 0,
+        "funding_key": "79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+        "funding_transaction_id": "1111111111111111111111111111111111111111111111111111111111111111",
+        "issuance": {
+          "amount": 12000000,
+          "output_index": 0,
+          "script": "20c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5ac",
+          "transaction_id": "e974a1344d5e9bfacf0dbe9bbf2b2277741a4a177739e2defe7d88d87c396356"
+        },
+        "mode": "OFFLINE_NATIVE_FIXTURES_NO_CHAIN_NO_AUTHORIZATION",
+        "namespace": "icp-native-ticket-lab-v0",
+        "network": "testnet-10",
+        "profile": "n0-layout-lab-v0",
+        "return_key": "f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9",
+        "ticket_key": "c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5"
+      },
+      "storage_mass": 16667,
+      "transaction_id": "577c00e0b1022336961cf8e1f28c53dc13eb244c4d3572c8482f50c730b11c43",
+      "vm_verified": true
+    }
+  ],
+  "mode": "OFFLINE_NATIVE_FIXTURES_NO_CHAIN_NO_AUTHORIZATION",
+  "note": "Consume and refund are alternative fabricated branches, not two allowed live spends."
+}

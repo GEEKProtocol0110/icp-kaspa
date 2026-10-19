@@ -12,8 +12,27 @@ engineering checkpoint first, followed by earlier milestones.
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
-| Automated coverage | 447 tests: 68 Rust + 379 Python |
-| Next engineering work | Implement and mutation-test native ticket preparation offline; review wire formats, protected key ownership and independent enforcement |
+| Automated coverage | 475 tests: 96 Rust + 379 Python |
+| Next engineering work | Add durable native fixture branch/outbox recovery; review authorization, protected key ownership and independent enforcement |
+
+## Offline native ticket checkpoint
+
+- [Native ticket lab](docs/NATIVE-TICKET-LAB.md) builds and signs issue,
+  consume and refund fixtures with native Kaspa transaction/hash/script APIs.
+  Terminal inputs link to the actual calculated issue ID and output index.
+- Closed canonical lab plans pin a fabricated source, known distinct keys,
+  exact amounts/outputs, purpose-bound commitments, mass and compute budget.
+  Full native saved-hash checks complement layout/VM and transaction-ID checks.
+- 28 new native tests cover mutations, field encoding and scope boundaries.
+  The complete local suite passes: 475 tests (96 Rust + 379 Python). Public
+  fixture vectors reproduce; standard-library Python independently verifies
+  their commitment digests. The runnable example is also checked by CI.
+- Tests deliberately show arbitrary controller-authorized P2PK spends and both
+  conflicting terminal fixtures. No durable branch controller, actual permission
+  or refund-history check, RPC, broadcast, real-key/model integration or live
+  acceptance is implemented. It uses a separate lab domain rather than N0 wire.
+- Read [the verification record](evidence/native-ticket-lab-verification.md).
+  Next: fixture-only durable branch selection/outbox recovery and crash tests.
 
 ## Native ticket design checkpoint
 

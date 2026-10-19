@@ -99,7 +99,9 @@ The [native ticket proposal](NATIVE-TICKET-DESIGN.md) describes creating and
 spending a small testnet ticket for a request. An expired or revoked ticket
 could return its test coins only if it had never been reserved for release.
 That refund would restore neither permission nor a release limit. This part
-is a design; its transaction code and live tests still need to be built.
+now has an [offline transaction lab](NATIVE-TICKET-LAB.md): working code builds
+the transactions with made-up inputs and checks their signatures and layout.
+It does not yet enforce the refund history rule or submit anything to Kaspa.
 
 The older model allows copied databases to accept separate claims. The new
 simulation adds a trusted witness, but restoring that witness with every
@@ -121,7 +123,7 @@ original document is factually true.
 | Simulation or model | Invented chain observations or placeholders exercise the rules; they are not live-chain evidence |
 | Proposal or research | A direction being specified; a working, secure deployment has not been established |
 
-There are **447 automated tests** today. Passing tests helps catch mistakes; it
+There are **475 automated tests** today. Passing tests helps catch mistakes; it
 does not replace an independent security review or prove production readiness.
 The project is still an experimental Testnet-10 prototype.
 
