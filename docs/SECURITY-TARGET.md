@@ -37,6 +37,10 @@ feasibility on one chain.
 The additive [transfer lab](TRANSFER-LAB.md) explores local before-send and
 after-receive checks with conventional Ed25519 keys, AES-GCM and a trusted
 policy/clock/replay database. It has no chain anchor or protected key delivery.
+The companion [anchor observer](TRANSFER-ANCHOR.md) checks a pinned transaction
+commitment against trusted-node accepted-chain scans with successor counting
+and rollback. It has only synthetic evidence so far, supplies no consensus proof
+and does not govern receiver acceptance or key release.
 An acknowledgment is an authenticated recipient claim, not proof of execution
 or factual truth. Local replay rejection does not provide global read limits.
 

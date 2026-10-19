@@ -1,0 +1,58 @@
+{
+  "mode": "SYNTHETIC_CHAIN_NO_RPC_NO_FUNDS",
+  "source": "evidence/transfer-lab-demo.json",
+  "snapshots": [
+    {
+      "mode": "TRUSTED_NODE_OBSERVATION_ONLY",
+      "state": "SCAN_REQUIRED",
+      "network": "testnet-10",
+      "sampled_target": null,
+      "transaction_id": "0000000000000000000000000000000000000000000000000000000000000384",
+      "payload": "4943502d584645522d544e31302d56300086694d3c071f3717383137e967c0cfb0ea867bc78e53e026e2f1824758df5601",
+      "accepting_block": null,
+      "tip": "0000000000000000000000000000000000000000000000000000000000000000",
+      "selected_chain_successors": 0,
+      "required_successors": 2,
+      "observed_at": null
+    },
+    {
+      "mode": "TRUSTED_NODE_OBSERVATION_ONLY",
+      "state": "WAITING_SUCCESSORS",
+      "network": "testnet-10",
+      "sampled_target": "0000000000000000000000000000000000000000000000000000000000000001",
+      "transaction_id": "0000000000000000000000000000000000000000000000000000000000000384",
+      "payload": "4943502d584645522d544e31302d56300086694d3c071f3717383137e967c0cfb0ea867bc78e53e026e2f1824758df5601",
+      "accepting_block": "0000000000000000000000000000000000000000000000000000000000000001",
+      "tip": "0000000000000000000000000000000000000000000000000000000000000001",
+      "selected_chain_successors": 0,
+      "required_successors": 2,
+      "observed_at": 1792382699
+    },
+    {
+      "mode": "TRUSTED_NODE_OBSERVATION_ONLY",
+      "state": "OBSERVED_COMMITMENT",
+      "network": "testnet-10",
+      "sampled_target": "0000000000000000000000000000000000000000000000000000000000000003",
+      "transaction_id": "0000000000000000000000000000000000000000000000000000000000000384",
+      "payload": "4943502d584645522d544e31302d56300086694d3c071f3717383137e967c0cfb0ea867bc78e53e026e2f1824758df5601",
+      "accepting_block": "0000000000000000000000000000000000000000000000000000000000000001",
+      "tip": "0000000000000000000000000000000000000000000000000000000000000003",
+      "selected_chain_successors": 2,
+      "required_successors": 2,
+      "observed_at": 1792382699
+    },
+    {
+      "mode": "TRUSTED_NODE_OBSERVATION_ONLY",
+      "state": "NOT_FOUND",
+      "network": "testnet-10",
+      "sampled_target": "0000000000000000000000000000000000000000000000000000000000000004",
+      "transaction_id": "0000000000000000000000000000000000000000000000000000000000000384",
+      "payload": "4943502d584645522d544e31302d56300086694d3c071f3717383137e967c0cfb0ea867bc78e53e026e2f1824758df5601",
+      "accepting_block": null,
+      "tip": "0000000000000000000000000000000000000000000000000000000000000004",
+      "selected_chain_successors": 0,
+      "required_successors": 2,
+      "observed_at": 1792382699
+    }
+  ]
+}
