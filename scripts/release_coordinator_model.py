@@ -435,13 +435,19 @@ class Coordinator:
                 raise ModelError('Acknowledged preparation authorization required')
             candidates = loaded['vault'][0]['candidates']
             if grant not in candidates:
-                response = dict(mode=MODE, operation=[self.policy.service, self.policy.budget, grant],
-                                context=row['context_hash'], placeholder=secrets.token_hex(16))
-                candidates[grant] = dict(context_hash=row['context_hash'], authorization=row['authorization'],
-                                         ledger_checkpoint=loaded['ledger'][1][1],
-                                         response=response, response_hash=digest(response))
+                candidates[grant] = self._make_candidate(lease, loaded, row)
                 self._save(lease, loaded, 'vault', 'private-candidate')
         self.hook('prepare:acknowledged')
+
+    def _make_candidate(self, lease, loaded, row):
+        response = dict(mode=MODE, operation=[self.policy.service, self.policy.budget, row['context']['grant']],
+                        context=row['context_hash'], placeholder=secrets.token_hex(16))
+        return dict(context_hash=row['context_hash'], authorization=row['authorization'],
+                    ledger_checkpoint=loaded['ledger'][1][1], response=response, response_hash=digest(response))
+
+    def _commit_candidate(self, row, candidate):
+        row.update(response=candidate['response'], response_hash=candidate['response_hash'],
+                   used=True, possible_disclosure=True)
 
     def commit(self, grant):
         with self._step() as (lease, loaded):
@@ -451,8 +457,7 @@ class Coordinator:
             if candidate is None:
                 raise ModelError('Private acknowledged candidate required')
             if row['response'] is None:
-                row.update(response=candidate['response'], response_hash=candidate['response_hash'],
-                           used=True, possible_disclosure=True)
+                self._commit_candidate(row, candidate)
                 self._save(lease, loaded, 'ledger', 'response-committed')
         self.hook('commit:acknowledged')
 

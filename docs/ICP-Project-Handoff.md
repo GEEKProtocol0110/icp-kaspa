@@ -1,6 +1,6 @@
 # ICP continuation checkpoint
 
-**October 19, 2026: signed coordinator permissions and recipient requests implemented as a local lab.**
+**October 19, 2026: delivery-key possession and durable response attestations implemented as a local lab.**
 
 For a nontechnical introduction, open [ICP in plain English](PLAIN-ENGLISH.md).
 The [documentation directory](README.md) separates explanations, dated testnet
@@ -9,14 +9,36 @@ engineering and operational detail needed to continue development.
 
 ## Current state
 
-The latest module is scripts/signed_coordinator_lab.py. Read
+The latest module is scripts/bound_response_lab.py. Read
+[BOUND-RESPONSE-LAB.md](BOUND-RESPONSE-LAB.md) and
+[its verification record](../evidence/bound-response-verification.md).
+The signed policy's binding label now commits to a pinned X25519 delivery key,
+identity, service/budget, epoch and suite. HPKE encrypts a fresh registration token;
+recipient/approver signatures and private expected-hash comparison precede a
+service certificate saved with the used nonce in one ledger event.
+
+A response record shares the candidate's private vault event, copies exactly
+to the response commit and returns in a canonical bundle only through fresh
+signed retrieval. Public client verification binds the intended permission and
+original admission. Forty-five new tests bring the suite to 447 (68 Rust + 379
+Python), including actual process exit after vault save before acknowledgment.
+
+Only the enrollment token is encrypted: response bundles remain non-secret,
+unencrypted fixtures, with a relay counterexample. There is no content key,
+real record validation, RPC, native ticket/refund, transport or protected host
+boundary. Independent authority history/clock/admin trust and final-sample races
+remain. Earlier lab encodings are not R0 adoption. Next review these formats and
+specify native ticket/consume/refund bindings before real-key integration;
+protected storage/delivery and independent enforcement remain separate gates.
+
+The earlier signed module is scripts/signed_coordinator_lab.py. Read
 [SIGNED-COORDINATOR-LAB.md](SIGNED-COORDINATOR-LAB.md) and
 [its verification record](../evidence/signed-coordinator-verification.md).
 Separate approver/sender, recipient, service-challenge and revoker Ed25519
 roles bind complete permissions and fresh purpose-bound requests. Shared base
 transaction helpers commit signed evidence and used nonces atomically with
 reservation/delivery; the response context binds permission and admission digests.
-Forty-eight new tests bring the suite to 402 (68 Rust + 334 Python), including
+At that checkpoint, forty-eight new tests brought the suite to 402 (68 Rust + 334 Python), including
 an actual subprocess crash in the signed reservation commit/acknowledgment gap.
 
 This has a distinct experimental lab encoding, not an adopted R0 wire format.
@@ -24,9 +46,9 @@ Delivery-key binding, record/chain facts and administration remain fixtures;
 responses stay non-secret. The earlier HPKE lab is not connected. A copied
 signed retrieval can be relayed once, and joint authority/store rollback loses
 signed revocations. Keep the independent authority outside component restores.
-Next review signed boundaries and specify/test verifiable delivery-key binding
-plus response attestation with synthetic responses. Real key custody/delivery,
-protected enforcement, transport and native ticket/refund remain separate gates.
+The bound response layer above now adds separate cryptographic enrollment and
+response records. Real key custody/delivery, protected enforcement, transport
+and native ticket/refund remain separate gates.
 
 The earlier recovery module is scripts/release_coordinator_model.py. Read
 [RELEASE-COORDINATOR-MODEL.md](RELEASE-COORDINATOR-MODEL.md) and

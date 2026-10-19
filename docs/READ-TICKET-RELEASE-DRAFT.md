@@ -262,7 +262,9 @@ with no real keys or native effects. The separate [signed coordinator lab](SIGNE
 now integrates conventional two-role permissions, recipient challenges and signed
 revocations into those synthetic recovery decisions. Its encoding is a separate
 experiment, not R0 wire adoption; delivery binding and record/chain facts remain
-fixtures. Next review those boundaries and specify/test verified delivery-key
-binding plus response attestations while responses remain synthetic. Connect
-real keys, chain adapters and remote delivery only after their separate gates
-pass; a dated anchor observation is not a current access grant.
+fixtures. The separate [bound response lab](BOUND-RESPONSE-LAB.md) now adds
+HPKE enrollment and durable response signatures while delivery remains a
+non-secret placeholder. Next review those formats and specify native
+ticket/consume/refund bindings. Connect real keys, chain adapters and remote
+delivery only after their separate gates pass; a dated anchor observation is
+not a current access grant.

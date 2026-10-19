@@ -11,9 +11,38 @@ engineering checkpoint first, followed by earlier milestones.
 | At a glance | Current position |
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
-| Data access | Local recipient encryption, signed request checks and synthetic recovery; no remote release service |
-| Automated coverage | 402 tests: 68 Rust + 334 Python |
-| Next engineering work | Review signed recovery; specify delivery-key binding/response attestations, production enforcement and native ticket/refund implementations |
+| Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
+| Automated coverage | 447 tests: 68 Rust + 379 Python |
+| Next engineering work | Review binding/response formats; specify native ticket/consume/refund bindings, protected key ownership and independent enforcement |
+
+## Delivery-key binding and signed response checkpoint
+
+- scripts/bound_response_lab.py extends the signed recovery flow with a distinct
+  lab protocol for X25519 enrollment and response attestations. Policy commits
+  the exact delivery public key/epoch, recipient identity, service/budget and
+  suite. A fresh HPKE-encrypted random token requires the delivery private key;
+  separate recipient and approver signatures precede service certification.
+- Enrollment nonces/certificates share one checkpointed ledger event. Response
+  records share their private candidate's vault event and copy exactly into
+  the ledger response commit. Retries/restarts return identical complete bundles,
+  retain one charge, and halt on mismatched/lost records without re-signing.
+- A public client verifier checks the intended permission/admission, registration,
+  exact dummy response and service signature. Status/binding reads expose no
+  pending response or signature. All public demo objects are explicitly synthetic.
+- 45 new tests bring the suite to 447 (68 Rust + 379 Python), including an actual
+  child-process exit after vault commit and before checkpoint acknowledgment.
+  Python passes locally; required native/build/template checks run in CI.
+- HPKE encrypts only the enrollment token. Returned bundles are unencrypted
+  placeholders, with a test showing relay of a captured signed request. There
+  are no content keys, real record validation, native tickets, RPC, remote
+  endpoint, protected hardware or adopted R0 wire/suite.
+- Independent authority history, local administration and clocks remain trusted.
+  Existing rollback and final-check-to-arrival limits remain; an old signature
+  staying verifiable after revocation is not permission for another delivery.
+- Read docs/BOUND-RESPONSE-LAB.md and evidence/bound-response-verification.md.
+  Next: review these formats and specify native ticket/consume/refund bindings
+  before connecting real content keys. Protected storage/delivery, independent
+  enforcement and authenticated transport remain separate acceptance gates.
 
 ## Signed coordinator permission/request checkpoint
 

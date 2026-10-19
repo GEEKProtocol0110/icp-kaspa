@@ -91,6 +91,17 @@ remain fixtures. A copied signed request can be relayed once; restoring all
 stores with the witness loses accepted revocation history. No encrypted key
 response, remote transport, hardware isolation or R0 wire adoption is supplied.
 
+The [bound response lab](BOUND-RESPONSE-LAB.md) now checks possession of a
+pinned X25519 delivery key through a fresh HPKE-encrypted token, recipient
+identity signature and approver authorization. A service certificate and exact
+response record are saved under the recovery model's checkpoints. Client
+verification binds intended permission/admission and exact dummy response.
+This proves neither real-world identity nor exclusive/continued key ownership;
+the service/expected-hash store remain trusted. HPKE encrypts enrollment only:
+returned bundles are unencrypted placeholders and can be relayed with a copied
+signed request. No content keys, native ticket, remote transport, independent
+isolation or R0 wire adoption is supplied.
+
 ## Implemented protected-v1 claim
 
 While value remains under the covenant, a compromised owner key cannot change

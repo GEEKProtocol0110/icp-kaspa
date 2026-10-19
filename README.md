@@ -64,11 +64,12 @@ these vault rules no longer protect their later transfers.
 | Automated recovery monitoring | An earlier testnet run recovered an unapproved withdrawal | [Watchtower run](docs/ICP-Watchtower-Live-Proof.md) |
 | Recording a data commitment on Kaspa | One testnet transaction observed through two node endpoints | [Transfer anchor run](docs/ICP-Transfer-Anchor-Live-Proof.md) |
 | A message encrypted for one recipient | Local HPKE encryption, delivery-key possession checks, sender approval and signed receipts; no network delivery | [Recipient-encryption lab](docs/RECIPIENT-ENCRYPTION-LAB.md) |
+| Delivery-key checks and signed response records | Encrypted enrollment challenge plus exact saved signatures over dummy responses; no real key delivery | [Bound response lab](docs/BOUND-RESPONSE-LAB.md) |
 | Signed release requests | Exact two-role permissions, recipient challenges and signed revocations over dummy deliveries | [Signed coordinator lab](docs/SIGNED-COORDINATOR-LAB.md) |
 | Coordinated release recovery | Synthetic vault/ledger/delivery failures, stale-writer fencing and backup continuity; no real keys | [Coordinator model](docs/RELEASE-COORDINATOR-MODEL.md) |
 | Encrypted messages and release accounting | Local experiments; the release model uses simulated chain data and a non-secret placeholder | [Transfer lab](docs/TRANSFER-LAB.md) · [Release model](docs/RELEASE-LEDGER-MODEL.md) |
 
-The automated suite contains **402 tests: 68 Rust + 334 Python**.
+The automated suite contains **447 tests: 68 Rust + 379 Python**.
 [GitHub Actions](.github/workflows/verify.yml) checks the build, tests and demos.
 Individual testnet runs are dated evidence, not performance or security
 guarantees; later software changes also have their own offline checks.
@@ -99,8 +100,10 @@ vault, ledger and delivery failures together. A separate fake authority fences
 old writers and detects component backups restored behind its checkpoints.
 The [signed coordinator lab](docs/SIGNED-COORDINATOR-LAB.md) now adds two-role
 permissions, recipient-signed challenges and signed revocations to that recovery
-flow. Responses stay non-secret; record/chain facts and delivery-key binding
-remain fixtures. Real-key delivery and production enforcement need separate review.
+flow. The new [bound response lab](docs/BOUND-RESPONSE-LAB.md) also checks
+recipient encryption-key possession and saves a signature with each exact dummy
+response. Responses remain non-secret; record/chain facts remain fixtures.
+Real-key delivery and production enforcement need separate review.
 
 ## Explore or build
 
@@ -129,7 +132,7 @@ move funds. For live testnet instructions, use the developer setup guide.
 
 | Priority | Next work |
 | --- | --- |
-| Private data access | Review the [signed coordinator lab](docs/SIGNED-COORDINATOR-LAB.md); specify verified delivery-key binding and response attestations before real delivery |
+| Private data access | Review the [bound response lab](docs/BOUND-RESPONSE-LAB.md); specify native ticket/consume/refund bindings and protected key ownership before real delivery |
 | Reliable operation | Select and validate independent fencing/storage and recovery enforcement; validate separate signer hosts and alerts |
 | Stronger custody | Specify key replacement and recovery from the cold stage, then test and independently review the design |
 | Longer-term research | Proof systems and broader data-access enforcement, with separate specifications and evidence |

@@ -431,6 +431,14 @@ class SignedCoordinatorTests(unittest.TestCase):
         self.assertFalse(self.model.status(self.context.grant)['revoked'])
         self.model.dispatch(self.request('retrieve'))
 
+    def test_stored_context_numeric_type_change_is_an_integrity_failure(self):
+        self.reserved();self.model.observe(self.context.grant)
+        with self.model._step() as (lease,loaded):
+            loaded['ledger'][0]['grants'][self.context.grant]['context']['policy_epoch']=False
+            self.model._save(lease,loaded,'ledger','injected-context-type-change')
+        with self.assertRaises(IntegrityError):self.model.authorize(self.context.grant)
+        self.assertEqual(self.state('vault')['candidates'],{})
+
     def test_real_process_crash_saves_reservation_and_proof_atomically(self):
         self.model.close()
         script='''import json,os,sys
