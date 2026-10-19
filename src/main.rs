@@ -503,6 +503,9 @@ async fn main() -> Result<()> {
             return Ok(());
         }
         if command == "scan" {
+            let target = tokio::time::timeout(Duration::from_secs(10), c.get_block_dag_info())
+                .await??
+                .sink;
             let changes = tokio::time::timeout(
                 Duration::from_secs(15),
                 c.get_virtual_chain_from_block_v2(
@@ -514,7 +517,7 @@ async fn main() -> Result<()> {
             .await??;
             println!(
                 "{}",
-                serde_json::to_string(&json!({"node":info,"from":args[2],"changes":changes}))?
+                serde_json::to_string(&json!({"node":info,"from":args[2],"target":target.to_string(),"changes":changes}))?
             );
             return Ok(());
         }

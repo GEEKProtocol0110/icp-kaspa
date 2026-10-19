@@ -2,6 +2,22 @@
 
 **Status: V1 PROTECTED RECOVERY PASSED FUNDED TESTNET-10 ACCEPTANCE.**
 
+## Bounded catch-up and developer experience
+
+- Native scans include a sampled sink target. The watcher processes bounded
+  local batches, checks recovery between commits, persists progress with its
+  cursor and reports CHAIN_BACKLOG until the page and sampled target are caught
+  up. Whole blocks are never split; removals stay atomic and budgeted.
+- Restart preserves committed prefixes and signed outbox bytes. Audit stdout
+  drains in bounded batches with a durable at-least-once delivery cursor.
+- Upgrade native binaries and Python together. Bounds do not limit RPC bytes,
+  memory or signing latency; deep reorgs/pruned history still require review.
+- The README now includes the Kaspa custody vision, original SVG artwork,
+  architecture, evidence, roadmap and a separate developer quick start.
+- Full current suite: 138 offline tests (59 Rust + 79 Python). This is not a
+  new funded run. See evidence/chain-batching-verification.md and
+  docs/WATCHTOWER.md for behavior, upgrade requirements and limitations.
+
 ## Quarantine custody tracking update
 
 - The protected watcher now retains exact quarantine outputs through accepted
@@ -27,7 +43,7 @@
   2,067 DAA units after quarantine creation (required: 1,800).
 - A second TN10 node observed the quarantine output while locked and the final
   normal/cold outputs. Both vaults exited. No daemon remains running.
-- All 119 offline checks pass (59 Rust and 60 Python). Read docs/ICP-Protected-Recovery-Live-Proof.md and
+- The current 138 offline checks pass (59 Rust and 79 Python). Read docs/ICP-Protected-Recovery-Live-Proof.md and
   evidence/protected-live.json for exact IDs, scripts, amounts and observations.
 - This run spent 0.16 test KAS in eight accepted transaction fees. Total remaining
   across old and fresh session addresses: 2.64 test KAS. No real KAS was used.
@@ -104,7 +120,7 @@ The watcher is not left running as an unattended hosted service.
 2. Specify cold-stage rescue, key rotation and lost-key procedures before
    expanding custody claims; the final cold P2PK exit is not ongoing protection.
 3. Complete external alert acceptance, database retention,
-   deep-reorg/pruning reconciliation and bounded backlog processing.
+   deep-reorg/pruning reconciliation and RPC/resource limits beyond local batching.
 4. Add fee estimation within the immutable cap, broader node/network failure
    testing, and independent adversarial review.
 5. Keep data tickets, STARKs, DAG Zippers and STATIC separately specified.

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="620" viewBox="0 0 1600 620" role="img" aria-labelledby="title description">
+  <title id="title">ICP — Internal Command Protocol</title>
+  <desc id="description">Programmable custody on Kaspa. A luminous teal custody core connected to a geometric network. Policy, delay, recovery. Testnet research.</desc>
+  <defs>
+    <linearGradient id="background" x2="1" y2="1"><stop stop-color="#07151a"/><stop offset="1" stop-color="#02080e"/></linearGradient>
+    <radialGradient id="aura"><stop stop-color="#52e3ce" stop-opacity=".17"/><stop offset="1" stop-color="#52e3ce" stop-opacity="0"/></radialGradient>
+    <linearGradient id="edge" x2="1" y2="1"><stop stop-color="#a8ffed"/><stop offset="1" stop-color="#2a9e91"/></linearGradient>
+    <pattern id="grid" width="52" height="52" patternUnits="userSpaceOnUse"><path d="M52 0H0V52" fill="none" stroke="#254049" stroke-opacity=".25"/></pattern>
+  </defs>
+  <rect width="1600" height="620" rx="20" fill="url(#background)"/>
+  <rect width="1600" height="620" rx="20" fill="url(#grid)"/>
+  <ellipse cx="1220" cy="300" rx="440" ry="380" fill="url(#aura)"/>
+  <path d="M64 62H1536M64 556H1536" stroke="#264249"/>
+  <g font-family="DejaVu Sans, Arial, sans-serif">
+    <rect x="64" y="31" width="29" height="7" rx="3.5" fill="#70e5d0"/>
+    <text x="108" y="41" font-size="15" letter-spacing="3" fill="#a9c7ca">KASPA / CUSTODY SYSTEMS</text>
+    <text x="1536" y="41" text-anchor="end" font-size="13" letter-spacing="2" fill="#78a5aa">TESTNET RESEARCH</text>
+    <text x="61" y="241" font-size="148" font-weight="bold" letter-spacing="-7" fill="#eafaf6">ICP<tspan fill="#70e5d0">.</tspan></text>
+    <text x="68" y="291" font-size="20" letter-spacing="4" fill="#79d9cb">INTERNAL COMMAND PROTOCOL</text>
+    <text x="64" y="371" font-size="46" font-weight="bold" letter-spacing="-1" fill="#eafaf6">Programmable custody</text>
+    <text x="64" y="429" font-size="46" font-weight="bold" letter-spacing="-1" fill="#eafaf6">on Kaspa.</text>
+    <text x="68" y="492" font-size="19" fill="#92adb5">Custody with rules. Recovery with time.</text>
+    <text x="64" y="590" font-size="14" letter-spacing="3" fill="#83b7b7">POLICY</text>
+    <circle cx="168" cy="585" r="2" fill="#62d6c5"/>
+    <text x="196" y="590" font-size="14" letter-spacing="3" fill="#83b7b7">DELAY</text>
+    <circle cx="290" cy="585" r="2" fill="#62d6c5"/>
+    <text x="318" y="590" font-size="14" letter-spacing="3" fill="#83b7b7">RECOVERY</text>
+    <text x="1536" y="590" text-anchor="end" font-size="14" letter-spacing="3" fill="#83b7b7">BUILT TO BE VERIFIED</text>
+  </g>
+  <g fill="none">
+    <path d="M824 149L979 205L1139 124L1319 170L1497 115M824 149L846 363L1005 461L1169 490L1390 422L1497 288M979 205L846 363L1069 320L1139 124M979 205L1069 320L1005 461M1319 170L1390 422L1169 490M1319 170L1497 288L1390 422" stroke="#2f625f" stroke-width="1.5"/>
+    <path d="M846 363L979 205L1139 124M1005 461L1169 490L1390 422L1497 288" stroke="#62cebd" stroke-opacity=".55" stroke-width="2"/>
+    <circle cx="1212" cy="303" r="177" stroke="#376661" stroke-dasharray="3 12"/>
+    <circle cx="1212" cy="303" r="143" stroke="#427f76" stroke-opacity=".5"/>
+    <path d="M1212 146L1348 224V381L1212 460L1076 381V224Z" fill="#091d22" stroke="url(#edge)" stroke-width="3"/>
+    <path d="M1212 171L1326 237V368L1212 435L1098 368V237Z" stroke="#2f665f"/>
+    <path d="M1212 217L1275 245V303C1275 343 1241 375 1212 391C1183 375 1149 343 1149 303V245Z" fill="#0c3031" stroke="url(#edge)" stroke-width="3"/>
+    <path d="M1183 299L1204 320L1243 276" stroke="#a8ffed" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <g fill="#081a20" stroke="#61beaf" stroke-width="2">
+      <path d="M824 139L834 149L824 159L814 149Z"/><path d="M979 195L989 205L979 215L969 205Z"/>
+      <path d="M1139 114L1149 124L1139 134L1129 124Z"/><path d="M1319 160L1329 170L1319 180L1309 170Z"/>
+      <path d="M1497 105L1507 115L1497 125L1487 115Z"/><path d="M846 353L856 363L846 373L836 363Z"/>
+      <path d="M1005 451L1015 461L1005 471L995 461Z"/><path d="M1169 480L1179 490L1169 500L1159 490Z"/>
+      <path d="M1390 412L1400 422L1390 432L1380 422Z"/><path d="M1497 278L1507 288L1497 298L1487 288Z"/>
+    </g>
+  </g>
+</svg>

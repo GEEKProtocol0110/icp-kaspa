@@ -13,6 +13,7 @@ from pathlib import Path
 import re
 import sqlite3
 import subprocess
+import sys
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -168,7 +169,7 @@ class Store:
         else:
             raise WatchError('Accepted output does not match a pinned vault path')
         del state['outputs'][hits[0]]
-    def apply(self,response):
+    def apply(self,response,progress=None):
         guard(response['node'])
         if response['from'] != self.get('tip'):
             raise WatchError('Stale RPC scan cursor')
@@ -195,6 +196,10 @@ class Store:
             self.validate_custody(state)
             self.put('tip',tip);self.put('state',json.dumps(state))
             self._reconcile_actions(state)
+            if progress is not None:
+                if tip==progress['target']:
+                    progress['target_reached']=True
+                self.put('scan_progress',json.dumps(progress))
     def _reconcile_actions(self,state):
         for row in self.db.execute('SELECT * FROM actions').fetchall():
             pending=row['pending'];live=state['outputs'].get(pending)
@@ -294,6 +299,84 @@ def heartbeat(store,node,execute,remote=False,now=None):
         store.put('heartbeat',json.dumps({'at':now,'advanced_at':advanced,'daa':daa,'execute':execute,'remote_signer':remote}))
         store.put('health_error','')
 
+def scan_batches(response,max_blocks=128,max_transactions=10000,max_removed=2048):
+    """Bound local processing, never split a block or silently discard history.
+
+    The upstream VSPC v2 method is itself paged without a continuation flag.
+    `target` is the node sink sampled by the native CLI before that RPC call.
+    These are processing budgets, not limits on RPC response bytes or latency.
+    """
+    for value,ceiling in ((max_blocks,4096),(max_transactions,1000000),(max_removed,100000)):
+        if not 0 < integer(value) <= ceiling:
+            raise WatchError('Invalid scan processing budget')
+    guard(response['node'])
+    start=txid(response['from'])
+    target=txid(response.get('target'))
+    changes=response['changes']
+    added=changes['addedChainBlockHashes'];removed=changes['removedChainBlockHashes']
+    blocks=changes['chainBlockAcceptedTransactions']
+    if not all(isinstance(value,list) for value in (added,removed,blocks)):
+        raise WatchError('Invalid accepted-chain lists')
+    if len(removed)>max_removed or len(set(removed))!=len(removed):
+        raise WatchError('Reorg removal budget exceeded or duplicate removals; reconcile history')
+    for value in added+removed:txid(value)
+    if [b['chainBlockHeader']['hash'] for b in blocks]!=added or len(set(added))!=len(added):
+        raise WatchError('Incomplete or unordered accepted-chain response')
+    counts=[]
+    for block in blocks:
+        transactions=block['acceptedTransactions']
+        if not isinstance(transactions,list) or len(transactions)>max_transactions:
+            raise WatchError('One accepted block exceeds transaction budget; reconcile before increasing it')
+        integer(block['chainBlockHeader']['daaScore'])
+        counts.append(len(transactions))
+    if not added and not removed and start!=target:
+        raise WatchError('Scan made no progress toward its target; reconcile node history')
+    # Validate the complete RPC envelope before yielding any committable prefix.
+    total=sum(counts);offset=0;done=0;cursor=start
+    reached=start==target and start not in removed
+    while offset<len(blocks) or offset==0:
+        end=offset;count=0
+        while end<len(blocks) and end-offset<max_blocks and count+counts[end]<=max_transactions:
+            count+=counts[end];end+=1
+        batch_hashes=added[offset:end]
+        reached=reached or target in batch_hashes
+        done+=count
+        progress={'target':target,'target_reached':reached,
+                  'remaining_blocks':len(blocks)-end,'remaining_transactions':total-done}
+        yield ({'node':response['node'],'from':cursor,'changes':{
+            'removedChainBlockHashes':removed if offset==0 else [],
+            'addedChainBlockHashes':batch_hashes,
+            'chainBlockAcceptedTransactions':blocks[offset:end]}},progress)
+        if batch_hashes:cursor=batch_hashes[-1]
+        if end==len(blocks):break
+        offset=end
+
+def process_scan(store,adapter,response,execute=False,remote=False,scanned_at=None,
+                 max_blocks=128,max_transactions=10000,max_removed=2048,after_batch=None):
+    if response['from']!=store.get('tip'):
+        raise WatchError('Stale RPC scan cursor')
+    scanned_at=time.time() if scanned_at is None else scanned_at
+    for batch,progress in scan_batches(response,max_blocks,max_transactions,max_removed):
+        store.apply(batch,progress=progress)
+        # act() checks the exact currently unspent output before every signing
+        # or retry pass, even while the cached chain response is being drained.
+        act(store,adapter,execute)
+        heartbeat(store,response['node'],execute,remote=remote,now=scanned_at)
+        if after_batch:after_batch(progress)
+    return bool(progress['remaining_blocks'] or not progress['target_reached'])
+
+def emit_events(store,stream=None,limit=256):
+    """At-least-once logging with a bounded restart/catch-up batch."""
+    if not 0 < integer(limit) <= 4096:
+        raise WatchError('Invalid audit log batch budget')
+    stream=sys.stdout if stream is None else stream
+    last=int(store.get('logged_event') or 0)
+    for event in store.db.execute('SELECT * FROM audit WHERE id>? ORDER BY id LIMIT ?',(last,limit)).fetchall():
+        print(json.dumps({'event_id':event['id'],'kind':event['kind'],'data':json.loads(event['data'])}),file=stream,flush=True)
+        last=event['id']
+    with store.db:store.put('logged_event',str(last))
+    return last
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('command',choices=['arm','run','authorize','status'])
     p.add_argument('--remote-signer',type=Path,help='Pinned SSH recovery-only signer config')
@@ -301,7 +384,12 @@ def main():
     p.add_argument('--db',type=Path,default=ROOT/'runtime/watchtower.sqlite');p.add_argument('--config',type=Path,default=ROOT/'runtime/watchtower-config.json')
     p.add_argument('--deposit',action='append',default=[]);p.add_argument('--pending');p.add_argument('--expires-daa',type=int)
     p.add_argument('--execute',action='store_true');p.add_argument('--once',action='store_true');p.add_argument('--poll',type=float,default=1)
+    p.add_argument('--max-blocks',type=int,default=128,help='Maximum accepted blocks per local transaction batch')
+    p.add_argument('--max-transactions',type=int,default=10000,help='Maximum accepted transactions per local batch; blocks are never split')
+    p.add_argument('--max-removed',type=int,default=2048,help='Maximum removals applied atomically before additions')
     a=p.parse_args();a.db.parent.mkdir(parents=True,exist_ok=True)
+    if not 0<a.max_blocks<=4096 or not 0<a.max_transactions<=1000000 or not 0<a.max_removed<=100000:
+        p.error('Scan budgets must be positive and within documented limits')
     with Path(str(a.db)+'.lock').open('a') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
         native=Native([str(a.cli.resolve())] if a.cli else None)
@@ -316,23 +404,19 @@ def main():
             if a.remote_signer:
                 from recovery_signer import RemoteNative
                 native=RemoteNative(native.command,a.remote_signer,store.config)
-            last_event=int(store.get('logged_event') or 0)
             while True:
                 try:
                     response=native.call('scan',store.get('tip'));scanned_at=time.time()
-                    store.apply(response);act(store,native,a.execute)
-                    heartbeat(store,response['node'],a.execute,remote=bool(a.remote_signer),now=scanned_at)
+                    backlog=process_scan(store,native,response,a.execute,remote=bool(a.remote_signer),scanned_at=scanned_at,
+                                         max_blocks=a.max_blocks,max_transactions=a.max_transactions,max_removed=a.max_removed,
+                                         after_batch=lambda _:emit_events(store))
                 except Exception as error:
                     with store.db:
                         store.audit('WATCH_ERROR',{'error':str(error)})
                         store.put('health_error',str(error))
                     raise
-                for event in store.db.execute('SELECT * FROM audit WHERE id>? ORDER BY id',(last_event,)).fetchall():
-                    print(json.dumps({'event_id':event['id'],'kind':event['kind'],'data':json.loads(event['data'])}),flush=True)
-                    last_event=event['id']
-                with store.db:store.put('logged_event',str(last_event))
                 if a.once:break
-                time.sleep(max(a.poll,0.1))
+                if not backlog:time.sleep(max(a.poll,0.1))
         print(json.dumps({'tip':store.get('tip'),'state':store.state(),'actions':[dict(r) for r in store.db.execute('SELECT * FROM actions')]},indent=2))
 
 if __name__=='__main__':

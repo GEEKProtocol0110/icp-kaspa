@@ -1,159 +1,159 @@
-# Internal Command Protocol (ICP)
+<p align="center">
+  <img src="docs/assets/icp-banner.svg" alt="ICP — Internal Command Protocol. Programmable custody on Kaspa. Policy, delay, recovery. Testnet research." width="100%">
+</p>
 
-[Verification workflow](.github/workflows/verify.yml)
+<p align="center">
+  <strong>Custody with rules. Recovery with time.</strong><br>
+  A foundation for programmable custody on Kaspa.
+</p>
 
-Open-source Kaspa testnet vault and watchtower prototype.
-Original implementation: [MIT](LICENSE).
+<p align="center">
+  <a href="docs/ARCHITECTURE.md">Architecture</a> ·
+  <a href="docs/QUICKSTART.md">Quick start</a> ·
+  <a href="docs/ICP-Protected-Recovery-Live-Proof.md">Live evidence</a> ·
+  <a href=".github/workflows/verify.yml">Verification</a> ·
+  <a href="#roadmap">Roadmap</a>
+</p>
 
-A small Kaspa covenant vault derived from the ICP whitepaper.
-Engineering choices are documented in
-[the specification](docs/VAULT-SPEC.md).
+---
 
-**Status:** the v0 vault/watchtower and protected-v1 recovery lifecycle passed
-funded testnet-10 runs. V1 kept recovery inside a quarantine covenant and
-released it with a separate cold key after a new delay. Both early payouts
-were sequence-rejected; the exact same signed transactions later passed.
-[Protected recovery proof](docs/ICP-Protected-Recovery-Live-Proof.md),
-[earlier watchtower proof](docs/ICP-Watchtower-Live-Proof.md) and
-[v0 vault proof](docs/ICP-Testnet-Live-Proof.md) include transaction IDs.
-All 119 offline checks pass. GitHub Actions reproduces them on pushes and pull
-requests. This remains an experimental testnet prototype without an independent
-security audit or production signer isolation.
+## Build a recovery window into custody
 
-A recovery-only SSH endpoint and supervised watcher deployment kit are available
-in [SIGNER-DEPLOYMENT.md](docs/SIGNER-DEPLOYMENT.md). Protocol and restart tests pass;
-independent-host installation and external alert delivery remain pending.
+Internal Command Protocol (ICP) explores a simple idea: **a valid spending
+signature should still have to follow the vault's rules.**
 
-## What works locally
+A withdrawal first creates a new pending output. Its delay gives a watchtower
+time to detect an unexpected intent and request recovery. The protected-v1
+design routes recovery into another covenant, where a separate cold key and
+a fresh, longer delay govern release.
 
-- Owner-signed initiation creates a new pending UTXO.
-- Pending execution requires a relative DAA lock and pays a fixed recipient.
-- A separate recovery signature sends the remainder to a fixed recovery address.
-- Every path enforces one input, one output, positive value and a fee ceiling.
-- Native tests execute actual compiled bytecode with compute-budget limits.
-- The operator CLI builds, signs, checks and submits transactions, recording
-  prepared, mempool-accepted, rejected/unknown, and UTXO-observation evidence.
-- The live acceptance harness automates two deposits' lifecycles after funding:
-  initiation, an explicit early-execution rejection, recovery and delayed payout.
+The goal is to make custody policy visible, enforceable and testable on Kaspa:
+pinned destinations, explicit authority, bounded fees and time to respond.
 
-## Reproduce
+**Current stage: experimental Testnet-10 prototype.** The v0 vault/watchtower
+and protected-v1 lifecycle have passed funded TN10 acceptance runs. The latest
+controller changes pass **138 offline tests: 59 Rust + 79 Python**. Independent
+security review and production operation remain ahead.
 
-Linux x86_64, Python 3, the pinned Rust 1.99.1 toolchain and a C compiler are required. Use a
-Linux Codespace if needed. All Rust dependencies are commit-pinned and locked.
+## The custody lifecycle
+
+```mermaid
+flowchart TD
+    I["Idle vault"] -->|"Owner initiates"| P["Pending withdrawal"]
+    P -->|"Owner executes after delay"| R["Fixed recipient"]
+    I -->|"Recovery key"| Q["Quarantine covenant"]
+    P -->|"Recovery key"| Q
+    Q -->|"Cold key + longer delay"| C["Fixed cold exit"]
+```
+
+This is the protected-v1 contract flow. Watcher approval is an off-chain policy
+decision; the covenant enforces the spending paths. The watcher never signs a
+cold release. The final cold exit is P2PK and ends covenant protection.
+V0's recovery goes directly to its fixed recovery address.
+
+## What is running in code
+
+| Layer | Capability | Validation |
+| --- | --- | --- |
+| Covenant vaults | Fresh withdrawal delay, fixed destinations, distinct roles, fee/value bounds | Native VM tests + funded TN10 runs |
+| Protected recovery | Quarantine covenant, independent cold key, longer release delay | Native VM tests + funded TN10 run |
+| Watchtower | Exact-intent approval, accepted-chain observation, durable recovery outbox | Controller tests + earlier funded recovery run |
+| Custody tracking | Exact quarantine output through cold release; branch-aware rollback | Offline controller/restart/reorg tests |
+| Chain catch-up | Bounded local batches, recovery checks between batches, backlog health | 19 new offline tests |
+| Signer deployment kit | Recovery-only SSH endpoint, pinned policy/transport, supervised services | Offline protocol and restart tests; separate-host deployment pending |
+
+Both native CLIs enforce TN10 node identity and activation checks. A broadcast
+response never substitutes for an exact accepted-chain output observation.
+
+## Evidence before claims
+
+The latest funded protected-v1 run recorded:
+
+| Observation | Measured result |
+| --- | --- |
+| Unexpected intent → quarantine | One recovery attempt; 236 DAA units within a 600-DAA withdrawal window |
+| Early normal and cold payouts | Both rejected by the node's sequence checks |
+| Later payout | The exact same signed transactions accepted after maturity |
+| Cold output acceptance | 2,067 DAA units after quarantine; configured delay was 1,800 |
+| Independent observation | A second TN10 node observed locked quarantine and final payout outputs |
+
+These are results from one journaled run, not latency or recovery guarantees.
+The new catch-up and quarantine-tracking changes have offline verification;
+they have not been through a new funded run.
+
+- [Protected-v1 proof and transaction IDs](docs/ICP-Protected-Recovery-Live-Proof.md)
+- [Watchtower live proof](docs/ICP-Watchtower-Live-Proof.md) · [Original vault proof](docs/ICP-Testnet-Live-Proof.md)
+- [Catch-up verification](evidence/chain-batching-verification.md) · [Quarantine verification](evidence/quarantine-verification.md) · [Signer verification](evidence/signer-verification.md)
+
+## Build and verify
+
+Use Linux x86_64, Python 3, a C compiler and the pinned Rust **1.99.1** toolchain.
+From the repository root:
 
 ```bash
 python3 scripts/compile.py
 python3 scripts/compile_protected.py --fixtures
+cargo fmt --check
 cargo test --locked --features live
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 cargo build --locked --features live
 ```
 
-The compiler bootstrap verifies both the release archive and executable SHA-256.
-The upstream v1.0.0 release still emits compiler/artifact version 0.1.0; its
-source pragma must match that value. The exact upstream commits and checksums
-are in [TOOLCHAIN.json](TOOLCHAIN.json).
+Compiler downloads are checksum verified; Kaspa/Silverscript Git dependencies
+are commit-pinned and Cargo is locked. See [TOOLCHAIN.json](TOOLCHAIN.json).
+[GitHub Actions](.github/workflows/verify.yml) runs without live keys or RPC.
+**Public fixture keys are intentionally known. Never fund fixture addresses.**
 
-## Run a fresh testnet session
+For fresh test keys, node setup and a journaled TN10 pilot, follow the
+[quick start](docs/QUICKSTART.md). For protected-v1 roles and policy, read
+[protected recovery](docs/PROTECTED-RECOVERY.md) before signing.
 
-Build the CLI with `cargo build --locked --features live`, then use
-`target/debug/icp`. The separately saved prototype archive also includes a
-Linux x86_64 `bin/icp`; executables are not tracked in this repository.
-The source excludes all live session keys.
+## Explore the project
 
-```bash
-./target/debug/icp init
-./target/debug/icp node
-```
+| Start here | Purpose |
+| --- | --- |
+| [Architecture](docs/ARCHITECTURE.md) | Contracts, watcher, signer and trust boundaries |
+| [Project status](PROJECT-STATUS.md) | Current engineering checkpoint |
+| [Vault specification](docs/VAULT-SPEC.md) | V0 invariants and threat model |
+| [Protected recovery](docs/PROTECTED-RECOVERY.md) | V1 state transitions and role-specific CLI |
+| [Watchtower](docs/WATCHTOWER.md) | Approval, rollback, catch-up and upgrade rules |
+| [Signer deployment](docs/SIGNER-DEPLOYMENT.md) | Recovery-only SSH and service supervision |
+| [Continuation checkpoint](docs/ICP-Project-Handoff.md) | Remaining work and operational context |
 
-`init` generates fresh test-only keys into `.secrets/keys.json` with restrictive
-permissions on Unix, compiles both vault states, and prints public addresses.
-It refuses to overwrite existing keys. Fund the printed **funding address** with
-3 test KAS on **testnet-10**, then run:
+Source lives in `contracts/`, `src/` and `scripts/`; verification lives in
+`tests/` and `evidence/`; service templates live in `deploy/`.
 
-```bash
-python3 scripts/pilot.py
-```
+## Roadmap
 
-The live runner accepts only a synced, UTXO-indexed TN10 node past the pinned
-covenant activation. A testnet address alone does not identify TN10 versus TN12.
-No mainnet option is provided. `ICP_RPC_URL` optionally specifies a Borsh wRPC
-endpoint; otherwise the official SDK resolver is used. For restricted environments, install the optional
-`websockets==16.0` package and use `python3 scripts/with_proxy.py target/debug/icp status`
-or `python3 scripts/with_proxy.py python3 scripts/pilot.py`. The wrapper uses
-the environment's normal proxy. `ICP_UPSTREAM_URL` optionally supplies a
-previously resolved TN10 Borsh TLS endpoint when HTTP resolver access fails. Node identity/status is checked again before each broadcast.
+| Horizon | Work |
+| --- | --- |
+| Now | Reproducible covenant vaults, protected recovery, durable watchtower, quarantine tracking and bounded local catch-up |
+| Next | Independent watcher/signer hosts, external alert acceptance and a fresh journaled TN10 operational run |
+| Harden | Cold-stage rescue and rotation specification, pruning/deep-reorg reconciliation, retention, fee estimation and adversarial review |
+| Research | Data-release tickets, proof systems, DAG Zippers and STATIC; separately specified before implementation |
 
-The CLI's default fee is 0.02 test KAS per transaction; each deposit UTXO is
-1 test KAS. Delay is 600 DAA-score units, approximately a minute at 10 BPS,
-with no wall-clock guarantee. The node decides maturity.
+The direction is ambitious. Each milestone must earn its claims with code,
+tests and inspectable evidence.
 
-The automated pilot refuses to restart over an existing `runtime/pilot.json`.
-If interrupted, inspect the saved transaction IDs and live UTXOs before taking
-further action. Direct recovery and inspection commands remain available:
+## Security boundary
 
-```bash
-./target/debug/icp status
-./target/debug/icp initiate TXID:INDEX
-./target/debug/icp execute TXID:INDEX
-./target/debug/icp recover TXID:INDEX
-```
+This prototype uses conventional Schnorr keys and an operator-trusted, synced,
+UTXO-indexed TN10 node. A separately secure recovery key, watcher availability,
+adequate fees and timely inclusion are assumptions. At maturity, recovery has
+no guaranteed priority over a competing execution. DAA delays are not wall-clock
+guarantees. Local batching does not cap RPC response size or promise a response
+SLA. The signer kit has not been installed on independently controlled hosts.
 
-## Evidence and important limits
+There is no mainnet-readiness, quantum-safety or completed-audit claim. Keep
+private keys, databases and signed outboxes out of Git. Reconcile saved
+transaction IDs and live outputs before retrying an interrupted pilot.
 
-Public fixture keys in `artifacts/` and the test source are intentionally known.
-**Never fund fixture addresses.** Fresh live keys are separate. Do not publish
-`.secrets/` or put real funds in any key created by this test harness. All roles
-share a host here for testing; production separation is not provided.
+## Contribute
 
-The native VM checks the relative-sequence requirement; actual UTXO age is a
-separate node consensus check. Native pass results alone do not prove node acceptance. The live evidence
-separately establishes acceptance for the exact tested transactions and fee
-settings. Other values, nodes and network conditions need their own checks.
-Broadcast receipts are not confirmations. The pilot observes exact outpoints
-in the node's accepted-chain UTXO view; that observation can change after a
-reorganization. Recovery does not have guaranteed priority at maturity.
+Read [AGENTS.md](AGENTS.md), the [current checkpoint](PROJECT-STATUS.md) and the
+relevant custody specification first. Open an issue or pull request with a
+concrete change, reproducible checks and its security implications. Use
+project-level attribution and include no private session data.
 
-The watchtower implementation and operator instructions are in
-[docs/WATCHTOWER.md](docs/WATCHTOWER.md). Protected-v1 recovery remains under
-observation through its fixed cold exit, with rollback-safe custody records.
-Authority rotation, arbitrary payout recipients, partial withdrawal, data-release
-tickets, DAG Zippers, proof systems, post-quantum authority and STATIC trading
-remain outside the prototype.
-
-## Develop and contribute
-
-Clone this repository using its Code menu, then enter the checkout:
-
-```bash
-cd icp-kaspa
-```
-
-Read [PROJECT-STATUS.md](PROJECT-STATUS.md), [AGENTS.md](AGENTS.md) and the
-specification before changing custody behavior. No live RPC, signing or private
-test data is required by CI. Open an issue or pull request with reproducible
-evidence; do not include keys or funded-session backups.
-
-Next: production signer isolation, cold-stage rescue/rotation,
-service operation and external review. See [the project checkpoint](docs/ICP-Project-Handoff.md).
-The source import is documented in [the import record](docs/IMPORT.md).
-
-The original implementation is MIT licensed. Third-party dependencies and
-source papers retain their own terms; see [NOTICE.md](NOTICE.md).
-
-## Protected recovery v1
-
-The additive [v1 implementation](docs/PROTECTED-RECOVERY.md) moves recovery into a
-quarantined covenant. Release requires an independent cold key and a new,
-longer relative delay. Its `icp-protected` CLI uses one explicit role-specific
-signer file, with no combined-key fallback. Read-only operations need no keys.
-
-Build its public fixtures with `python3 scripts/compile_protected.py --fixtures`
-before running Cargo tests. The original v0 contract and CLI remain available;
-their live receipts do not cover v1. Its own funded acceptance run is recorded
-in the protected recovery proof above. The watcher now observes the quarantine
-through cold exit; it never signs cold release. Existing databases containing
-untracked quarantine need explicit reconciliation before upgrade, as documented
-in WATCHTOWER.md. The automated harness is
-`scripts/protected_pilot.py`; it refuses an existing journal. Production signer
-isolation and cold-stage rescue/rotation remain work.
+Original implementation: [MIT](LICENSE). Dependencies and source papers retain
+their own terms; see [NOTICE.md](NOTICE.md) and the [import record](docs/IMPORT.md).

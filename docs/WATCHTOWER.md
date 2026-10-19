@@ -37,7 +37,8 @@ python3 scripts/watchtower.py run --execute
 Arming checks that registered deposits are still exact unspent idle-vault
 outputs before and after taking the chain anchor. A changed or already-pending
 deposit cannot be silently bootstrapped. `run` without `--execute` is dry-run
-mode. `--once` performs one chain scan and reconciliation pass. In restricted
+mode. `--once` processes one fetched chain response, including its local
+batches; the response may still end before the sampled chain target. In restricted
 environments wrap the command with `scripts/with_proxy.py` and a reachable TN10
 Borsh TLS endpoint.
 
@@ -77,6 +78,52 @@ There is no guaranteed response SLA. The live demo measures actual detection
 and recovery; outages can consume the entire 600-DAA delay. RPC backlogs,
 pruning, database retention, signer isolation and production monitoring require
 additional operational work and review.
+
+## Bounded catch-up
+
+Rebuild both native CLIs and update the Python watcher together. Native `scan`
+now samples the node's sink before fetching VSPC v2 changes and returns it as
+`target`. Older binaries without that field are rejected. The pinned node can
+truncate a VSPC page without a `hasMore` flag; a drained page alone cannot prove
+that the watcher is current.
+
+The watcher preflights list completeness, hash ordering and budgets before any
+commit, applies all removals atomically, and then commits bounded batches of
+whole accepted blocks. Recovery reconciliation runs after every committed
+batch, with the existing exact live pending-UTXO check before signing/retry.
+The original RPC observation time is retained across cached batches, so a long
+drain does not manufacture a fresh heartbeat.
+
+| Option | Default | Maximum | Meaning |
+| --- | --- | --- | --- |
+| `--max-blocks` | 128 | 4,096 | Accepted blocks per local transaction batch |
+| `--max-transactions` | 10,000 | 1,000,000 | Accepted transactions per local batch; blocks are never split |
+| `--max-removed` | 2,048 | 100,000 | Removals allowed in the first atomic batch |
+
+An oversized individual block or removal set stops for review; nothing is
+silently truncated. Reorgs below the bootstrap anchor still stop. Inspect
+history and the resource implications before increasing a limit. A malformed
+envelope fails before the first commit; a later invalid vault transition can
+leave earlier valid batches committed, with the durable cursor and outbox
+available for reconciliation and restart.
+
+`scan_progress` records the sampled target, whether it was reached, and local
+remaining block/transaction counts. Health reports `CHAIN_BACKLOG` while local
+blocks remain or the sampled target has not been reached. Backlog causes an
+immediate next fetch without the normal polling sleep. An empty response that
+does not reach its target stops rather than spinning or claiming success. A
+target displaced by concurrent reorganization can require another scan or
+explicit review; these observations do not establish finality.
+
+Audit stdout delivery reads at most 256 records per committed batch and saves
+its cursor only after successful writes. Delivery is at least once: a crash
+after writing but before saving can repeat events. Consumers should deduplicate
+on `event_id`. Remaining audit records drain on subsequent batches/scans.
+
+These are **local processing bounds**, not caps on RPC response bytes, memory,
+RPC/signing latency, total DB/undo history or recovery-candidate count. There
+is no response SLA or automatic pruning/deep-history reconstruction. See
+[chain-batching verification](../evidence/chain-batching-verification.md).
 
 ## Verification
 

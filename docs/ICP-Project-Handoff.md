@@ -1,6 +1,6 @@
 # ICP continuation checkpoint
 
-**October 19, 2026: protected-v1 quarantine custody tracking implemented.**
+**October 19, 2026: bounded chain catch-up and repository refresh implemented.**
 
 ## Current state
 
@@ -15,7 +15,7 @@ separate conventional cold key and a fresh, longer delay. Existing v0 deposits
 are not migrated. No mainnet switch, quantum-safety finding or external audit
 is provided.
 
-The latest software extends the watcher beyond recovery confirmation:
+The watcher retains custody observations beyond recovery confirmation:
 
 - A recovered quarantine outpoint remains tracked, with pinned root and amount.
 - An accepted cold exit must pay the descriptor's cold script within existing
@@ -30,6 +30,17 @@ The latest software extends the watcher beyond recovery confirmation:
   blindly rerun completed pilots.
 - The fresh protected pilot now waits for the watcher's exact cold-exit
   observation as well as live UTXO observation. It was not rerun for this update.
+
+The latest catch-up update adds bounded local accepted-block/transaction
+batches, atomic budgeted removals, and recovery checks between commits. Native
+scans now carry a sampled sink target; a drained server page without that target
+remains CHAIN_BACKLOG. Cursor/progress commits and signed outboxes survive
+restart. Audit stdout uses bounded at-least-once delivery. Rebuild native CLIs
+and Python together. RPC response bytes/memory, candidate count, signer latency,
+retention and pruned/deep-reorg history remain outside those processing bounds.
+
+README.md now presents the custody vision, evidence and roadmap with original
+SVG artwork. docs/ARCHITECTURE.md and docs/QUICKSTART.md orient new contributors.
 
 Custody rules and compiled contract bytecode are unchanged. The controller uses
 an operator-trusted indexed TN10 node and a trusted approval database. The node
@@ -51,7 +62,9 @@ later P2PK spends are not monitored by this watcher.
   This update submits no transactions and does not change that recorded balance.
 - New controller tests cover quarantine, cold exit, restart, reorg, rejected
   destinations/amounts/layout, durable recovery status and legacy-state refusal.
-  Full verification is recorded in evidence/quarantine-verification.md.
+  Earlier verification is recorded in evidence/quarantine-verification.md.
+- Current verification: 138 tests (59 Rust, 79 Python), including 19 new
+  batching/backlog/restart/logging tests. See evidence/chain-batching-verification.md.
 
 ## Signer/supervisor boundary
 
@@ -76,8 +89,9 @@ owner and recipient keys off watcher/signer service accounts.
    missing-heartbeat, RPC failure, signer outage and restart/outbox behavior.
 4. Specify cold-stage rescue, key rotation and lost-key procedures before
    changing contracts. The current cold authority has no rescue path.
-5. Harden bounded backlog processing, pruning/deep-reorg reconciliation,
-   database retention and fee estimation within immutable caps.
+5. Validate catch-up behavior in a fresh TN10 acceptance session. Harden RPC
+   resource limits, pruning/deep-reorg reconciliation, database retention and
+   fee estimation within immutable caps.
 6. Obtain independent adversarial review. Keep data tickets, STARK proofs, DAG
    Zippers and STATIC trading as separately specified future workstreams.
 
