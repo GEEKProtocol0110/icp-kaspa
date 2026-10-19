@@ -29,6 +29,11 @@ name = "icp-protected"
 path = "src/protected_main.rs"
 required-features = ["live"]
 
+[[example]]
+name = "fund_protected_pilot"
+path = "examples/fund_protected_pilot.rs"
+required-features = ["live"]
+
 [profile.dev]
 debug = 0
 

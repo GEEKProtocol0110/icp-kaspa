@@ -1,6 +1,8 @@
-# Candidate protected recovery - local verification
+# Candidate protected recovery - local verification (historical)
 
-October 18, 2026. No funded v1 transactions were submitted for this milestone.
+October 18, 2026. No funded v1 transactions were submitted for that native-only milestone.
+A later funded run is recorded in docs/ICP-Protected-Recovery-Live-Proof.md
+and evidence/protected-live.json.
 Earlier v0 transaction IDs demonstrate only the original contract's live paths.
 
 | Suite | Checks passed |

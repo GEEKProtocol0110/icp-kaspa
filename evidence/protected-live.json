@@ -1,0 +1,1074 @@
+{
+  "summary": {
+    "status": "LIVE_PROTECTED_PASSED",
+    "network": "testnet-10",
+    "normal_delay_daa": 600,
+    "cold_delay_daa": 1800,
+    "recovery_response_daa": 236,
+    "recovery_attempts": 1,
+    "early_normal_age_at_node_gate": 125,
+    "early_cold_age_at_node_gate": 311,
+    "accepted_normal_age_daa": 828,
+    "accepted_cold_age_daa": 2067,
+    "fees_this_run_sompi": 16000000,
+    "final_legacy_sompi": 208000000,
+    "final_new_sompi": 56000000,
+    "total_remaining_sompi": 264000000
+  },
+  "journal": {
+    "version": "protected-v1",
+    "status": "LIVE_PROTECTED_PASSED",
+    "steps": [
+      {
+        "step": "approved_deposit",
+        "output": "Broadcast deposit: 2530e96f0b4156c00dbd27995aa44a9ec2763cc330d6999ae66ea3a695e85a9c. Confirm accepted-chain inclusion separately.\n",
+        "error": null,
+        "receipts": [
+          {
+            "id": "2530e96f0b4156c00dbd27995aa44a9ec2763cc330d6999ae66ea3a695e85a9c",
+            "network": "testnet-10",
+            "node": {
+              "hasUtxoIndex": true,
+              "isSynced": true,
+              "networkId": "testnet-10",
+              "rpcApiRevision": 0,
+              "rpcApiVersion": 1,
+              "serverVersion": "2.1.0",
+              "virtualDaaScore": 600368661
+            },
+            "status": "MEMPOOL_ACCEPTED",
+            "transaction": {
+              "gas": 0,
+              "inputs": [
+                {
+                  "computeBudget": 100,
+                  "previousOutpoint": {
+                    "index": 0,
+                    "transactionId": "21f1ebdbe2c33ac60fb694d4c57c96baf73791b7f3c84ffe8b1094d3fa307a37"
+                  },
+                  "sequence": 0,
+                  "sigOpCount": 0,
+                  "verboseData": null
+                }
+              ],
+              "lockTime": 0,
+              "mass": 45363,
+              "outputs": [
+                {
+                  "covenant": null,
+                  "scriptPublicKey": "0000aa2091fd28fef84750a9f4baafc72b31b5b26a9bc51fc6165eb7a05b7dc4e4b18f1187",
+                  "value": 30000000,
+                  "verboseData": null
+                },
+                {
+                  "covenant": null,
+                  "scriptPublicKey": "00002039d5b1f64374f9d2d50f9d071e79189490253ef03bcda5bec8d1fd2153251a6aac",
+                  "value": 38000000,
+                  "verboseData": null
+                }
+              ],
+              "storageMass": 45363,
+              "subnetworkId": "0000000000000000000000000000000000000000",
+              "verboseData": null,
+              "version": 1
+            },
+            "version": "protected-v1"
+          }
+        ]
+      },
+      {
+        "step": "unexpected_deposit",
+        "output": "Broadcast deposit: bf2a9fb6284ad52fd07f36f5ce2a98364b722f690ec354b8cff9d37778c350ce. Confirm accepted-chain inclusion separately.\n",
+        "error": null,
+        "receipts": [
+          {
+            "id": "bf2a9fb6284ad52fd07f36f5ce2a98364b722f690ec354b8cff9d37778c350ce",
+            "network": "testnet-10",
+            "node": {
+              "hasUtxoIndex": true,
+              "isSynced": true,
+              "networkId": "testnet-10",
+              "rpcApiRevision": 0,
+              "rpcApiVersion": 1,
+              "serverVersion": "2.1.0",
+              "virtualDaaScore": 600368751
+            },
+            "status": "MEMPOOL_ACCEPTED",
+            "transaction": {
+              "gas": 0,
+              "inputs": [
+                {
+                  "computeBudget": 100,
+                  "previousOutpoint": {
+                    "index": 1,
+                    "transactionId": "2530e96f0b4156c00dbd27995aa44a9ec2763cc330d6999ae66ea3a695e85a9c"
+                  },
+                  "sequence": 0,
+                  "sigOpCount": 0,
+                  "verboseData": null
+                }
+              ],
+              "lockTime": 0,
+              "mass": 173684,
+              "outputs": [
+                {
+                  "covenant": null,
+                  "scriptPublicKey": "0000aa2091fd28fef84750a9f4baafc72b31b5b26a9bc51fc6165eb7a05b7dc4e4b18f1187",
+                  "value": 30000000,
+                  "verboseData": null
+                },
+                {
+                  "covenant": null,
+                  "scriptPublicKey": "00002039d5b1f64374f9d2d50f9d071e79189490253ef03bcda5bec8d1fd2153251a6aac",
+                  "value": 6000000,
+                  "verboseData": null
+                }
+              ],
+              "storageMass": 173684,
+              "subnetworkId": "0000000000000000000000000000000000000000",
+              "verboseData": null,
+              "version": 1
+            },
+            "version": "protected-v1"
+          }
+        ]
+      },
+      {
+        "step": "approved_intent",
+        "output": "Broadcast rebroadcast: f7a49f773a576e7c391ba3917cf316d26b8986f316a5f209915290a33694e706. Confirm accepted-chain inclusion separately.\n",
+        "error": null,
+        "receipts": [
+          {
+            "id": "f7a49f773a576e7c391ba3917cf316d26b8986f316a5f209915290a33694e706",
+            "network": "testnet-10",
+            "node": {
+              "hasUtxoIndex": true,
+              "isSynced": true,
+              "networkId": "testnet-10",
+              "rpcApiRevision": 0,
+              "rpcApiVersion": 1,
+              "serverVersion": "2.1.0",
+              "virtualDaaScore": 600369096
+            },
+            "status": "MEMPOOL_ACCEPTED",
+            "transaction": {
+              "gas": 0,
+              "inputs": [
+                {
+                  "computeBudget": 100,
+                  "previousOutpoint": {
+                    "index": 0,
+                    "transactionId": "2530e96f0b4156c00dbd27995aa44a9ec2763cc330d6999ae66ea3a695e85a9c"
+                  },
+                  "sequence": 0,
+                  "sigOpCount": 0,
+                  "verboseData": null
+                }
+              ],
+              "lockTime": 0,
+              "mass": 2381,
+              "outputs": [
+                {
+                  "covenant": null,
+                  "scriptPublicKey": "0000aa20e76e88483d35d54e84912c07a19740dda4358343c83d779264beddcbfda6560987",
+                  "value": 28000000,
+                  "verboseData": null
+                }
+              ],
+              "storageMass": 2381,
+              "subnetworkId": "0000000000000000000000000000000000000000",
+              "verboseData": null,
+              "version": 1
+            },
+            "version": "protected-v1"
+          }
+        ]
+      },
+      {
+        "step": "early_normal_execute",
+        "output": null,
+        "error": "Error: RpcSubsystem(\"Rejected transaction 3f0c45adeb00f8427f246cb90528f8ab0c367c17e6128f777bb58aa0111981a9: one of the transaction sequence locks conditions was not met\")",
+        "receipts": [
+          {
+            "error": "RPC Server (remote error) -> Rejected transaction 3f0c45adeb00f8427f246cb90528f8ab0c367c17e6128f777bb58aa0111981a9: one of the transaction sequence locks conditions was not met",
+            "id": "3f0c45adeb00f8427f246cb90528f8ab0c367c17e6128f777bb58aa0111981a9",
+            "network": "testnet-10",
+            "node": {
+              "hasUtxoIndex": true,
+              "isSynced": true,
+              "networkId": "testnet-10",
+              "rpcApiRevision": 0,
+              "rpcApiVersion": 1,
+              "serverVersion": "2.1.0",
+              "virtualDaaScore": 600369227
+            },
+            "status": "REJECTED_OR_UNKNOWN",
+            "transaction": {
+              "gas": 0,
+              "inputs": [
+                {
+                  "computeBudget": 100,
+                  "previousOutpoint": {
+                    "index": 0,
+                    "transactionId": "f7a49f773a576e7c391ba3917cf316d26b8986f316a5f209915290a33694e706"
+                  },
+                  "sequence": 600,
+                  "sigOpCount": 0,
+                  "verboseData": null
+                }
+              ],
+              "lockTime": 0,
+              "mass": 2747,
+              "outputs": [
+                {
+                  "covenant": null,
+                  "scriptPublicKey": "000020668155ac2de0d692251e78d4efe45448e2439ae6b74caea95b2df4137e6f163eac",
+                  "value": 26000000,
+                  "verboseData": null
+                }
+              ],
+              "storageMass": 2747,
+              "subnetworkId": "0000000000000000000000000000000000000000",
+              "verboseData": null,
+              "version": 1
+            },
+            "version": "protected-v1"
+          }
+        ]
+      },
+      {
+        "step": "unexpected_intent",
+        "output": "Broadcast initiate: 00fe1483c1eae111985a5113344064b48fad27ded051ceddc2967de47e042c6f. Confirm accepted-chain inclusion separately.\n",
+        "error": null,
+        "receipts": [
+          {
+            "id": "00fe1483c1eae111985a5113344064b48fad27ded051ceddc2967de47e042c6f",
+            "network": "testnet-10",
+            "node": {
+              "hasUtxoIndex": true,
+              "isSynced": true,
+              "networkId": "testnet-10",
+              "rpcApiRevision": 0,
+              "rpcApiVersion": 1,
+              "serverVersion": "2.1.0",
+              "virtualDaaScore": 600369281
+            },
+            "status": "MEMPOOL_ACCEPTED",
+            "transaction": {
+              "gas": 0,
+              "inputs": [
+                {
+                  "computeBudget": 100,
+                  "previousOutpoint": {
+                    "index": 0,
+                    "transactionId": "bf2a9fb6284ad52fd07f36f5ce2a98364b722f690ec354b8cff9d37778c350ce"
+                  },
+                  "sequence": 0,
+                  "sigOpCount": 0,
+                  "verboseData": null
+                }
+              ],
+              "lockTime": 0,
+              "mass": 2381,
+              "outputs": [
+                {
+                  "covenant": null,
+                  "scriptPublicKey": "0000aa20e76e88483d35d54e84912c07a19740dda4358343c83d779264beddcbfda6560987",
+                  "value": 28000000,
+                  "verboseData": null
+                }
+              ],
+              "storageMass": 2381,
+              "subnetworkId": "0000000000000000000000000000000000000000",
+              "verboseData": null,
+              "version": 1
+            },
+            "version": "protected-v1"
+          }
+        ]
+      },
+      {
+        "step": "early_cold_release",
+        "output": null,
+        "error": "Error: RpcSubsystem(\"Rejected transaction 046a87cd97e50c67fed5acfb18ac8081b5eecedea43591fa7cbdf1d836f606ce: one of the transaction sequence locks conditions was not met\")",
+        "receipts": [
+          {
+            "error": "RPC Server (remote error) -> Rejected transaction 046a87cd97e50c67fed5acfb18ac8081b5eecedea43591fa7cbdf1d836f606ce: one of the transaction sequence locks conditions was not met",
+            "id": "046a87cd97e50c67fed5acfb18ac8081b5eecedea43591fa7cbdf1d836f606ce",
+            "network": "testnet-10",
+            "node": {
+              "hasUtxoIndex": true,
+              "isSynced": true,
+              "networkId": "testnet-10",
+              "rpcApiRevision": 0,
+              "rpcApiVersion": 1,
+              "serverVersion": "2.1.0",
+              "virtualDaaScore": 600369840
+            },
+            "status": "REJECTED_OR_UNKNOWN",
+            "transaction": {
+              "gas": 0,
+              "inputs": [
+                {
+                  "computeBudget": 100,
+                  "previousOutpoint": {
+                    "index": 0,
+                    "transactionId": "2af3dfd0b4db9c45f0d09785c6c4e439dec485f7034e1e9e5eca7cc0cb305dc0"
+                  },
+                  "sequence": 1800,
+                  "sigOpCount": 0,
+                  "verboseData": null
+                }
+              ],
+              "lockTime": 0,
+              "mass": 3205,
+              "outputs": [
+                {
+                  "covenant": null,
+                  "scriptPublicKey": "0000208fdde7751aa03dac7a761e3de134232e484e37367ac8640f1b7f2b65fd392440ac",
+                  "value": 24000000,
+                  "verboseData": null
+                }
+              ],
+              "storageMass": 3205,
+              "subnetworkId": "0000000000000000000000000000000000000000",
+              "verboseData": null,
+              "version": 1
+            },
+            "version": "protected-v1"
+          }
+        ]
+      },
+      {
+        "step": "approved_execute_after_delay",
+        "output": "Broadcast rebroadcast: 3f0c45adeb00f8427f246cb90528f8ab0c367c17e6128f777bb58aa0111981a9. Confirm accepted-chain inclusion separately.\n",
+        "error": null,
+        "receipts": [
+          {
+            "id": "3f0c45adeb00f8427f246cb90528f8ab0c367c17e6128f777bb58aa0111981a9",
+            "network": "testnet-10",
+            "node": {
+              "hasUtxoIndex": true,
+              "isSynced": true,
+              "networkId": "testnet-10",
+              "rpcApiRevision": 0,
+              "rpcApiVersion": 1,
+              "serverVersion": "2.1.0",
+              "virtualDaaScore": 600369923
+            },
+            "status": "MEMPOOL_ACCEPTED",
+            "transaction": {
+              "gas": 0,
+              "inputs": [
+                {
+                  "computeBudget": 100,
+                  "previousOutpoint": {
+                    "index": 0,
+                    "transactionId": "f7a49f773a576e7c391ba3917cf316d26b8986f316a5f209915290a33694e706"
+                  },
+                  "sequence": 600,
+                  "sigOpCount": 0,
+                  "verboseData": null
+                }
+              ],
+              "lockTime": 0,
+              "mass": 2747,
+              "outputs": [
+                {
+                  "covenant": null,
+                  "scriptPublicKey": "000020668155ac2de0d692251e78d4efe45448e2439ae6b74caea95b2df4137e6f163eac",
+                  "value": 26000000,
+                  "verboseData": null
+                }
+              ],
+              "storageMass": 2747,
+              "subnetworkId": "0000000000000000000000000000000000000000",
+              "verboseData": null,
+              "version": 1
+            },
+            "version": "protected-v1"
+          }
+        ]
+      },
+      {
+        "step": "cold_release_after_delay",
+        "output": "Broadcast rebroadcast: 046a87cd97e50c67fed5acfb18ac8081b5eecedea43591fa7cbdf1d836f606ce. Confirm accepted-chain inclusion separately.\n",
+        "error": null,
+        "receipts": [
+          {
+            "id": "046a87cd97e50c67fed5acfb18ac8081b5eecedea43591fa7cbdf1d836f606ce",
+            "network": "testnet-10",
+            "node": {
+              "hasUtxoIndex": true,
+              "isSynced": true,
+              "networkId": "testnet-10",
+              "rpcApiRevision": 0,
+              "rpcApiVersion": 1,
+              "serverVersion": "2.1.0",
+              "virtualDaaScore": 600371583
+            },
+            "status": "MEMPOOL_ACCEPTED",
+            "transaction": {
+              "gas": 0,
+              "inputs": [
+                {
+                  "computeBudget": 100,
+                  "previousOutpoint": {
+                    "index": 0,
+                    "transactionId": "2af3dfd0b4db9c45f0d09785c6c4e439dec485f7034e1e9e5eca7cc0cb305dc0"
+                  },
+                  "sequence": 1800,
+                  "sigOpCount": 0,
+                  "verboseData": null
+                }
+              ],
+              "lockTime": 0,
+              "mass": 3205,
+              "outputs": [
+                {
+                  "covenant": null,
+                  "scriptPublicKey": "0000208fdde7751aa03dac7a761e3de134232e484e37367ac8640f1b7f2b65fd392440ac",
+                  "value": 24000000,
+                  "verboseData": null
+                }
+              ],
+              "storageMass": 3205,
+              "subnetworkId": "0000000000000000000000000000000000000000",
+              "verboseData": null,
+              "version": 1
+            },
+            "version": "protected-v1"
+          }
+        ]
+      }
+    ],
+    "funding": {
+      "funding_amount": 70000000,
+      "id": "21f1ebdbe2c33ac60fb694d4c57c96baf73791b7f3c84ffe8b1094d3fa307a37",
+      "network": "testnet-10",
+      "node": {
+        "hasUtxoIndex": true,
+        "isSynced": true,
+        "networkId": "testnet-10",
+        "rpcApiRevision": 0,
+        "rpcApiVersion": 1,
+        "serverVersion": "2.1.0",
+        "virtualDaaScore": 600368253
+      },
+      "status": "MEMPOOL_ACCEPTED",
+      "transaction": {
+        "gas": 0,
+        "inputs": [
+          {
+            "computeBudget": 100,
+            "previousOutpoint": {
+              "index": 0,
+              "transactionId": "c6cade7b912ae57f9df3d9ab4bfa9ff0d9be8535459670be4f0f4f28810aa328"
+            },
+            "sequence": 0,
+            "sigOpCount": 0,
+            "verboseData": null
+          }
+        ],
+        "lockTime": 0,
+        "mass": 45535,
+        "outputs": [
+          {
+            "covenant": null,
+            "scriptPublicKey": "00002039d5b1f64374f9d2d50f9d071e79189490253ef03bcda5bec8d1fd2153251a6aac",
+            "value": 70000000,
+            "verboseData": null
+          },
+          {
+            "covenant": null,
+            "scriptPublicKey": "000020f09c386dff9c7e2e2be32d2d6a9b47d5cc2fe714bb9a72b9865a8256db26d2d8ac",
+            "value": 24000000,
+            "verboseData": null
+          }
+        ],
+        "storageMass": 45535,
+        "subnetworkId": "0000000000000000000000000000000000000000",
+        "verboseData": null,
+        "version": 1
+      },
+      "version": "protected-v1"
+    },
+    "initial_snapshot": {
+      "node": {
+        "hasUtxoIndex": true,
+        "isSynced": true,
+        "networkId": "testnet-10",
+        "rpcApiRevision": 0,
+        "rpcApiVersion": 1,
+        "serverVersion": "2.1.0",
+        "virtualDaaScore": 600368618
+      },
+      "utxos": [
+        {
+          "address": "kaspatest:qquatv0kgd60n5k4p7wsw8nerz2fqff77qaumfd7ergl6g2ny5dx55j2nz2u7",
+          "outpoint": {
+            "index": 0,
+            "transactionId": "21f1ebdbe2c33ac60fb694d4c57c96baf73791b7f3c84ffe8b1094d3fa307a37"
+          },
+          "utxoEntry": {
+            "amount": 70000000,
+            "blockDaaScore": 600368262,
+            "covenantId": null,
+            "isCoinbase": false,
+            "scriptPublicKey": "00002039d5b1f64374f9d2d50f9d071e79189490253ef03bcda5bec8d1fd2153251a6aac"
+          }
+        }
+      ]
+    },
+    "roots": [
+      "2530e96f0b4156c00dbd27995aa44a9ec2763cc330d6999ae66ea3a695e85a9c:0",
+      "bf2a9fb6284ad52fd07f36f5ce2a98364b722f690ec354b8cff9d37778c350ce:0"
+    ],
+    "prepared": [
+      {
+        "id": "f7a49f773a576e7c391ba3917cf316d26b8986f316a5f209915290a33694e706",
+        "network": "testnet-10",
+        "node": {
+          "hasUtxoIndex": true,
+          "isSynced": true,
+          "networkId": "testnet-10",
+          "rpcApiRevision": 0,
+          "rpcApiVersion": 1,
+          "serverVersion": "2.1.0",
+          "virtualDaaScore": 600368987
+        },
+        "status": "PREPARED",
+        "transaction": {
+          "gas": 0,
+          "inputs": [
+            {
+              "computeBudget": 100,
+              "previousOutpoint": {
+                "index": 0,
+                "transactionId": "2530e96f0b4156c00dbd27995aa44a9ec2763cc330d6999ae66ea3a695e85a9c"
+              },
+              "sequence": 0,
+              "sigOpCount": 0,
+              "verboseData": null
+            }
+          ],
+          "lockTime": 0,
+          "mass": 2381,
+          "outputs": [
+            {
+              "covenant": null,
+              "scriptPublicKey": "0000aa20e76e88483d35d54e84912c07a19740dda4358343c83d779264beddcbfda6560987",
+              "value": 28000000,
+              "verboseData": null
+            }
+          ],
+          "storageMass": 2381,
+          "subnetworkId": "0000000000000000000000000000000000000000",
+          "verboseData": null,
+          "version": 1
+        },
+        "version": "protected-v1"
+      },
+      {
+        "id": "3f0c45adeb00f8427f246cb90528f8ab0c367c17e6128f777bb58aa0111981a9",
+        "network": "testnet-10",
+        "node": {
+          "hasUtxoIndex": true,
+          "isSynced": true,
+          "networkId": "testnet-10",
+          "rpcApiRevision": 0,
+          "rpcApiVersion": 1,
+          "serverVersion": "2.1.0",
+          "virtualDaaScore": 600369180
+        },
+        "status": "PREPARED",
+        "transaction": {
+          "gas": 0,
+          "inputs": [
+            {
+              "computeBudget": 100,
+              "previousOutpoint": {
+                "index": 0,
+                "transactionId": "f7a49f773a576e7c391ba3917cf316d26b8986f316a5f209915290a33694e706"
+              },
+              "sequence": 600,
+              "sigOpCount": 0,
+              "verboseData": null
+            }
+          ],
+          "lockTime": 0,
+          "mass": 2747,
+          "outputs": [
+            {
+              "covenant": null,
+              "scriptPublicKey": "000020668155ac2de0d692251e78d4efe45448e2439ae6b74caea95b2df4137e6f163eac",
+              "value": 26000000,
+              "verboseData": null
+            }
+          ],
+          "storageMass": 2747,
+          "subnetworkId": "0000000000000000000000000000000000000000",
+          "verboseData": null,
+          "version": 1
+        },
+        "version": "protected-v1"
+      },
+      {
+        "id": "046a87cd97e50c67fed5acfb18ac8081b5eecedea43591fa7cbdf1d836f606ce",
+        "network": "testnet-10",
+        "node": {
+          "hasUtxoIndex": true,
+          "isSynced": true,
+          "networkId": "testnet-10",
+          "rpcApiRevision": 0,
+          "rpcApiVersion": 1,
+          "serverVersion": "2.1.0",
+          "virtualDaaScore": 600369812
+        },
+        "status": "PREPARED",
+        "transaction": {
+          "gas": 0,
+          "inputs": [
+            {
+              "computeBudget": 100,
+              "previousOutpoint": {
+                "index": 0,
+                "transactionId": "2af3dfd0b4db9c45f0d09785c6c4e439dec485f7034e1e9e5eca7cc0cb305dc0"
+              },
+              "sequence": 1800,
+              "sigOpCount": 0,
+              "verboseData": null
+            }
+          ],
+          "lockTime": 0,
+          "mass": 3205,
+          "outputs": [
+            {
+              "covenant": null,
+              "scriptPublicKey": "0000208fdde7751aa03dac7a761e3de134232e484e37367ac8640f1b7f2b65fd392440ac",
+              "value": 24000000,
+              "verboseData": null
+            }
+          ],
+          "storageMass": 3205,
+          "subnetworkId": "0000000000000000000000000000000000000000",
+          "verboseData": null,
+          "version": 1
+        },
+        "version": "protected-v1"
+      }
+    ],
+    "authorized_pending": "f7a49f773a576e7c391ba3917cf316d26b8986f316a5f209915290a33694e706:0",
+    "unexpected_pending": "00fe1483c1eae111985a5113344064b48fad27ded051ceddc2967de47e042c6f:0",
+    "watcher_state": {
+      "outputs": {},
+      "terminal": {
+        "bf2a9fb6284ad52fd07f36f5ce2a98364b722f690ec354b8cff9d37778c350ce:0": {
+          "kind": "RECOVERED",
+          "transaction_id": "2af3dfd0b4db9c45f0d09785c6c4e439dec485f7034e1e9e5eca7cc0cb305dc0",
+          "daa": 600369529,
+          "custody": "QUARANTINED",
+          "outpoint": "2af3dfd0b4db9c45f0d09785c6c4e439dec485f7034e1e9e5eca7cc0cb305dc0:0",
+          "amount": 26000000
+        },
+        "2530e96f0b4156c00dbd27995aa44a9ec2763cc330d6999ae66ea3a695e85a9c:0": {
+          "kind": "EXECUTED",
+          "transaction_id": "3f0c45adeb00f8427f246cb90528f8ab0c367c17e6128f777bb58aa0111981a9",
+          "daa": 600369930
+        }
+      }
+    },
+    "actions": [
+      {
+        "pending": "00fe1483c1eae111985a5113344064b48fad27ded051ceddc2967de47e042c6f:0",
+        "status": "CONFIRMED",
+        "attempts": 1,
+        "last": 1792372002.5888593,
+        "error": null
+      }
+    ],
+    "quarantine_snapshot": {
+      "node": {
+        "hasUtxoIndex": true,
+        "isSynced": true,
+        "networkId": "testnet-10",
+        "rpcApiRevision": 0,
+        "rpcApiVersion": 1,
+        "serverVersion": "2.1.0",
+        "virtualDaaScore": 600369743
+      },
+      "utxos": [
+        {
+          "address": "kaspatest:qquatv0kgd60n5k4p7wsw8nerz2fqff77qaumfd7ergl6g2ny5dx55j2nz2u7",
+          "outpoint": {
+            "index": 1,
+            "transactionId": "bf2a9fb6284ad52fd07f36f5ce2a98364b722f690ec354b8cff9d37778c350ce"
+          },
+          "utxoEntry": {
+            "amount": 6000000,
+            "blockDaaScore": 600368765,
+            "covenantId": null,
+            "isCoinbase": false,
+            "scriptPublicKey": "00002039d5b1f64374f9d2d50f9d071e79189490253ef03bcda5bec8d1fd2153251a6aac"
+          }
+        },
+        {
+          "address": "kaspatest:pq5at86jarfnp25h9x3z6wpkc48qzje375dhmuytqprcwqmyp6nvctadxdpc8",
+          "outpoint": {
+            "index": 0,
+            "transactionId": "2af3dfd0b4db9c45f0d09785c6c4e439dec485f7034e1e9e5eca7cc0cb305dc0"
+          },
+          "utxoEntry": {
+            "amount": 26000000,
+            "blockDaaScore": 600369529,
+            "covenantId": null,
+            "isCoinbase": false,
+            "scriptPublicKey": "0000aa2029d59f52e8d330aa9729a22d3836c54e014b31f51b7df08b00478703640ea6cc87"
+          }
+        },
+        {
+          "address": "kaspatest:prnkazzg856a2n5yjykq0gvhgrw6gdvrg0yr6aujvjldmjla5etqjujcf5dmt",
+          "outpoint": {
+            "index": 0,
+            "transactionId": "f7a49f773a576e7c391ba3917cf316d26b8986f316a5f209915290a33694e706"
+          },
+          "utxoEntry": {
+            "amount": 28000000,
+            "blockDaaScore": 600369102,
+            "covenantId": null,
+            "isCoinbase": false,
+            "scriptPublicKey": "0000aa20e76e88483d35d54e84912c07a19740dda4358343c83d779264beddcbfda6560987"
+          }
+        }
+      ]
+    },
+    "quarantine_utxo": {
+      "address": "kaspatest:pq5at86jarfnp25h9x3z6wpkc48qzje375dhmuytqprcwqmyp6nvctadxdpc8",
+      "outpoint": {
+        "index": 0,
+        "transactionId": "2af3dfd0b4db9c45f0d09785c6c4e439dec485f7034e1e9e5eca7cc0cb305dc0"
+      },
+      "utxoEntry": {
+        "amount": 26000000,
+        "blockDaaScore": 600369529,
+        "covenantId": null,
+        "isCoinbase": false,
+        "scriptPublicKey": "0000aa2029d59f52e8d330aa9729a22d3836c54e014b31f51b7df08b00478703640ea6cc87"
+      }
+    },
+    "final_snapshot": {
+      "node": {
+        "hasUtxoIndex": true,
+        "isSynced": true,
+        "networkId": "testnet-10",
+        "rpcApiRevision": 0,
+        "rpcApiVersion": 1,
+        "serverVersion": "2.1.0",
+        "virtualDaaScore": 600371690
+      },
+      "utxos": [
+        {
+          "address": "kaspatest:qquatv0kgd60n5k4p7wsw8nerz2fqff77qaumfd7ergl6g2ny5dx55j2nz2u7",
+          "outpoint": {
+            "index": 1,
+            "transactionId": "bf2a9fb6284ad52fd07f36f5ce2a98364b722f690ec354b8cff9d37778c350ce"
+          },
+          "utxoEntry": {
+            "amount": 6000000,
+            "blockDaaScore": 600368765,
+            "covenantId": null,
+            "isCoinbase": false,
+            "scriptPublicKey": "00002039d5b1f64374f9d2d50f9d071e79189490253ef03bcda5bec8d1fd2153251a6aac"
+          }
+        },
+        {
+          "address": "kaspatest:qz8amem4r2srmtr6wc0rmcf5yvhysn3hxeavseq0rdljke0a8yjyqv7p7gz3q",
+          "outpoint": {
+            "index": 0,
+            "transactionId": "046a87cd97e50c67fed5acfb18ac8081b5eecedea43591fa7cbdf1d836f606ce"
+          },
+          "utxoEntry": {
+            "amount": 24000000,
+            "blockDaaScore": 600371596,
+            "covenantId": null,
+            "isCoinbase": false,
+            "scriptPublicKey": "0000208fdde7751aa03dac7a761e3de134232e484e37367ac8640f1b7f2b65fd392440ac"
+          }
+        },
+        {
+          "address": "kaspatest:qpngz4dv9hsddy39reudfmly23ywysu6u6m5et4ftvklgym7dutru0cv8uu8j",
+          "outpoint": {
+            "index": 0,
+            "transactionId": "3f0c45adeb00f8427f246cb90528f8ab0c367c17e6128f777bb58aa0111981a9"
+          },
+          "utxoEntry": {
+            "amount": 26000000,
+            "blockDaaScore": 600369930,
+            "covenantId": null,
+            "isCoinbase": false,
+            "scriptPublicKey": "000020668155ac2de0d692251e78d4efe45448e2439ae6b74caea95b2df4137e6f163eac"
+          }
+        }
+      ]
+    },
+    "descriptor": {
+      "cold_delay_daa": 1800,
+      "cold_spk": "0000208fdde7751aa03dac7a761e3de134232e484e37367ac8640f1b7f2b65fd392440ac",
+      "delay_daa": 600,
+      "idle_spk": "0000aa2091fd28fef84750a9f4baafc72b31b5b26a9bc51fc6165eb7a05b7dc4e4b18f1187",
+      "max_fee": 2000000,
+      "network": "testnet-10",
+      "pending_spk": "0000aa20e76e88483d35d54e84912c07a19740dda4358343c83d779264beddcbfda6560987",
+      "recipient_spk": "000020668155ac2de0d692251e78d4efe45448e2439ae6b74caea95b2df4137e6f163eac",
+      "recovery_spk": "0000aa2029d59f52e8d330aa9729a22d3836c54e014b31f51b7df08b00478703640ea6cc87",
+      "version": "protected-v1"
+    },
+    "audit": [
+      {
+        "kind": "ARMED",
+        "data": {
+          "anchor": "acd6ab4ccfec529961483f3a92bd556ed7ef4f8bec6c154f9036f23ab484d627",
+          "deposits": [
+            "2530e96f0b4156c00dbd27995aa44a9ec2763cc330d6999ae66ea3a695e85a9c:0",
+            "bf2a9fb6284ad52fd07f36f5ce2a98364b722f690ec354b8cff9d37778c350ce:0"
+          ]
+        }
+      },
+      {
+        "kind": "AUTHORIZED",
+        "data": {
+          "expires": 600375032,
+          "pending": "f7a49f773a576e7c391ba3917cf316d26b8986f316a5f209915290a33694e706:0",
+          "root": "2530e96f0b4156c00dbd27995aa44a9ec2763cc330d6999ae66ea3a695e85a9c:0"
+        }
+      },
+      {
+        "kind": "INTENT",
+        "data": {
+          "authorized": true,
+          "daa": 600369102,
+          "pending": "f7a49f773a576e7c391ba3917cf316d26b8986f316a5f209915290a33694e706:0",
+          "root": "2530e96f0b4156c00dbd27995aa44a9ec2763cc330d6999ae66ea3a695e85a9c:0"
+        }
+      },
+      {
+        "kind": "INTENT",
+        "data": {
+          "authorized": false,
+          "daa": 600369293,
+          "pending": "00fe1483c1eae111985a5113344064b48fad27ded051ceddc2967de47e042c6f:0",
+          "root": "bf2a9fb6284ad52fd07f36f5ce2a98364b722f690ec354b8cff9d37778c350ce:0"
+        }
+      },
+      {
+        "kind": "RECOVERY_SUBMITTED",
+        "data": {
+          "pending": "00fe1483c1eae111985a5113344064b48fad27ded051ceddc2967de47e042c6f:0",
+          "txid": "2af3dfd0b4db9c45f0d09785c6c4e439dec485f7034e1e9e5eca7cc0cb305dc0"
+        }
+      },
+      {
+        "kind": "RECOVERY_QUARANTINED",
+        "data": {
+          "amount": 26000000,
+          "outpoint": "2af3dfd0b4db9c45f0d09785c6c4e439dec485f7034e1e9e5eca7cc0cb305dc0:0",
+          "root": "bf2a9fb6284ad52fd07f36f5ce2a98364b722f690ec354b8cff9d37778c350ce:0"
+        }
+      }
+    ]
+  },
+  "second_node_quarantine": {
+    "node": {
+      "hasUtxoIndex": true,
+      "isSynced": true,
+      "networkId": "testnet-10",
+      "rpcApiRevision": 0,
+      "rpcApiVersion": 1,
+      "serverVersion": "2.1.0",
+      "virtualDaaScore": 600370289
+    },
+    "utxos": [
+      {
+        "address": "kaspatest:qquatv0kgd60n5k4p7wsw8nerz2fqff77qaumfd7ergl6g2ny5dx55j2nz2u7",
+        "outpoint": {
+          "index": 1,
+          "transactionId": "bf2a9fb6284ad52fd07f36f5ce2a98364b722f690ec354b8cff9d37778c350ce"
+        },
+        "utxoEntry": {
+          "amount": 6000000,
+          "blockDaaScore": 600368765,
+          "covenantId": null,
+          "isCoinbase": false,
+          "scriptPublicKey": "00002039d5b1f64374f9d2d50f9d071e79189490253ef03bcda5bec8d1fd2153251a6aac"
+        }
+      },
+      {
+        "address": "kaspatest:qpngz4dv9hsddy39reudfmly23ywysu6u6m5et4ftvklgym7dutru0cv8uu8j",
+        "outpoint": {
+          "index": 0,
+          "transactionId": "3f0c45adeb00f8427f246cb90528f8ab0c367c17e6128f777bb58aa0111981a9"
+        },
+        "utxoEntry": {
+          "amount": 26000000,
+          "blockDaaScore": 600369930,
+          "covenantId": null,
+          "isCoinbase": false,
+          "scriptPublicKey": "000020668155ac2de0d692251e78d4efe45448e2439ae6b74caea95b2df4137e6f163eac"
+        }
+      },
+      {
+        "address": "kaspatest:pq5at86jarfnp25h9x3z6wpkc48qzje375dhmuytqprcwqmyp6nvctadxdpc8",
+        "outpoint": {
+          "index": 0,
+          "transactionId": "2af3dfd0b4db9c45f0d09785c6c4e439dec485f7034e1e9e5eca7cc0cb305dc0"
+        },
+        "utxoEntry": {
+          "amount": 26000000,
+          "blockDaaScore": 600369529,
+          "covenantId": null,
+          "isCoinbase": false,
+          "scriptPublicKey": "0000aa2029d59f52e8d330aa9729a22d3836c54e014b31f51b7df08b00478703640ea6cc87"
+        }
+      }
+    ]
+  },
+  "second_node_final": {
+    "node": {
+      "hasUtxoIndex": true,
+      "isSynced": true,
+      "networkId": "testnet-10",
+      "rpcApiRevision": 0,
+      "rpcApiVersion": 1,
+      "serverVersion": "2.1.0",
+      "virtualDaaScore": 600372456
+    },
+    "utxos": [
+      {
+        "address": "kaspatest:qpngz4dv9hsddy39reudfmly23ywysu6u6m5et4ftvklgym7dutru0cv8uu8j",
+        "outpoint": {
+          "index": 0,
+          "transactionId": "3f0c45adeb00f8427f246cb90528f8ab0c367c17e6128f777bb58aa0111981a9"
+        },
+        "utxoEntry": {
+          "amount": 26000000,
+          "blockDaaScore": 600369930,
+          "covenantId": null,
+          "isCoinbase": false,
+          "scriptPublicKey": "000020668155ac2de0d692251e78d4efe45448e2439ae6b74caea95b2df4137e6f163eac"
+        }
+      },
+      {
+        "address": "kaspatest:qquatv0kgd60n5k4p7wsw8nerz2fqff77qaumfd7ergl6g2ny5dx55j2nz2u7",
+        "outpoint": {
+          "index": 1,
+          "transactionId": "bf2a9fb6284ad52fd07f36f5ce2a98364b722f690ec354b8cff9d37778c350ce"
+        },
+        "utxoEntry": {
+          "amount": 6000000,
+          "blockDaaScore": 600368765,
+          "covenantId": null,
+          "isCoinbase": false,
+          "scriptPublicKey": "00002039d5b1f64374f9d2d50f9d071e79189490253ef03bcda5bec8d1fd2153251a6aac"
+        }
+      },
+      {
+        "address": "kaspatest:qz8amem4r2srmtr6wc0rmcf5yvhysn3hxeavseq0rdljke0a8yjyqv7p7gz3q",
+        "outpoint": {
+          "index": 0,
+          "transactionId": "046a87cd97e50c67fed5acfb18ac8081b5eecedea43591fa7cbdf1d836f606ce"
+        },
+        "utxoEntry": {
+          "amount": 24000000,
+          "blockDaaScore": 600371596,
+          "covenantId": null,
+          "isCoinbase": false,
+          "scriptPublicKey": "0000208fdde7751aa03dac7a761e3de134232e484e37367ac8640f1b7f2b65fd392440ac"
+        }
+      }
+    ]
+  },
+  "legacy_final": {
+    "node": {
+      "hasUtxoIndex": true,
+      "isSynced": true,
+      "networkId": "testnet-10",
+      "rpcApiRevision": 0,
+      "rpcApiVersion": 1,
+      "serverVersion": "2.1.0",
+      "virtualDaaScore": 600372432
+    },
+    "utxos": [
+      {
+        "address": "kaspatest:qrcfcwrdl7w8ut3tuvkj665mgl2uctl8zjae5u4esedgy4kmymfdsew9hmsdf",
+        "outpoint": {
+          "index": 1,
+          "transactionId": "21f1ebdbe2c33ac60fb694d4c57c96baf73791b7f3c84ffe8b1094d3fa307a37"
+        },
+        "utxoEntry": {
+          "amount": 24000000,
+          "blockDaaScore": 600368262,
+          "covenantId": null,
+          "isCoinbase": false,
+          "scriptPublicKey": "000020f09c386dff9c7e2e2be32d2d6a9b47d5cc2fe714bb9a72b9865a8256db26d2d8ac"
+        }
+      },
+      {
+        "address": "kaspatest:qrcfcwrdl7w8ut3tuvkj665mgl2uctl8zjae5u4esedgy4kmymfdsew9hmsdf",
+        "outpoint": {
+          "index": 0,
+          "transactionId": "b7828e6f747a26f3d43f3c27eebe7e903ecc1ff7082923c4a7f1f2359bdecbb4"
+        },
+        "utxoEntry": {
+          "amount": 26000000,
+          "blockDaaScore": 599969144,
+          "covenantId": null,
+          "isCoinbase": false,
+          "scriptPublicKey": "000020f09c386dff9c7e2e2be32d2d6a9b47d5cc2fe714bb9a72b9865a8256db26d2d8ac"
+        }
+      },
+      {
+        "address": "kaspatest:qrn45mvv2s5zuarpuzdr8k9auk4e657fz9rwl30acl2fvudqsdpjk6ey7cx93",
+        "outpoint": {
+          "index": 0,
+          "transactionId": "dc7f9a6643e7087014d571d8b3235e02f2af83e27c9b343cd2783d2954c4833d"
+        },
+        "utxoEntry": {
+          "amount": 96000000,
+          "blockDaaScore": 599950831,
+          "covenantId": null,
+          "isCoinbase": false,
+          "scriptPublicKey": "000020e75a6d8c54282e7461e09a33d8bde5ab9d53c91146efc5fdc7d49671a083432bac"
+        }
+      },
+      {
+        "address": "kaspatest:qrn45mvv2s5zuarpuzdr8k9auk4e657fz9rwl30acl2fvudqsdpjk6ey7cx93",
+        "outpoint": {
+          "index": 0,
+          "transactionId": "fc721df0da069607361ec50ea2708a11e59ef7c5e350d9c8a6575f0bf5800bcc"
+        },
+        "utxoEntry": {
+          "amount": 26000000,
+          "blockDaaScore": 599968584,
+          "covenantId": null,
+          "isCoinbase": false,
+          "scriptPublicKey": "000020e75a6d8c54282e7461e09a33d8bde5ab9d53c91146efc5fdc7d49671a083432bac"
+        }
+      },
+      {
+        "address": "kaspatest:qq78m9h93fp6sv8u235umkfvyfqljmqfzr5jnxhpumg64hw4sel8sg877542k",
+        "outpoint": {
+          "index": 2,
+          "transactionId": "1808543e2b465c0900a93cf637adb6089fdc5c00abbca13968a91e04b0979319"
+        },
+        "utxoEntry": {
+          "amount": 36000000,
+          "blockDaaScore": 599967848,
+          "covenantId": null,
+          "isCoinbase": false,
+          "scriptPublicKey": "0000203c7d96e58a43a830fc5469cdd92c2241f96c0910e9299ae1e6d1aaddd5867e78ac"
+        }
+      }
+    ]
+  },
+  "public_evidence_note": "Signature scripts, signed outbox payloads and local receipt paths are omitted. Complete raw receipts and SQLite state are preserved only in the private test-session backup."
+}
