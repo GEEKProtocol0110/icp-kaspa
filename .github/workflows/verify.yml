@@ -21,3 +21,14 @@ jobs:
       - run: python3 scripts/transfer_anchor.py
       - run: sh -n deploy/icp-recovery-command
       - run: systemd-analyze verify deploy/*.service deploy/*.timer
+      - run: cargo build --locked --features live --bins --example prepare_transfer_anchor
+      - run: sha256sum target/debug/icp target/debug/examples/prepare_transfer_anchor > target/anchor-binaries.sha256
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: tn10-anchor-binaries
+          retention-days: 7
+          if-no-files-found: error
+          path: |
+            target/debug/icp
+            target/debug/examples/prepare_transfer_anchor
+            target/anchor-binaries.sha256
