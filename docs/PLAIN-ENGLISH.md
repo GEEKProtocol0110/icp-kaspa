@@ -82,6 +82,12 @@ An independent fake checkpoint store blocks old writers and detects older
 component backups. Everything it delivers is a non-secret placeholder;
 permission and recipient authentication are supplied by the test harness.
 
+A separate [signed-request lab](SIGNED-COORDINATOR-LAB.md) now adds two
+permission signatures, a fresh recipient signature before reservation/delivery,
+and signed revocation. These checks run together with the recovery simulation.
+The recipient is a configured signing key, while delivery-key ownership and
+record/chain facts are still fixtures. No real decryption key is released.
+
 The older model allows copied databases to accept separate claims. The new
 simulation adds a trusted witness, but restoring that witness with every
 store still loses history. Both models also recognize that a chain change
@@ -102,7 +108,7 @@ original document is factually true.
 | Simulation or model | Invented chain observations or placeholders exercise the rules; they are not live-chain evidence |
 | Proposal or research | A direction being specified; a working, secure deployment has not been established |
 
-There are **354 automated tests** today. Passing tests helps catch mistakes; it
+There are **402 automated tests** today. Passing tests helps catch mistakes; it
 does not replace an independent security review or prove production readiness.
 The project is still an experimental Testnet-10 prototype.
 

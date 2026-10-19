@@ -366,36 +366,41 @@ class Coordinator:
         if type(context) is not Context:
             raise ModelError('Exact synthetic Context required')
         with self._step() as (lease, loaded):
-            ledger = loaded['ledger'][0]
-            body = dict(service=self.policy.service, budget=self.policy.budget, **asdict(context))
-            context_hash = digest(body)
-            old = ledger['grants'].get(context.grant)
-            if old:
-                if old['context_hash'] != context_hash:
-                    raise IntegrityError('Conflicting context for stable grant operation')
-                return  # Idempotent reconciliation, never new permission or a quota charge.
-            row = dict(context=body, context_hash=context_hash, revoked=False,
-                       authorization=None, response=None, response_hash=None,
-                       used=False, possible_disclosure=False)
-            self._eligible(lease, ledger, row, chain=False)
-            if context.challenge in ledger['challenges'] or context.ticket in ledger['tickets']:
-                raise ModelError('Challenge or exact ticket already claimed')
-            # A single immutable window identity is pinned by its start; no overlapping
-            # relabeling or policy-epoch budget reset is accepted.
-            window = str(context.window_start)
-            for start, charge in ledger['charges'].items():
-                if int(start) < context.window_end and context.window_start < charge['end'] and start != window:
-                    raise ModelError('Overlapping budget window')
-            charge = ledger['charges'].setdefault(window, dict(end=context.window_end, count=0, bytes=0))
-            if charge['end'] != context.window_end:
-                raise ModelError('Budget window changed')
-            if charge['count'] + 1 > self.policy.count_limit or charge['bytes'] + context.size > self.policy.byte_limit:
-                raise ModelError('Original budget exhausted')
-            charge['count'] += 1; charge['bytes'] += context.size
-            ledger['grants'][context.grant] = row
-            ledger['challenges'].append(context.challenge); ledger['tickets'].append(context.ticket)
-            self._save(lease, loaded, 'ledger', 'reserve')
+            self._reserve_in_step(lease, loaded, context)
         self.hook('reserve:acknowledged')
+
+    def _reserve_in_step(self, lease, loaded, context, *, extra_context=None, evidence=None):
+        ledger = loaded['ledger'][0]
+        body = dict(service=self.policy.service, budget=self.policy.budget, **asdict(context), **(extra_context or {}))
+        context_hash = digest(body)
+        old = ledger['grants'].get(context.grant)
+        if old:
+            if old['context_hash'] != context_hash:
+                raise IntegrityError('Conflicting context for stable grant operation')
+            return  # Idempotent reconciliation, never new permission or a quota charge.
+        row = dict(context=body, context_hash=context_hash, revoked=False,
+                   authorization=None, response=None, response_hash=None,
+                   used=False, possible_disclosure=False)
+        if evidence is not None:
+            row['signed_admission'] = evidence
+        self._eligible(lease, ledger, row, chain=False)
+        if context.challenge in ledger['challenges'] or context.ticket in ledger['tickets']:
+            raise ModelError('Challenge or exact ticket already claimed')
+        # A single immutable window identity is pinned by its start; no overlapping
+        # relabeling or policy-epoch budget reset is accepted.
+        window = str(context.window_start)
+        for start, charge in ledger['charges'].items():
+            if int(start) < context.window_end and context.window_start < charge['end'] and start != window:
+                raise ModelError('Overlapping budget window')
+        charge = ledger['charges'].setdefault(window, dict(end=context.window_end, count=0, bytes=0))
+        if charge['end'] != context.window_end:
+            raise ModelError('Budget window changed')
+        if charge['count'] + 1 > self.policy.count_limit or charge['bytes'] + context.size > self.policy.byte_limit:
+            raise ModelError('Original budget exhausted')
+        charge['count'] += 1; charge['bytes'] += context.size
+        ledger['grants'][context.grant] = row
+        ledger['challenges'].append(context.challenge); ledger['tickets'].append(context.ticket)
+        self._save(lease, loaded, 'ledger', 'reserve')
 
     def observe(self, grant, views=(True, True)):
         label(grant)
@@ -454,32 +459,40 @@ class Coordinator:
     def dispatch(self, grant, request, nonce, response_hash):
         label(request); label(nonce)
         with self._step() as (lease, loaded):
-            ledger = loaded['ledger'][0]
-            row = self._row(loaded, grant)
-            self._eligible(lease, ledger, row)
-            if row['response'] is None or row['context']['request'] != request or row['response_hash'] != response_hash:
-                raise ModelError('Committed response and exact authenticated-request stub required')
-            nonces = loaded['delivery'][0]['nonces']
-            if nonce in nonces:
-                raise ModelError('Dispatch nonce already consumed')
-            nonces[nonce] = dict(grant=grant, request=request, response_hash=response_hash,
-                                 generation=self.generation, revocations=ledger['revocations'],
-                                 policy_epoch=ledger['policy_epoch'], delivery_epoch=ledger['delivery_epoch'],
-                                 deadline=min(row['context']['expires'], row['context']['window_end']))
-            self._save(lease, loaded, 'delivery', 'dispatch-accepted')
-            response = canonical(row['response'])
+            response = self._dispatch_in_step(lease, loaded, grant, request, nonce, response_hash)
         # Final-sample-to-arrival race is deliberate: accepted bytes cannot be recalled.
         self.hook('dispatch:acknowledged')
         return response
 
+    def _dispatch_in_step(self, lease, loaded, grant, request, nonce, response_hash, *, evidence=None):
+        ledger = loaded['ledger'][0]
+        row = self._row(loaded, grant)
+        self._eligible(lease, ledger, row)
+        if row['response'] is None or row['context']['request'] != request or row['response_hash'] != response_hash:
+            raise ModelError('Committed response and exact authenticated-request stub required')
+        nonces = loaded['delivery'][0]['nonces']
+        if nonce in nonces:
+            raise ModelError('Dispatch nonce already consumed')
+        nonces[nonce] = dict(grant=grant, request=request, response_hash=response_hash,
+                             generation=self.generation, revocations=ledger['revocations'],
+                             policy_epoch=ledger['policy_epoch'], delivery_epoch=ledger['delivery_epoch'],
+                             deadline=min(row['context']['expires'], row['context']['window_end']))
+        if evidence is not None:
+            nonces[nonce]['signed_request'] = evidence
+        self._save(lease, loaded, 'delivery', 'dispatch-accepted')
+        return canonical(row['response'])
+
     def revoke(self, grant):
         with self._step() as (lease, loaded):
-            row = self._row(loaded, grant)
-            if not row['revoked']:
-                row['revoked'] = True
-                loaded['ledger'][0]['revocations'] += 1
-                self._save(lease, loaded, 'ledger', 'revoke')
+            self._revoke_in_step(lease, loaded, grant)
         self.hook('revoke:acknowledged')
+
+    def _revoke_in_step(self, lease, loaded, grant):
+        row = self._row(loaded, grant)
+        if not row['revoked']:
+            row['revoked'] = True
+            loaded['ledger'][0]['revocations'] += 1
+            self._save(lease, loaded, 'ledger', 'revoke')
 
     def advance_epochs(self, policy_epoch, delivery_epoch):
         integer(policy_epoch); integer(delivery_epoch)

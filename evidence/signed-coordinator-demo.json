@@ -1,0 +1,85 @@
+{
+  "admission_request": {
+    "challenge": {
+      "body": {
+        "admission_hash": null,
+        "authority": "model:authority-c4c5897be6518f8d85442f26022f327d",
+        "binding": "model:delivery-certificate",
+        "budget": "model:budget",
+        "delivery_epoch": 0,
+        "expires_at": 130,
+        "generation": 1,
+        "grant": "model:grant",
+        "issued_at": 100,
+        "mode": "LOCAL_SIGNED_COORDINATOR_SYNTHETIC_RESPONSES_NO_CHAIN",
+        "network": "testnet-10-simulation",
+        "nonce": "model:challenge-37699b0d254fcc0ee7c784d95f1fc124",
+        "permission_hash": "e3748f4054697220cf34147610978f330058f42a1ad1f34a6fadae87b1a6e5c7",
+        "policy_epoch": 0,
+        "policy_id": "5509339e62c98ef9f0e7c443adfba861592dea5525917f0066cf452edf680704",
+        "purpose": "reserve",
+        "recipient_key": "9793aa984ea29549d151d3e2c362a4409e8dac74e37670560210c00a1a210232",
+        "request": "model:approved-recipient-request",
+        "response_hash": null,
+        "service": "model:service",
+        "version": "icp-signed-coordinator-lab-v0"
+      },
+      "signature": "fce92f9491f3c52ab0d22e47ba51436ae11644a76bc3b69131189a943564b0f5a8b74617e0968aa511557a551c2f2f870e3a5673e3c979c650675edbd10d3305"
+    },
+    "signature": "bc883a5215ba9f542854accedaef575045d0cc75119e0ecf8c38b547c91a554beb88a997299482f9ef1e9cd4c117bd55a51c3886afb23ce8ec9f8968cfe2370e"
+  },
+  "broadcasts": 0,
+  "content_keys": 0,
+  "identical_retry": true,
+  "mode": "LOCAL_SIGNED_COORDINATOR_SYNTHETIC_RESPONSES_NO_CHAIN",
+  "permission": {
+    "approval": "da6b9310fa5fe0b9b0f40ebbb47cf10708adfa641bda17b57130eb49fd534d5a3f1c51b15c0f058cf99fb4abeb8f169f464f6a4795ac9cefe0129ca5a1ac7005",
+    "body": {
+      "budget": "model:budget",
+      "context": {
+        "binding": "model:delivery-certificate",
+        "challenge": "model:request-challenge",
+        "cipher": "model:cipher-digest",
+        "consume": "model:exact-consume",
+        "delivery_epoch": 0,
+        "expires": 200,
+        "grant": "model:grant",
+        "not_before": 100,
+        "policy_epoch": 0,
+        "recipient": "model:recipient",
+        "record": "model:record/version-1",
+        "request": "model:approved-recipient-request",
+        "size": 128,
+        "ticket": "model:issue/outpoint-0",
+        "window_end": 180,
+        "window_start": 100
+      },
+      "mode": "LOCAL_SIGNED_COORDINATOR_SYNTHETIC_RESPONSES_NO_CHAIN",
+      "network": "testnet-10-simulation",
+      "policy_id": "5509339e62c98ef9f0e7c443adfba861592dea5525917f0066cf452edf680704",
+      "recipient_key": "9793aa984ea29549d151d3e2c362a4409e8dac74e37670560210c00a1a210232",
+      "service": "model:service",
+      "version": "icp-signed-coordinator-lab-v0"
+    },
+    "sender_signature": "5f5135d148c729333c356b393ffb87cffa017551a20c316105c1dd3ba73e5af2ecfdbfec7241f3df582b03fe29bde1c49ab7f5c7ef07a393c0fea84b8ca16907"
+  },
+  "rpc_calls": 0,
+  "status": {
+    "charges": {
+      "100": {
+        "bytes": 128,
+        "count": 1,
+        "end": 180
+      }
+    },
+    "committed": true,
+    "grant": "model:grant",
+    "mode": "SYNTHETIC_COORDINATOR_NO_KEYS_NO_CHAIN",
+    "possible_disclosure": true,
+    "prepared": true,
+    "reserved": true,
+    "response_hash": "5a111e129591bd3110dc3f811d4f457c2c91e0e397edb2d6e7925d76e30b9ecc",
+    "revoked": true,
+    "used": true
+  }
+}
