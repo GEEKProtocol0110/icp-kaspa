@@ -151,6 +151,7 @@ class ReleaseLedger:
     def _transaction(self, initializing=False):
         self.db.execute('BEGIN IMMEDIATE')
         rollback_clock = False
+        observed_clock = 0
         try:
             row = self.db.execute('SELECT * FROM meta').fetchone()
             try:
@@ -158,6 +159,7 @@ class ReleaseLedger:
             except Exception:
                 rollback_clock = True
                 raise TransferError('Uncertain clock; ledger halted') from None
+            observed_clock = now
             if row:
                 require(not row['halted'] or initializing, 'Ledger halted; explicit recovery required')
                 rollback_clock = now < row['last_clock']
@@ -170,6 +172,7 @@ class ReleaseLedger:
             except Exception:
                 rollback_clock = True
                 raise TransferError('Uncertain clock; ledger halted') from None
+            observed_clock = max(observed_clock, end)
             rollback_clock = end < now
             require(not rollback_clock, 'Clock rollback; ledger halted')
             require(self._deadline is None or end < self._deadline, 'Deadline crossed before commit')
@@ -179,10 +182,12 @@ class ReleaseLedger:
             self.db.commit()
         except BaseException:
             self.db.rollback()
-            if rollback_clock:
-                self.db.execute('BEGIN IMMEDIATE')
-                self.db.execute('UPDATE meta SET halted=1 WHERE id=1')
-                self.db.commit()
+            # A denied operation must not erase an already observed later clock.
+            # Preserve only clock/halt metadata; grant/nonce/quota writes roll back.
+            self.db.execute('BEGIN IMMEDIATE')
+            self.db.execute('UPDATE meta SET last_clock=MAX(last_clock,?),halted=MAX(halted,?) WHERE id=1',
+                            (observed_clock, int(rollback_clock)))
+            self.db.commit()
             raise
 
     def _grant(self, grant):

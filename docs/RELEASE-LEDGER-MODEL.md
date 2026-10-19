@@ -66,6 +66,8 @@ reorg, revocation and failed delivery never refund quota automatically.
 The trusted clock is checked at transaction entry and before commit. Chain
 freshness is checked at both points for chain-gated operations. A clock error
 or backward movement latches a durable halt; reopening does not clear it.
+Rejected operations preserve the latest observed clock while rolling back
+their grant/nonce/quota changes; denial must not hide a later backward jump.
 `halt()` also records explicit continuity uncertainty. Status/outbox reads remain
 available for inspection. There is intentionally no automatic reset, epoch
 rotation, database migration or unhalt API; a reviewed recovery procedure is
@@ -91,6 +93,9 @@ counterexample test copies an unclaimed database and successfully claims the
 same grant independently in both copies. This implementation cannot detect
 that operation. Writer fencing, anti-rollback storage, recovery audit and
 multi-host continuity remain gates, as does authenticated policy rotation.
+An abrupt process/host failure cannot durably record a clock sample it never
+committed. Clock continuity across that gap is a trusted operational assumption;
+reconcile uncertainty and halt before resuming.
 
 `FakeChain` is trusted mutable test input. Two model views are not independent
 nodes, operator ownership evidence, consensus proof or finality. Removing either

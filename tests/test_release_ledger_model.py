@@ -358,9 +358,13 @@ ledger.commit_response(sys.argv[3],chain)
         with self.assertRaises(TransferError): self.ledger.retrieve(body, signature, self.chain)
 
     def test_clock_rollback_latches_halt_across_restart(self):
-        self.now = 99
+        # Even a rejected expired request must preserve the observed clock.
+        self.now = 300
+        with self.assertRaisesRegex(TransferError, 'deadline'):
+            self.ledger.challenge(self.grant, 'request')
+        self.now = 100
         with self.assertRaisesRegex(TransferError, 'rollback'): self.ledger.challenge(self.grant, 'request')
-        self.now = 100; self.reopen()
+        self.now = 300; self.reopen()
         with self.assertRaisesRegex(TransferError, 'halted'): self.reserve()
 
     def test_uncertain_clock_latches_halt(self):

@@ -19,7 +19,8 @@ The 44 new Python tests cover:
   effect intent; actual subprocess exit before/after response commit and restart
   retrieval of identical bytes.
 - Durable clock rollback/error halts, pinned policy/epoch/budget, revocation and
-  explicit uncertainty halts. Real-adapter objects are rejected.
+  explicit uncertainty halts. Rejected requests preserve observed clock progress,
+  so denial cannot hide a later backward jump. Real-adapter objects are rejected.
 - Two explicit limitation counterexamples: cloned databases can each claim the
   same grant; a reorg after the final sample can precede the placeholder return.
 
