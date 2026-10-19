@@ -13,7 +13,26 @@ engineering checkpoint first, followed by earlier milestones.
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local recipient-specific encryption and simulated release accounting; no remote release service |
 | Automated coverage | 302 tests: 68 Rust + 234 Python |
-| Next engineering work | Review delivery/identity binding; define service-owned keys, copy safeguards and native ticket/refund rules |
+| Next engineering work | Model coordinated vault/ledger/delivery recovery; review real delivery, fencing/storage and native ticket/refund implementations |
+
+## Release-service design checkpoint
+
+- docs/RELEASE-SERVICE-DESIGN.md proposes the ownership and recovery boundaries
+  connecting the existing R0 draft, recipient lab and simulated grant ledger.
+  It defines private per-version content keys, one stable response operation
+  per grant, a private vault outbox, ledger commit and a separate delivery gate.
+- Cross-store failures recover the same saved candidate/response. Revocation,
+  expiry and reorgs stop eligibility without refunding quota or erasing used
+  grants. Candidate encrypted key responses are treated as disclosure capabilities.
+- A proposed independent authority would fence obsolete writers and acknowledge
+  continuity checkpoints. Restored snapshots cannot silently reset claims,
+  nonces, revocations or clock progress. Providers/enforcement are unimplemented.
+- This is a design-only change. The 302-test implementation checkpoint is
+  unchanged; no service, key store, remote endpoint or funded ticket was created.
+  Publication is not independent security review or R0 wire/suite adoption.
+- Next executable milestone: synthetic-only coordinator recovery model with
+  separate fake vault, fencing/checkpoint authority and delivery gate. Keep
+  responses non-secret and disconnected from real keys/native transactions.
 
 ## Local recipient-encryption lab
 

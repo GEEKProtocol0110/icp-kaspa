@@ -17,6 +17,10 @@ tests local HPKE message encryption and identity/delivery-key possession
 binding. It is not connected to the model ledger and does not adopt an R0
 suite, service-owned content-key store or protected remote-release protocol.
 
+The [release-service design](RELEASE-SERVICE-DESIGN.md) adds proposed key-store,
+response outbox, delivery-gate and recovery boundaries. It retains this draft's
+unimplemented wire, cryptographic review and native-ticket gates.
+
 **Status: engineering proposal, not implemented or an adopted protocol.**
 This defines the next bounded experiment after the
 [funded transfer anchor](ICP-Transfer-Anchor-Live-Proof.md). It changes no custody
@@ -249,8 +253,10 @@ Freeze the following before implementing remote release or funded tickets:
 - Metadata review for public ticket/grant commitments, recipient linkage and
   object popularity. Encryption alone does not hide those access patterns.
 
-Next deliverable: a synthetic-data-only local release ledger and fake-chain
-adapter implementing these transitions and crash/concurrency/reorg cases.
-It must remain clearly labeled a service-enforced model. Connect a real chain
-adapter and recipient key-delivery implementation only after their separate
-gates pass; do not reuse a dated anchor observation as a current access grant.
+The [synthetic local ledger](RELEASE-LEDGER-MODEL.md) delivered the initial
+state/accounting experiment. Next: a synthetic-only coordinator recovery model
+following the [release-service design](RELEASE-SERVICE-DESIGN.md), with separate
+fake vault, fencing/checkpoint authority and delivery gate. Keep responses
+non-secret and the service-enforced model label explicit. Connect real keys,
+chain adapters and remote delivery only after their separate gates pass; do not
+reuse a dated anchor observation as a current access grant.

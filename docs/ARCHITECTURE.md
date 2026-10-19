@@ -25,6 +25,12 @@ P2PK ticket would serve as a chain witness; the service would enforce access
 rules and quotas. Used-grant and possible-disclosure history must survive
 changes to chain observations. The complete release service is unimplemented.
 
+The separate [release-service design](RELEASE-SERVICE-DESIGN.md) specifies
+proposed content-key ownership, private response preparation, authoritative
+commit and delivery boundaries. It adds cross-store recovery, revocation order
+and independently maintained fencing/continuity requirements. These are design
+requirements for a future coordinator, not guarantees supplied by today's labs.
+
 ## Responsibilities and trust
 
 | Component | Responsibility | Boundary |

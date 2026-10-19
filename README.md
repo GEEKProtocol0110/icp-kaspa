@@ -89,7 +89,13 @@ A person who eventually receives a real key can still read or copy the data;
 one authorized release does not mean only one viewing.
 
 [Read the proposal](docs/READ-TICKET-RELEASE-DRAFT.md) ·
+[Release-service design](docs/RELEASE-SERVICE-DESIGN.md) ·
 [Understand the current limits](docs/SECURITY-TARGET.md)
+
+The service design now specifies key ownership, saved-response delivery,
+revocation and backup recovery. Its next implementation step is a simulation
+of those components failing and restarting together. Remote release remains
+behind separate implementation and review gates.
 
 ## Explore or build
 
@@ -118,7 +124,7 @@ move funds. For live testnet instructions, use the developer setup guide.
 
 | Priority | Next work |
 | --- | --- |
-| Private data access | Independently review delivery/identity binding; specify service-owned key handling and ticket/refund rules before remote release |
+| Private data access | Model the [release-service design](docs/RELEASE-SERVICE-DESIGN.md) across vault/ledger failures; review delivery/identity binding and native ticket/refund rules before remote release |
 | Reliable operation | Prevent competing service copies from reusing grants; define safe backup/recovery; validate separate signer hosts and alerts |
 | Stronger custody | Specify key replacement and recovery from the cold stage, then test and independently review the design |
 | Longer-term research | Proof systems and broader data-access enforcement, with separate specifications and evidence |

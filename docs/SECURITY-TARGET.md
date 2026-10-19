@@ -66,6 +66,13 @@ fake chain views and non-secret placeholders. It delivers no content key.
 Copied databases and reorgs after the final sample have explicit counterexample
 tests; neither global uniqueness nor atomic chain-to-delivery behavior is claimed.
 
+The [release-service design](RELEASE-SERVICE-DESIGN.md) proposes a private key
+vault, authoritative grant/response ledger and delivery gate, with independent
+writer fencing and recovery checkpoints. It makes encrypted candidate responses
+part of the disclosure boundary and defines revocation/dispatch ordering.
+Those requirements are not implemented anti-rollback protection, hardware
+isolation or a reviewed remote release service.
+
 ## Implemented protected-v1 claim
 
 While value remains under the covenant, a compromised owner key cannot change
