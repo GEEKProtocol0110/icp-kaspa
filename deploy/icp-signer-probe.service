@@ -1,0 +1,20 @@
+[Unit]
+Description=Probe ICP remote recovery signer without blocking watcher
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=icp-watchtower
+Group=icp-watchtower
+WorkingDirectory=/opt/icp
+ExecStart=/usr/bin/python3 /opt/icp/scripts/signer_probe.py --config /etc/icp-watchtower/signer.json --descriptor /etc/icp/watchtower.json --db /var/lib/icp-watchtower/watch.sqlite
+TimeoutStartSec=45
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ReadWritePaths=/var/lib/icp-watchtower
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6

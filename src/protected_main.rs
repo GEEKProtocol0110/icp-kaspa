@@ -142,6 +142,9 @@ async fn submit(
     prepare: bool,
 ) -> Result<()> {
     let node = gate(c).await?;
+    let receipt_dir = std::env::var_os("ICP_PROTECTED_RECEIPT_DIR").map(PathBuf::from);
+    let dir = receipt_dir.as_deref().unwrap_or(dir);
+    fs::create_dir_all(dir)?;
     let path = dir.join(format!(
         "{}-{}-{}.json",
         SystemTime::now().duration_since(UNIX_EPOCH)?.as_millis(),

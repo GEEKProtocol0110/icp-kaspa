@@ -2,12 +2,13 @@
 """Deterministic TN10 watchtower. SQLite chain undo + durable signed outbox.
 
 The controller never reads keys. Its signer adapter invokes prepare-recover;
-the test CLI currently keeps conventional test keys on the same host.
+protected deployments can delegate signing to an SSH forced-command service.
 """
 import argparse
 import fcntl
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import sqlite3
@@ -178,7 +179,8 @@ class Native:
         if not binary.exists():binary=ROOT/'target/debug/icp'
         self.command=command or [str(binary)]
     def call(self,*args,json_output=True):
-        p=subprocess.run(self.command+list(args),cwd=ROOT,text=True,capture_output=True,timeout=35)
+        env={k:v for k,v in os.environ.items() if k!='ICP_SIGNER_KEY_FILE'} if args[0] in ('status','descriptor','anchor','scan','broadcast') else None
+        p=subprocess.run(self.command+list(args),cwd=ROOT,text=True,capture_output=True,timeout=35,env=env)
         if p.returncode:
             raise WatchError(p.stderr.strip() or p.stdout.strip() or 'Native CLI failed')
         return json.loads(p.stdout) if json_output else p.stdout
@@ -187,9 +189,18 @@ class Native:
     def prepare(self,pending):
         return self.call('prepare-recover',pending)
     def broadcast(self,payload):
-        path=ROOT/'runtime/outbox'/f"{txid(payload['id'])}.json"
+        path=Path(os.environ.get('ICP_OUTBOX_DIR',ROOT/'runtime/outbox'))/f"{txid(payload['id'])}.json"
         path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(payload))
         return self.call('broadcast',str(path),json_output=False)
+
+def validate_recovery(payload,pending,amount,config):
+    tx=payload['transaction']
+    if len(tx['inputs'])!=1 or len(tx['outputs'])!=1:
+        raise WatchError('Recovery signer returned unexpected transaction layout')
+    out=tx['outputs'][0]
+    if point(tx['inputs'][0]['previousOutpoint'])!=pending or out['scriptPublicKey']!=config['recovery_spk'] or out.get('covenant') is not None or not 0<integer(out['value'])<=integer(amount) or amount-out['value']>config['max_fee']:
+        raise WatchError('Recovery signer returned unexpected transaction')
+    txid(payload['id'])
 
 def act(store,adapter,execute=False,now=None):
     """Always reconcile exact live UTXOs before signing or re-broadcasting."""
@@ -211,10 +222,7 @@ def act(store,adapter,execute=False,now=None):
         row=store.db.execute('SELECT * FROM actions WHERE pending=?',(pending,)).fetchone()
         try:
             payload=json.loads(row['payload']) if row['payload'] else adapter.prepare(pending)
-            tx=payload['transaction'];out=tx['outputs'][0]
-            if len(tx['inputs'])!=1 or point(tx['inputs'][0]['previousOutpoint'])!=pending or len(tx['outputs'])!=1 or out['scriptPublicKey']!=store.config['recovery_spk'] or not 0<integer(out['value'])<=expected['amount'] or expected['amount']-out['value']>store.config['max_fee']:
-                raise WatchError('Recovery signer returned unexpected transaction')
-            txid(payload['id'])
+            validate_recovery(payload,pending,expected['amount'],store.config)
             # Durable signed outbox BEFORE the network side effect.
             with store.db:
                 store.db.execute('UPDATE actions SET payload=?,status=?,attempts=attempts+1,last=? WHERE pending=?',(json.dumps(payload),'PREPARED',now,pending))
@@ -241,8 +249,19 @@ def arm(adapter,db,config,deposits):
     config.write_text(json.dumps(descriptor,indent=2)+'\n')
     store=Store(db,descriptor);store.arm(anchor['anchor'],after);return store
 
+def heartbeat(store,node,execute,remote=False,now=None):
+    now=time.time() if now is None else now
+    daa=integer(node['virtualDaaScore'])
+    previous=json.loads(store.get('heartbeat') or '{}')
+    advanced=now if previous.get('daa')!=daa else previous.get('advanced_at',now)
+    with store.db:
+        store.put('health_limits',json.dumps({'delay_daa':store.config['delay_daa']}))
+        store.put('heartbeat',json.dumps({'at':now,'advanced_at':advanced,'daa':daa,'execute':execute,'remote_signer':remote}))
+        store.put('health_error','')
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('command',choices=['arm','run','authorize','status'])
+    p.add_argument('--remote-signer',type=Path,help='Pinned SSH recovery-only signer config')
     p.add_argument('--cli',type=Path,help='Explicit native CLI, e.g. target/debug/icp-protected')
     p.add_argument('--db',type=Path,default=ROOT/'runtime/watchtower.sqlite');p.add_argument('--config',type=Path,default=ROOT/'runtime/watchtower-config.json')
     p.add_argument('--deposit',action='append',default=[]);p.add_argument('--pending');p.add_argument('--expires-daa',type=int)
@@ -259,16 +278,24 @@ def main():
             if len(a.deposit)!=1 or not a.pending or a.expires_daa is None:p.error('authorize needs one --deposit, --pending TXID:0 and --expires-daa')
             store.authorize(a.deposit[0],a.pending,a.expires_daa)
         elif a.command=='run':
-            last_event=0
+            if a.remote_signer:
+                from recovery_signer import RemoteNative
+                native=RemoteNative(native.command,a.remote_signer,store.config)
+            last_event=int(store.get('logged_event') or 0)
             while True:
                 try:
-                    response=native.call('scan',store.get('tip'));store.apply(response);act(store,native,a.execute)
+                    response=native.call('scan',store.get('tip'));scanned_at=time.time()
+                    store.apply(response);act(store,native,a.execute)
+                    heartbeat(store,response['node'],a.execute,remote=bool(a.remote_signer),now=scanned_at)
                 except Exception as error:
-                    with store.db:store.audit('WATCH_ERROR',{'error':str(error)})
+                    with store.db:
+                        store.audit('WATCH_ERROR',{'error':str(error)})
+                        store.put('health_error',str(error))
                     raise
                 for event in store.db.execute('SELECT * FROM audit WHERE id>? ORDER BY id',(last_event,)).fetchall():
                     print(json.dumps({'event_id':event['id'],'kind':event['kind'],'data':json.loads(event['data'])}),flush=True)
                     last_event=event['id']
+                with store.db:store.put('logged_event',str(last_event))
                 if a.once:break
                 time.sleep(max(a.poll,0.1))
         print(json.dumps({'tip':store.get('tip'),'state':store.state(),'actions':[dict(r) for r in store.db.execute('SELECT * FROM actions')]},indent=2))

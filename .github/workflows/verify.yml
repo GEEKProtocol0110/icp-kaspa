@@ -16,3 +16,5 @@ jobs:
       - run: cargo fmt --check
       - run: cargo test --locked --features live
       - run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+      - run: sh -n deploy/icp-recovery-command
+      - run: systemd-analyze verify deploy/*.service deploy/*.timer

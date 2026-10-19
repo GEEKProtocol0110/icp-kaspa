@@ -1,0 +1,9 @@
+{
+  "cli": "/opt/icp/target/release/icp-protected",
+  "working_dir": "/opt/icp",
+  "state_dir": "/etc/icp/protected",
+  "receipt_dir": "/var/lib/icp-recovery/receipts",
+  "recovery_key": "/etc/icp-recovery/key.json",
+  "rpc_url": "ws://127.0.0.1:17210",
+  "descriptor_sha256": "REPLACE_WITH_VERIFIED_DESCRIPTOR_SHA256"
+}

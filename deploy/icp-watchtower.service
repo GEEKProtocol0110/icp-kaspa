@@ -1,0 +1,37 @@
+[Unit]
+Description=ICP protected TN10 watchtower
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=icp-watchtower
+Group=icp-watchtower
+WorkingDirectory=/opt/icp
+Environment=ICP_PROTECTED_STATE_DIR=/etc/icp/protected
+Environment=ICP_PROTECTED_RECEIPT_DIR=/var/lib/icp-watchtower/receipts
+Environment=ICP_OUTBOX_DIR=/var/lib/icp-watchtower/outbox
+Environment=ICP_RPC_URL=ws://127.0.0.1:17210
+UnsetEnvironment=ICP_SIGNER_KEY_FILE SSH_AUTH_SOCK
+ExecStartPre=/usr/bin/test -s /var/lib/icp-watchtower/watch.sqlite
+ExecStart=/usr/bin/python3 /opt/icp/scripts/watchtower.py run --execute --cli /opt/icp/target/release/icp-protected --db /var/lib/icp-watchtower/watch.sqlite --config /etc/icp/watchtower.json --remote-signer /etc/icp-watchtower/signer.json
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=10
+UMask=0077
+StateDirectory=icp-watchtower
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+[Install]
+WantedBy=multi-user.target

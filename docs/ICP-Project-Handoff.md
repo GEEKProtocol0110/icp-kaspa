@@ -1,3 +1,24 @@
+# ICP - recovery signer and supervision kit checkpoint
+
+**October 19, 2026: offline deployment kit verified; independent hosting pending.**
+
+- Recovery-only SSH forced command and pinned client preserve fixed-quarantine
+  custody, independent node checks and the watcher's durable signed outbox.
+- Supervised watcher, independent readiness probe, and read-only health timer
+  are supplied with administrator installation steps. No service was installed.
+- All 105 checks pass: 59 Rust and 46 Python. Unit syntax and shell wrapper validate.
+- Read [SIGNER-DEPLOYMENT.md](SIGNER-DEPLOYMENT.md),
+  [signer-verification.md](../evidence/signer-verification.md) and PROJECT-STATUS.md.
+- Next: supply two independent Linux hosts, verify SSH/public-policy pins, install
+  the reviewed units, connect an approved external alert destination, then perform
+  separately journaled TN10 outage/restart/recovery acceptance. No live SSH host
+  isolation or external alert receipt has been demonstrated by the offline tests.
+- No new testnet transaction, balance change or private-session archive update.
+  Funded v1 proof below remains valid; cold rescue/rotation and external review
+  remain outstanding.
+
+## Earlier checkpoints (historical; superseded above)
+
 # ICP - funded protected recovery checkpoint
 
 **V1 funded TN10 acceptance passed. PR #1 is merged.**

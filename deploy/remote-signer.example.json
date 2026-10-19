@@ -1,0 +1,8 @@
+{
+  "host": "signer.example.invalid",
+  "user": "icp-recovery",
+  "port": 22,
+  "identity_file": "/etc/icp-watchtower/ssh-identity",
+  "known_hosts_file": "/etc/icp-watchtower/known_hosts",
+  "descriptor_sha256": "REPLACE_WITH_VERIFIED_DESCRIPTOR_SHA256"
+}

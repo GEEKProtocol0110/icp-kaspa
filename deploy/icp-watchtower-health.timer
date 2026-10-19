@@ -1,0 +1,11 @@
+[Unit]
+Description=Poll ICP watchtower health every 5 seconds
+
+[Timer]
+OnBootSec=30
+OnUnitActiveSec=5
+AccuracySec=1
+Unit=icp-watchtower-health.service
+
+[Install]
+WantedBy=timers.target

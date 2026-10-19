@@ -1,0 +1,14 @@
+[Unit]
+Description=Check ICP TN10 watchtower health
+
+[Service]
+Type=oneshot
+User=icp-watchtower
+Group=icp-watchtower
+ExecStart=/usr/bin/python3 /opt/icp/scripts/watch_health.py --db /var/lib/icp-watchtower/watch.sqlite
+TimeoutStartSec=10
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
