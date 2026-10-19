@@ -9,6 +9,12 @@ mapping are in [SECURITY-TARGET.md](SECURITY-TARGET.md). The separate
 experiment. On-chain data access and protected key release remain proposed
 subsystems rather than implemented services.
 
+The [R0 read-ticket/release draft](READ-TICKET-RELEASE-DRAFT.md) proposes the next
+service boundary and durable ledger. Its consumed P2PK ticket would be a chain
+witness; access authorization, delivery and quotas would remain service-enforced.
+Irreversible grant/disclosure history must not roll back with chain observations.
+This proposal is not an implemented component or a change to custody contracts.
+
 The companion [transfer anchor observer](TRANSFER-ANCHOR.md) consumes the same
 native scan envelope in a separate database. It pins the exact signed exchange
 commitment/transaction, follows reorgs and checks selected-chain successors,

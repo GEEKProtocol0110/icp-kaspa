@@ -2,6 +2,23 @@
 
 **Status: V1 PROTECTED RECOVERY PASSED FUNDED TESTNET-10 ACCEPTANCE.**
 
+## Read-ticket and key-release design draft
+
+- docs/READ-TICKET-RELEASE-DRAFT.md specifies the proposed next experiment's
+  authority and object bindings, issuance/consumption/release gates, durable
+  states, service-wide accounting and adversarial acceptance cases.
+- One use means one durable encrypted key-response grant, with identical-byte
+  authenticated retries. It does not limit later reads/copies by a key holder.
+- Reorgs revoke current eligibility but never erase a used grant, budget charge
+  or possible disclosure. A trusted service ledger is separate from reversible
+  chain observations; clone/restore/fencing assumptions are explicit.
+- This is a proposal, not implemented enforcement. A plain P2PK ticket would
+  leave policy/expiry/budget enforcement at the service. Cryptographic delivery,
+  wire formats, ticket/refund transactions and stronger on-chain rules have
+  explicit gates. Next: a synthetic local ledger/fake-chain model.
+- Existing 221-check code and live evidence are unchanged. No test keys, data
+  keys, tickets or funded transactions were created for this documentation step.
+
 ## Funded transfer anchor observed
 
 - A fresh synthetic encrypted exchange was committed in TN10 transaction
