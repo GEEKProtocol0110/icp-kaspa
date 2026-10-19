@@ -1,5 +1,13 @@
 # Synthetic release-ledger model
 
+[Plain-English introduction](PLAIN-ENGLISH.md) · [Documentation](README.md)
+
+In everyday terms, this tests a service's saved record of **who claimed a
+permission and how much of a release limit they used**. It checks duplicate
+requests, crashes and changes to chain observations. It returns a clearly
+labeled example in place of a decryption key. Copying the database can defeat
+its accounting; global safeguards remain future work.
+
 This implements the local state/accounting experiment proposed in the
 [read-ticket draft](READ-TICKET-RELEASE-DRAFT.md). It is **not a key-release
 service**. It creates no content keys, recipient encryption, service attestation,

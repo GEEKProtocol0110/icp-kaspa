@@ -1,32 +1,28 @@
 # ICP architecture
 
-ICP combines on-chain custody constraints with an off-chain observer and a
-restricted recovery signer. The current network is Kaspa Testnet-10.
+[Project home](../README.md) · [Plain-English introduction](PLAIN-ENGLISH.md) · [Documentation](README.md)
 
-The broader custody/data-access direction, compromise matrix and source-paper
-mapping are in [SECURITY-TARGET.md](SECURITY-TARGET.md). The separate
-[transfer lab](TRANSFER-LAB.md) implements a local encrypted manifest/receipt
-experiment. On-chain data access and protected key release remain proposed
-subsystems rather than implemented services.
+Three parts work together: **the vault enforces withdrawal rules, the watchtower
+checks requests, and a restricted signer authorizes recovery transactions.**
+They currently run as an experimental Kaspa Testnet-10 prototype.
 
-The [R0 read-ticket/release draft](READ-TICKET-RELEASE-DRAFT.md) proposes the next
-service boundary and durable ledger. Its consumed P2PK ticket would be a chain
-witness; access authorization, delivery and quotas would remain service-enforced.
-Irreversible grant/disclosure history must not roll back with chain observations.
-This proposal is not an implemented component or a change to custody contracts.
+This page describes the technical boundaries. For an everyday example and
+definitions, start with [ICP in plain English](PLAIN-ENGLISH.md). The complete
+threat model and paper comparison are in [SECURITY-TARGET.md](SECURITY-TARGET.md).
 
-The separate [synthetic release ledger](RELEASE-LEDGER-MODEL.md) implements a
-local state/accounting model of that proposal. It uses model-only signatures,
-two fake observations and non-secret response placeholders. Its irreversible
-SQLite grant/quota history is separate from reversible observations. It is not
-a release service, native ticket adapter or source of real content keys.
+## Separate data-access experiments
 
-The companion [transfer anchor observer](TRANSFER-ANCHOR.md) consumes the same
-native scan envelope in a separate database. It pins the exact signed exchange
-commitment/transaction, follows reorgs and checks selected-chain successors,
-sampled-target catch-up and local freshness. It supplies no signing, key release
-or receiver acceptance gate. A [funded TN10 run](ICP-Transfer-Anchor-Live-Proof.md)
-adds dated two-endpoint observations alongside the synthetic fixtures.
+| Component | What exists | Boundary |
+| --- | --- | --- |
+| [Transfer lab](TRANSFER-LAB.md) | Local encrypted messages, signatures and recipient receipts | Keys are supplied separately; a receipt is a recipient claim |
+| [Anchor observer](TRANSFER-ANCHOR.md) | Exact signed-exchange commitment checked against trusted-node scans; a later [TN10 run](ICP-Transfer-Anchor-Live-Proof.md) supplies dated two-endpoint observations | Chain changes can withdraw that observation; it does not authorize key release |
+| [Release ledger](RELEASE-LEDGER-MODEL.md) | Permanent local grant/quota history, model signatures, two fake observations and non-secret placeholders | No native tickets or real key delivery; database copies are not fenced |
+
+The [read-ticket/release draft](READ-TICKET-RELEASE-DRAFT.md) proposes a future
+service connecting permission checks and decryption-key delivery. An ordinary
+P2PK ticket would serve as a chain witness; the service would enforce access
+rules and quotas. Used-grant and possible-disclosure history must survive
+changes to chain observations. The complete release service is unimplemented.
 
 ## Responsibilities and trust
 

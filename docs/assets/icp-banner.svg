@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="620" viewBox="0 0 1600 620" role="img" aria-labelledby="title description">
   <title id="title">ICP — Internal Command Protocol</title>
-  <desc id="description">Programmable custody on Kaspa. A luminous teal custody core connected to a geometric network. Policy, delay, recovery. Testnet research.</desc>
+  <desc id="description">Rules for withdrawals. Time for recovery. An experimental vault built on Kaspa Testnet-10, illustrated by a teal shield connected to a geometric network.</desc>
   <defs>
     <linearGradient id="background" x2="1" y2="1"><stop stop-color="#07151a"/><stop offset="1" stop-color="#02080e"/></linearGradient>
     <radialGradient id="aura"><stop stop-color="#52e3ce" stop-opacity=".17"/><stop offset="1" stop-color="#52e3ce" stop-opacity="0"/></radialGradient>
@@ -13,14 +13,14 @@
   <path d="M64 62H1536M64 556H1536" stroke="#264249"/>
   <g font-family="DejaVu Sans, Arial, sans-serif">
     <rect x="64" y="31" width="29" height="7" rx="3.5" fill="#70e5d0"/>
-    <text x="108" y="41" font-size="15" letter-spacing="3" fill="#a9c7ca">KASPA / CUSTODY SYSTEMS</text>
-    <text x="1536" y="41" text-anchor="end" font-size="13" letter-spacing="2" fill="#78a5aa">TESTNET RESEARCH</text>
+    <text x="108" y="41" font-size="15" letter-spacing="3" fill="#a9c7ca">KASPA / SECURITY RESEARCH</text>
+    <text x="1536" y="41" text-anchor="end" font-size="13" letter-spacing="2" fill="#78a5aa">TESTNET-10 PROTOTYPE</text>
     <text x="61" y="241" font-size="148" font-weight="bold" letter-spacing="-7" fill="#eafaf6">ICP<tspan fill="#70e5d0">.</tspan></text>
     <text x="68" y="291" font-size="20" letter-spacing="4" fill="#79d9cb">INTERNAL COMMAND PROTOCOL</text>
-    <text x="64" y="371" font-size="46" font-weight="bold" letter-spacing="-1" fill="#eafaf6">Programmable custody</text>
-    <text x="64" y="429" font-size="46" font-weight="bold" letter-spacing="-1" fill="#eafaf6">on Kaspa.</text>
-    <text x="68" y="492" font-size="19" fill="#92adb5">Custody with rules. Recovery with time.</text>
-    <text x="64" y="590" font-size="14" letter-spacing="3" fill="#83b7b7">POLICY</text>
+    <text x="64" y="371" font-size="46" font-weight="bold" letter-spacing="-1" fill="#eafaf6">Rules for withdrawals.</text>
+    <text x="64" y="429" font-size="46" font-weight="bold" letter-spacing="-1" fill="#eafaf6">Time for recovery.</text>
+    <text x="68" y="492" font-size="19" fill="#92adb5">An experimental vault built on Kaspa.</text>
+    <text x="64" y="590" font-size="14" letter-spacing="3" fill="#83b7b7">RULES</text>
     <circle cx="168" cy="585" r="2" fill="#62d6c5"/>
     <text x="196" y="590" font-size="14" letter-spacing="3" fill="#83b7b7">DELAY</text>
     <circle cx="290" cy="585" r="2" fill="#62d6c5"/>

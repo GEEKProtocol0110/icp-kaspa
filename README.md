@@ -1,199 +1,130 @@
 <p align="center">
-  <img src="docs/assets/icp-banner.svg" alt="ICP — Internal Command Protocol. Programmable custody on Kaspa. Policy, delay, recovery. Testnet research." width="100%">
+  <img src="docs/assets/icp-banner.svg" alt="ICP — Internal Command Protocol. Rules for withdrawals. Time for recovery. Experimental Kaspa Testnet-10 prototype." width="100%">
 </p>
 
 <p align="center">
-  <strong>Custody with rules. Recovery with time.</strong><br>
-  A foundation for programmable custody on Kaspa.
+  <strong>Rules for withdrawals. Time for recovery.</strong><br>
+  Exploring programmable security on Kaspa.
 </p>
 
 <p align="center">
-  <a href="docs/ARCHITECTURE.md">Architecture</a> ·
-  <a href="docs/QUICKSTART.md">Quick start</a> ·
-  <a href="docs/ICP-Protected-Recovery-Live-Proof.md">Live evidence</a> ·
-  <a href=".github/workflows/verify.yml">Verification</a> ·
-  <a href="#roadmap">Roadmap</a>
+  <a href="docs/PLAIN-ENGLISH.md">Start here</a> ·
+  <a href="#what-has-been-tested">Test results</a> ·
+  <a href="docs/README.md">Documentation</a> ·
+  <a href="docs/QUICKSTART.md">Developer setup</a> ·
+  <a href="#where-were-going">Roadmap</a>
 </p>
 
 ---
 
-## Build a recovery window into custody
+## What is ICP?
 
-Internal Command Protocol (ICP) explores a simple idea: **a valid spending
-signature should still have to follow the vault's rules.**
+**Internal Command Protocol (ICP) is an experimental vault system built on Kaspa.**
+It adds rules to withdrawals: where funds can go, how long a withdrawal must
+wait, and which separate key can move funds into recovery.
 
-A withdrawal first creates a new pending output. Its delay gives a watchtower
-time to detect an unexpected intent and request recovery. The protected-v1
-design routes recovery into another covenant, where a separate cold key and
-a fresh, longer delay govern release.
+The idea is simple: **a spending key should still have to follow the rules.**
+A waiting period gives monitoring software a chance to notice an unexpected
+withdrawal and try to recover the funds before they leave.
 
-The goal is to make custody policy visible, enforceable and testable on Kaspa:
-pinned destinations, explicit authority, bounded fees and time to respond.
-
-The broader direction includes institutional custody and controlled access to
-encrypted off-chain data, with Kaspa governing policy and proof verification.
-Data tickets, private key delivery and release limits remain research work.
-The [security target](docs/SECURITY-TARGET.md) maps this direction and the source
-paper to the current implementation and its unresolved design choices.
-
-The [read-ticket and key-release draft](docs/READ-TICKET-RELEASE-DRAFT.md)
-defines a proposed service-enforced experiment: exact grant/recipient binding,
-durable one-use accounting, consumed-ticket observations and crash/reorg rules.
-The [synthetic release ledger](docs/RELEASE-LEDGER-MODEL.md) now tests those
-state/accounting rules with fake chain views and non-secret placeholders.
-Remote key release and on-chain access enforcement remain unimplemented.
-
-**Current stage: experimental Testnet-10 prototype.** The v0 vault/watchtower
-and protected-v1 lifecycle have passed funded TN10 acceptance runs. The latest
-suite covers **265 offline tests: 68 Rust + 197 Python**. Independent
+**Today:** a Testnet-10 research prototype, tested with test coins. Independent
 security review and production operation remain ahead.
 
-## The custody lifecycle
+## How it works
+
+1. **Set the rules.** Configure the permitted destinations, separate keys and
+   waiting periods for a vault.
+2. **Watch withdrawals.** A withdrawal enters a waiting period. A monitor checks
+   it against saved approvals.
+3. **Use recovery when needed.** A separate recovery key can move funds into a
+   recovery vault. Releasing them then requires a cold key and a longer wait.
 
 ```mermaid
 flowchart TD
-    I["Idle vault"] -->|"Owner initiates"| P["Pending withdrawal"]
-    P -->|"Owner executes after delay"| R["Fixed recipient"]
-    I -->|"Recovery key"| Q["Quarantine covenant"]
-    P -->|"Recovery key"| Q
-    Q -->|"Cold key + longer delay"| C["Fixed cold exit"]
+    V["Funds in vault"] -->|"Request withdrawal"| W["Withdrawal waiting"]
+    W -->|"After the wait"| D["Preset recipient"]
+    V -->|"Recovery key"| R["Recovery vault"]
+    W -->|"Recovery key"| R
+    R -->|"Cold key + longer wait"| C["Preset cold destination"]
 ```
 
-This is the protected-v1 contract flow. Watcher approval is an off-chain policy
-decision; the covenant enforces the spending paths. The watcher never signs a
-cold release. Both recipient and cold exits are P2PK and end covenant protection.
-V0's recovery goes directly to its fixed recovery address.
+This is the current protected-v1 flow. The monitor's approvals are stored
+outside the blockchain; the vault enforces destinations, keys and delays.
+Recovery depends on the monitor, separate keys and timely transaction acceptance.
+It is not guaranteed to win a race. After funds reach either final destination,
+these vault rules no longer protect their later transfers.
 
-## What is running in code
+[Read the everyday explanation and examples →](docs/PLAIN-ENGLISH.md)
 
-| Layer | Capability | Validation |
+## What has been tested?
+
+| Area | Current result | Read the evidence |
 | --- | --- | --- |
-| Covenant vaults | Fresh withdrawal delay, fixed destinations, distinct roles, fee/value bounds | Native VM tests + funded TN10 runs |
-| Protected recovery | Quarantine covenant, independent cold key, longer release delay | Native VM tests + funded TN10 run |
-| Watchtower | Exact-intent approval, accepted-chain observation, durable recovery outbox | Controller tests + earlier funded recovery run |
-| Custody tracking | Exact quarantine output through cold release; branch-aware rollback | Offline controller/restart/reorg tests |
-| Chain catch-up | Bounded local batches, recovery checks between batches, backlog health | 19 new offline tests |
-| Local transfer lab | Encrypted manifests, separate approver/sender signatures, recipient attestations and local replay checks | 29 offline tests; no chain anchor or key delivery |
-| Transfer anchor observer + pilot | Exact commitment, self-return funding, one-attempt journal, two-node observation and reorg undo | Offline failure tests + funded TN10 anchor observed with 29/20 selected-chain successors |
-| Synthetic release ledger | Atomic grant/quota claims, one saved placeholder, authenticated retries and permanent disclosure history | 44 offline tests; fake chain only, no content keys or real tickets |
-| Signer deployment kit | Recovery-only SSH endpoint, pinned policy/transport, supervised services | Offline protocol and restart tests; separate-host deployment pending |
+| Vault withdrawals and protected recovery | Tested on Kaspa Testnet-10 with test coins, including rejected early payouts | [Protected recovery run](docs/ICP-Protected-Recovery-Live-Proof.md) |
+| Automated recovery monitoring | An earlier testnet run recovered an unapproved withdrawal | [Watchtower run](docs/ICP-Watchtower-Live-Proof.md) |
+| Recording a data commitment on Kaspa | One testnet transaction observed through two node endpoints | [Transfer anchor run](docs/ICP-Transfer-Anchor-Live-Proof.md) |
+| Encrypted messages and release accounting | Local experiments; the release model uses simulated chain data and a non-secret placeholder | [Transfer lab](docs/TRANSFER-LAB.md) · [Release model](docs/RELEASE-LEDGER-MODEL.md) |
 
-Both native CLIs enforce TN10 node identity and activation checks. A broadcast
-response never substitutes for an exact accepted-chain output observation.
+The automated suite contains **265 tests: 68 Rust + 197 Python**.
+[GitHub Actions](.github/workflows/verify.yml) checks the build, tests and demos.
+Individual testnet runs are dated evidence, not performance or security
+guarantees; later software changes also have their own offline checks.
 
-## Evidence before claims
+## The bigger direction: controlled access to encrypted data
 
-The latest funded protected-v1 run recorded:
+Alongside vaults, ICP is researching how a service could check permission before
+releasing a key to an encrypted record. Kaspa could record commitments and
+transactions; the service would manage private storage, permission checks and
+key delivery.
 
-| Observation | Measured result |
+The local release model already tests duplicate requests, release limits,
+crashes and blockchain reorganizations. It delivers **no real decryption keys**.
+A person who eventually receives a real key can still read or copy the data;
+one authorized release does not mean only one viewing.
+
+[Read the proposal](docs/READ-TICKET-RELEASE-DRAFT.md) ·
+[Understand the current limits](docs/SECURITY-TARGET.md)
+
+## Explore or build
+
+| Your goal | Start here |
 | --- | --- |
-| Unexpected intent → quarantine | One recovery attempt; 236 DAA units within a 600-DAA withdrawal window |
-| Early normal and cold payouts | Both rejected by the node's sequence checks |
-| Later payout | The exact same signed transactions accepted after maturity |
-| Cold output acceptance | 2,067 DAA units after quarantine; configured delay was 1,800 |
-| Independent observation | A second TN10 node observed locked quarantine and final payout outputs |
+| Understand the idea without a technical background | [ICP in plain English](docs/PLAIN-ENGLISH.md) |
+| Find a guide or specification | [Documentation directory](docs/README.md) |
+| Understand how the components fit together | [Architecture](docs/ARCHITECTURE.md) |
+| Build and run the tests | [Developer setup](docs/QUICKSTART.md) |
+| Check progress or continue development | [Project status](PROJECT-STATUS.md) · [Developer handoff](docs/ICP-Project-Handoff.md) |
 
-These are results from one journaled run, not latency or recovery guarantees.
-The new catch-up and quarantine-tracking changes have offline verification;
-they have not been through a new funded run.
-
-- [Protected-v1 proof and transaction IDs](docs/ICP-Protected-Recovery-Live-Proof.md)
-- [Watchtower live proof](docs/ICP-Watchtower-Live-Proof.md) · [Original vault proof](docs/ICP-Testnet-Live-Proof.md)
-- [Catch-up verification](evidence/chain-batching-verification.md) · [Quarantine verification](evidence/quarantine-verification.md) · [Signer verification](evidence/signer-verification.md)
-
-## Build and verify
-
-Use Linux x86_64, Python 3.11+, a C compiler and the pinned Rust **1.99.1** toolchain.
-From the repository root:
+For a local demo with simulated data and no wallet, run from the repository root:
 
 ```bash
 python3 -m pip install --only-binary=:all: -r requirements-lab.txt
-python3 scripts/compile.py
-python3 scripts/compile_protected.py --fixtures
-cargo fmt --check
-cargo test --locked --features live
-python3 -m unittest discover -s tests -p 'test_*.py' -v
-cargo build --locked --features live
+python3 scripts/release_ledger_model.py
 ```
 
-Compiler downloads are checksum verified; Kaspa/Silverscript Git dependencies
-are commit-pinned and Cargo is locked. See [TOOLCHAIN.json](TOOLCHAIN.json).
-[GitHub Actions](.github/workflows/verify.yml) runs without live keys or RPC.
+It prints a clearly labeled, non-secret example. It does not contact Kaspa or
+move funds. For live testnet instructions, use the developer setup guide.
 **Public fixture keys are intentionally known. Never fund fixture addresses.**
 
-For fresh test keys, node setup and a journaled TN10 pilot, follow the
-[quick start](docs/QUICKSTART.md). For protected-v1 roles and policy, read
-[protected recovery](docs/PROTECTED-RECOVERY.md) before signing.
+## Where we're going
 
-For the synthetic send/receive experiment, run `python3 scripts/transfer_lab.py`
-and read [TRANSFER-LAB.md](docs/TRANSFER-LAB.md). It uses conventional signatures
-and an out-of-band symmetric-key assumption. Its receipt authenticates a
-recipient claim; it does not prove remote decryption, factual truth or a Kaspa
-confirmation. This module changes no custody rule.
-
-The companion [transfer anchor observer](docs/TRANSFER-ANCHOR.md) consumes the
-native read-only accepted-chain scan format. It checks an exact commitment,
-selected-chain successors, catch-up and freshness, and withdraws observations
-after reorgs. Run `python3 scripts/transfer_anchor.py` for the synthetic demo.
-The [funded TN10 anchor](docs/ICP-Transfer-Anchor-Live-Proof.md) was observed by
-two distinct endpoints, with the exact self-return output and a 0.02-test-KAS
-fee. These are dated trusted-node observations. Protected key delivery remains
-future work; the [pilot runbook](docs/TRANSFER-ANCHOR-PILOT.md) covers restart
-and read-only reconciliation.
-
-Run `python3 scripts/release_ledger_model.py` for the separate
-[synthetic ledger experiment](docs/RELEASE-LEDGER-MODEL.md). Its crash,
-concurrency, expiry and reorg tests exercise permanent grant accounting.
-Copied databases and reorgs after the final observation have explicit
-counterexample tests; this model supplies no global fencing or key delivery.
-
-## Explore the project
-
-| Start here | Purpose |
+| Priority | Next work |
 | --- | --- |
-| [Architecture](docs/ARCHITECTURE.md) | Contracts, watcher, signer and trust boundaries |
-| [Security target](docs/SECURITY-TARGET.md) | Compromise matrix, paper mapping and tested payout boundaries |
-| [Project status](PROJECT-STATUS.md) | Current engineering checkpoint |
-| [Vault specification](docs/VAULT-SPEC.md) | V0 invariants and threat model |
-| [Protected recovery](docs/PROTECTED-RECOVERY.md) | V1 state transitions and role-specific CLI |
-| [Watchtower](docs/WATCHTOWER.md) | Approval, rollback, catch-up and upgrade rules |
-| [Signer deployment](docs/SIGNER-DEPLOYMENT.md) | Recovery-only SSH and service supervision |
-| [Continuation checkpoint](docs/ICP-Project-Handoff.md) | Remaining work and operational context |
+| Private data access | Specify recipient key delivery, transaction formats and ticket/refund rules before enabling real release |
+| Reliable operation | Prevent competing service copies from reusing grants; define safe backup/recovery; validate separate signer hosts and alerts |
+| Stronger custody | Specify key replacement and recovery from the cold stage, then test and independently review the design |
+| Longer-term research | Proof systems and broader data-access enforcement, with separate specifications and evidence |
 
-Source lives in `contracts/`, `src/` and `scripts/`; verification lives in
-`tests/` and `evidence/`; service templates live in `deploy/`.
-
-## Roadmap
-
-| Horizon | Work |
-| --- | --- |
-| Now | Reproducible covenant vaults, protected recovery, durable watchtower, quarantine tracking and bounded local catch-up |
-| Next | Review/freeze release wire and recipient-delivery requirements; specify service fencing/recovery and native ticket/refund rules before remote delivery or funded tickets; settle custody authority/rotation and independent hosting |
-| Harden | Cold-stage rescue and rotation specification, pruning/deep-reorg reconciliation, retention, fee estimation and adversarial review |
-| Research | Data-release tickets, proof systems, DAG Zippers and STATIC; separately specified before implementation |
-
-The direction is ambitious. Each milestone must earn its claims with code,
-tests and inspectable evidence.
-
-## Security boundary
-
-This prototype uses conventional Schnorr keys and an operator-trusted, synced,
-UTXO-indexed TN10 node. A separately secure recovery key, watcher availability,
-adequate fees and timely inclusion are assumptions. At maturity, recovery has
-no guaranteed priority over a competing execution. DAA delays are not wall-clock
-guarantees. Local batching does not cap RPC response size or promise a response
-SLA. The signer kit has not been installed on independently controlled hosts.
-
-There is no mainnet-readiness, quantum-safety or completed-audit claim. Keep
-private keys, databases and signed outboxes out of Git. Reconcile saved
-transaction IDs and live outputs before retrying an interrupted pilot.
+The current prototype uses conventional cryptography and trusted node/service
+software. Mainnet readiness, quantum safety and a completed independent audit
+have not been established. The [security target](docs/SECURITY-TARGET.md)
+explains exactly which protections are implemented and which remain proposals.
 
 ## Contribute
 
-Read [AGENTS.md](AGENTS.md), the [current checkpoint](PROJECT-STATUS.md) and the
-relevant custody specification first. Open an issue or pull request with a
-concrete change, reproducible checks and its security implications. Use
-project-level attribution and include no private session data.
+Read [AGENTS.md](AGENTS.md) and the relevant specification before making a
+change. Include reproducible checks and keep private keys, databases, signed
+outboxes and session backups out of Git. Use project-level attribution.
 
 Original implementation: [MIT](LICENSE). Dependencies and source papers retain
-their own terms; see [NOTICE.md](NOTICE.md) and the [import record](docs/IMPORT.md).
+their own terms; see [NOTICE.md](NOTICE.md) and [the import record](docs/IMPORT.md).
