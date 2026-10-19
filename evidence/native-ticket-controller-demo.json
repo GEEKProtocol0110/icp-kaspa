@@ -1,0 +1,23 @@
+{
+  "broadcasts": 0,
+  "content_keys": 0,
+  "identical_saved_transaction": true,
+  "mode": "OFFLINE_NATIVE_CONTROLLER_FIXTURES_NO_CHAIN_NO_AUTHORIZATION",
+  "opposite_branch_blocked": true,
+  "real_rpc_calls": 0,
+  "retry_reconciles_without_effect": true,
+  "status": {
+    "branch": "consume",
+    "charge": {
+      "bytes": 128,
+      "count": 1,
+      "window_end": 180,
+      "window_start": 100
+    },
+    "issue_attempt": "OBSERVED",
+    "issue_outbox_hash": "26b0cdb597b34883e37c993edcdeeaa4b4ea71e0ec5e925e3c833febc06232ec",
+    "mode": "OFFLINE_NATIVE_CONTROLLER_FIXTURES_NO_CHAIN_NO_AUTHORIZATION",
+    "terminal_attempt": "OBSERVED",
+    "terminal_outbox_hash": "a61a246fba18a584dacc975b5b86886b4df2a86f15c94b4b46d2699a961d21ed"
+  }
+}

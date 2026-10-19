@@ -1,6 +1,6 @@
 # ICP continuation checkpoint
 
-**October 19, 2026: offline native ticket preparation and mutation tests implemented.**
+**October 19, 2026: persistent native fixture branch/outbox recovery implemented.**
 
 For a nontechnical introduction, open [ICP in plain English](PLAIN-ENGLISH.md).
 The [documentation directory](README.md) separates explanations, dated testnet
@@ -9,7 +9,23 @@ engineering and operational detail needed to continue development.
 
 ## Current state
 
-The latest executable milestone is [NATIVE-TICKET-LAB.md](NATIVE-TICKET-LAB.md),
+The latest milestone is [NATIVE-TICKET-CONTROLLER.md](NATIVE-TICKET-CONTROLLER.md):
+scripts/native_ticket_controller.py uses the existing journal/authority model
+to persist branch choice before signing and recover exact private native
+outboxes. examples/native_ticket_worker.rs validates/prepares/verifies bounded
+fixture records through a private channel; recovery verification does not sign.
+Build that example before running the Python suite. CI now does so explicitly.
+
+37 Python plus four Rust tests bring local verification to 516 (100 Rust +
+416 Python), including actual child-process exits, concurrent branch choices,
+unknown effects and restore. The authority must not roll back with the component;
+joint rollback loses branch history in a counterexample. Direct fixture worker
+use bypasses the controller, so this is not independently enforced signing.
+No RPC, real authorization, funded state or data key is connected. Next build
+dedicated read-only native ticket observation; keep signing and effects separate.
+Read [the verification record](../evidence/native-ticket-controller-verification.md).
+
+The preceding native layout milestone is [NATIVE-TICKET-LAB.md](NATIVE-TICKET-LAB.md),
 implemented in src/native_ticket_lab.rs and examples/native_ticket_lab.rs.
 It builds linked native issue/consume/refund fixtures with known public keys,
 strict canonical plans, exact layout/mass checks, native Schnorr/VM verification

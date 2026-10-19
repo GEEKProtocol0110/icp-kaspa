@@ -103,6 +103,10 @@ now has an [offline transaction lab](NATIVE-TICKET-LAB.md): working code builds
 the transactions with made-up inputs and checks their signatures and layout.
 It does not yet enforce the refund history rule or submit anything to Kaspa.
 
+A separate [ticket controller](NATIVE-TICKET-CONTROLLER.md) now remembers that
+choice and the exact saved transaction across crashes. It uses made-up chain
+observations and checks recovery without moving coins or delivering data keys.
+
 The older model allows copied databases to accept separate claims. The new
 simulation adds a trusted witness, but restoring that witness with every
 store still loses history. Both models also recognize that a chain change
@@ -123,7 +127,7 @@ original document is factually true.
 | Simulation or model | Invented chain observations or placeholders exercise the rules; they are not live-chain evidence |
 | Proposal or research | A direction being specified; a working, secure deployment has not been established |
 
-There are **475 automated tests** today. Passing tests helps catch mistakes; it
+There are **516 automated tests** today. Passing tests helps catch mistakes; it
 does not replace an independent security review or prove production readiness.
 The project is still an experimental Testnet-10 prototype.
 

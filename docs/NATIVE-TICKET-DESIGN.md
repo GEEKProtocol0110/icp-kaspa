@@ -13,6 +13,10 @@ offline native layout/signature experiment with fabricated inputs. It has a
 separate lab encoding, invented evidence digests and no durable branch
 controller, authorization or live observation. The N0/R0 gates below remain.
 
+A subsequent [fixture controller](NATIVE-TICKET-CONTROLLER.md) now tests
+persistent branch/outbox recovery using a trusted local authority and synthetic
+views. It supplies no real authorization or independently enforced native signer.
+
 ## In plain English
 
 A service would create a small testnet output as a ticket for one approved

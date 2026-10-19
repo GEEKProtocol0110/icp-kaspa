@@ -498,7 +498,8 @@ pub fn fixture_terminal(issue: &Plan, action: Action) -> Result<Plan> {
     if issue.action != Action::Issue || action == Action::Issue {
         return Err("Expected issue and terminal action".into());
     }
-    let tx = prepare(issue, &issue.entry())?;
+    issue.validate()?;
+    let tx = unsigned(issue)?;
     let mut p = issue.clone();
     p.action = action;
     p.issuance = Some(binding(&tx));
@@ -523,6 +524,45 @@ pub fn fixture_terminal(issue: &Plan, action: Action) -> Result<Plan> {
     }
     p.validate()?;
     Ok(p)
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct SavedFixture {
+    plan: Plan,
+    transaction: Transaction,
+    native_hash: String,
+}
+
+/// Private worker channel only; never publish the returned signed fixture bytes.
+pub fn prepare_record(plan_raw: &[u8]) -> Result<String> {
+    let plan = Plan::from_json(plan_raw)?;
+    let transaction = prepare(&plan, &plan.entry())?;
+    let native_hash = hash(&transaction).to_string();
+    serde_json::to_string(&SavedFixture {
+        plan,
+        transaction,
+        native_hash,
+    })
+    .map_err(|e| e.to_string())
+}
+
+/// Verify exact saved bytes without signing or replacing a missing transaction.
+pub fn verify_record(raw: &[u8]) -> Result<Value> {
+    if raw.len() > 65_536 || !raw.is_ascii() {
+        return Err("Invalid saved fixture encoding/size".into());
+    }
+    let saved: SavedFixture = serde_json::from_slice(raw).map_err(|e| e.to_string())?;
+    if serde_json::to_vec(&saved).map_err(|e| e.to_string())? != raw {
+        return Err("Saved fixture has duplicate, unknown or noncanonical fields".into());
+    }
+    check_saved(
+        &saved.plan,
+        &saved.transaction,
+        &saved.plan.entry(),
+        &saved.native_hash,
+    )?;
+    summary(&saved.plan, &saved.transaction)
 }
 
 /// Public summary intentionally omits signed transaction bytes and private material.
@@ -1007,5 +1047,52 @@ mod tests {
             assert_eq!(v["mode"], MODE);
             assert_eq!(v["vm_verified"], true);
         }
+    }
+
+    #[test]
+    fn saved_fixture_roundtrip_preserves_exact_bytes_for_every_action() {
+        for p in cases() {
+            let record = prepare_record(&canonical(&p).unwrap()).unwrap();
+            assert_eq!(
+                verify_record(record.as_bytes()).unwrap(),
+                summary(&p, &signed(&p)).unwrap()
+            );
+            assert_eq!(record, prepare_record(&canonical(&p).unwrap()).unwrap());
+        }
+    }
+
+    #[test]
+    fn saved_fixture_rejects_duplicate_unknown_and_noncanonical_fields() {
+        let p = fixture_issue(24_000_000);
+        let raw = prepare_record(&canonical(&p).unwrap()).unwrap();
+        for bad in [
+            format!(" {raw}"),
+            raw.replacen("{", "{\"extra\":0,", 1),
+            raw.replacen("{", "{\"native_hash\":\"bad\",", 1),
+            " ".repeat(65_537),
+        ] {
+            assert!(verify_record(bad.as_bytes()).is_err());
+        }
+    }
+
+    #[test]
+    fn saved_fixture_detects_transaction_and_hash_corruption() {
+        let p = fixture_issue(24_000_000);
+        let raw = prepare_record(&canonical(&p).unwrap()).unwrap();
+        let mut saved: SavedFixture = serde_json::from_str(&raw).unwrap();
+        saved.transaction.inputs[0].signature_script[12] ^= 1;
+        assert!(verify_record(serde_json::to_string(&saved).unwrap().as_bytes()).is_err());
+        let mut saved: SavedFixture = serde_json::from_str(&raw).unwrap();
+        saved.native_hash = "00".repeat(32);
+        assert!(verify_record(serde_json::to_string(&saved).unwrap().as_bytes()).is_err());
+    }
+
+    #[test]
+    fn saved_fixture_requires_original_plan_even_with_valid_native_signature() {
+        let p = fixture_issue(24_000_000);
+        let raw = prepare_record(&canonical(&p).unwrap()).unwrap();
+        let mut saved: SavedFixture = serde_json::from_str(&raw).unwrap();
+        saved.plan.context.grant = "model:substituted".into();
+        assert!(verify_record(serde_json::to_string(&saved).unwrap().as_bytes()).is_err());
     }
 }
