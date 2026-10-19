@@ -74,6 +74,7 @@ records require explicit reconciliation as described in WATCHTOWER.md.
 ## Build and public setup
 
 ```bash
+python3 -m pip install --only-binary=:all: -r requirements-lab.txt
 python3 scripts/compile.py
 python3 scripts/compile_protected.py --fixtures
 cargo test --locked --features live

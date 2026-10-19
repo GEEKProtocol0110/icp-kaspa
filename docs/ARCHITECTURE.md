@@ -4,8 +4,10 @@ ICP combines on-chain custody constraints with an off-chain observer and a
 restricted recovery signer. The current network is Kaspa Testnet-10.
 
 The broader custody/data-access direction, compromise matrix and source-paper
-mapping are in [SECURITY-TARGET.md](SECURITY-TARGET.md). Data access and key
-release remain proposed subsystems rather than implemented services.
+mapping are in [SECURITY-TARGET.md](SECURITY-TARGET.md). The separate
+[transfer lab](TRANSFER-LAB.md) implements a local encrypted manifest/receipt
+experiment. On-chain data access and protected key release remain proposed
+subsystems rather than implemented services.
 
 ## Responsibilities and trust
 

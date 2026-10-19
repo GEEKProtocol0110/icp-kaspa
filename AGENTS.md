@@ -14,5 +14,7 @@
 - Preserve chain rollback, exact outpoint checks and the durable recovery outbox.
 - A broadcast response is not confirmation. Confirm exact accepted-chain outputs.
 - Run cargo fmt --check, cargo test --locked --features live and the Python unittest suite.
+- Install requirements-lab.txt before the full Python suite. The transfer lab
+  is local-only: do not treat its signed receipt as a chain or execution proof.
 - Live tests require a separate journal and must reconcile failed or unknown outcomes before retrying.
 - Keep receipts, limitations and the project checkpoint current; do not claim quantum safety or audit completion.
