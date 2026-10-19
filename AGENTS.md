@@ -1,6 +1,9 @@
 # ICP development
 
-- This is Internal Command Protocol, separate from Geek Protocol.
+- This is the standalone Internal Command Protocol project.
+- Use project-level attribution. Do not add personal names, contact details or
+  unrelated project affiliations. Preserve upstream legal notices and use
+  repository-relative links in project documentation.
 - Testnet-10 only. Never add a mainnet switch as a routine change.
 - Read PROJECT-STATUS.md and docs/VAULT-SPEC.md before changing custody rules.
 - Keep .secrets/, runtime/, signed outboxes, databases and private session backups out of Git.

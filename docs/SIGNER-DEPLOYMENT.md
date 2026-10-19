@@ -174,8 +174,11 @@ not advancing (30 seconds), dry-run/local signing, failed/stale remote readiness
 retry exhaustion, normal-delay deadline reached, and unauthorized execution.
 The heartbeat retains the actual scan timestamp before slow signing/RPC calls;
 restarts preserve DAA-progress history. A pending recovery remains unhealthy until
-accepted-chain confirmation. Quarantine confirmation ends this watcher's custody
-tracking; it does not monitor later cold release.
+accepted-chain confirmation. Quarantine stays under read-only chain observation
+through the fixed cold release; health reports quarantine/release counts and
+`QUARANTINE_TRACKING_INCOMPLETE` for older incomplete state. The watcher never
+loads the cold key or authorizes release. After cold P2PK exit, ongoing address
+spends are outside its scope. See WATCHTOWER.md before upgrading an existing DB.
 
 The health timer checks every five seconds and logs failures to journald. The
 separate signer-probe timer has a bounded 40-second SSH request; it never blocks

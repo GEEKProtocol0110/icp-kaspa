@@ -1,12 +1,12 @@
 # Internal Command Protocol (ICP)
 
-[![Verify ICP prototype](https://github.com/GEEKProtocol0110/icp-kaspa/actions/workflows/verify.yml/badge.svg)](https://github.com/GEEKProtocol0110/icp-kaspa/actions/workflows/verify.yml)
+[Verification workflow](.github/workflows/verify.yml)
 
-Open-source Kaspa testnet vault and watchtower prototype. Concept by CrypTony;
-implementation developed with Michael Gee. Original implementation: [MIT](LICENSE).
+Open-source Kaspa testnet vault and watchtower prototype.
+Original implementation: [MIT](LICENSE).
 
-A small Kaspa covenant vault derived from the ICP whitepaper. This is a separate
-project from Geek Protocol. Engineering choices are documented in
+A small Kaspa covenant vault derived from the ICP whitepaper.
+Engineering choices are documented in
 [the specification](docs/VAULT-SPEC.md).
 
 **Status:** the v0 vault/watchtower and protected-v1 recovery lifecycle passed
@@ -16,7 +16,7 @@ were sequence-rejected; the exact same signed transactions later passed.
 [Protected recovery proof](docs/ICP-Protected-Recovery-Live-Proof.md),
 [earlier watchtower proof](docs/ICP-Watchtower-Live-Proof.md) and
 [v0 vault proof](docs/ICP-Testnet-Live-Proof.md) include transaction IDs.
-All 105 offline checks pass. GitHub Actions reproduces them on pushes and pull
+All 119 offline checks pass. GitHub Actions reproduces them on pushes and pull
 requests. This remains an experimental testnet prototype without an independent
 security audit or production signer isolation.
 
@@ -115,16 +115,17 @@ in the node's accepted-chain UTXO view; that observation can change after a
 reorganization. Recovery does not have guaranteed priority at maturity.
 
 The watchtower implementation and operator instructions are in
-[docs/WATCHTOWER.md](docs/WATCHTOWER.md). Protected recovery covenants, authority
-rotation, arbitrary payout recipients, partial withdrawal, data-release
+[docs/WATCHTOWER.md](docs/WATCHTOWER.md). Protected-v1 recovery remains under
+observation through its fixed cold exit, with rollback-safe custody records.
+Authority rotation, arbitrary payout recipients, partial withdrawal, data-release
 tickets, DAG Zippers, proof systems, post-quantum authority and STATIC trading
-are outside this initial prototype. The specification defines the watcher
-requirements for the next milestone.
+remain outside the prototype.
 
 ## Develop and contribute
 
+Clone this repository using its Code menu, then enter the checkout:
+
 ```bash
-git clone https://github.com/GEEKProtocol0110/icp-kaspa.git
 cd icp-kaspa
 ```
 
@@ -135,7 +136,7 @@ evidence; do not include keys or funded-session backups.
 
 Next: production signer isolation, cold-stage rescue/rotation,
 service operation and external review. See [the project checkpoint](docs/ICP-Project-Handoff.md).
-Pre-publication Git history is preserved in [the import record](docs/IMPORT.md).
+The source import is documented in [the import record](docs/IMPORT.md).
 
 The original implementation is MIT licensed. Third-party dependencies and
 source papers retain their own terms; see [NOTICE.md](NOTICE.md).
@@ -150,6 +151,9 @@ signer file, with no combined-key fallback. Read-only operations need no keys.
 Build its public fixtures with `python3 scripts/compile_protected.py --fixtures`
 before running Cargo tests. The original v0 contract and CLI remain available;
 their live receipts do not cover v1. Its own funded acceptance run is recorded
-in the protected recovery proof above. The automated harness is
+in the protected recovery proof above. The watcher now observes the quarantine
+through cold exit; it never signs cold release. Existing databases containing
+untracked quarantine need explicit reconciliation before upgrade, as documented
+in WATCHTOWER.md. The automated harness is
 `scripts/protected_pilot.py`; it refuses an existing journal. Production signer
 isolation and cold-stage rescue/rotation remain work.

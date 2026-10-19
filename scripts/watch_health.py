@@ -32,6 +32,17 @@ def health(path, max_age=15, max_stall=30, now=None, require_remote=True):
             issues.append('WATCH_ERROR')
         if any(t.get('kind') == 'UNAUTHORIZED_EXECUTION' for t in state.get('terminal', {}).values()):
             issues.append('UNAUTHORIZED_EXECUTION')
+        outputs = state.get('outputs', {})
+        quarantined = {k: v for k, v in outputs.items() if v.get('stage') == 'quarantined'}
+        for root, terminal in state.get('terminal', {}).items():
+            if terminal.get('custody') == 'QUARANTINED':
+                output = quarantined.get(terminal.get('outpoint'), {})
+                if output.get('root') != root or output.get('amount') != terminal.get('amount'):
+                    issues.append('QUARANTINE_TRACKING_INCOMPLETE')
+        for outpoint, output in quarantined.items():
+            terminal = state.get('terminal', {}).get(output['root'], {})
+            if terminal.get('custody') != 'QUARANTINED' or terminal.get('outpoint') != outpoint:
+                issues.append('QUARANTINE_TRACKING_INCOMPLETE')
         actions = {r['pending']: r for r in db.execute('SELECT pending,status,attempts,error FROM actions')}
         for pending, output in state.get('outputs', {}).items():
             if output['stage'] != 'pending' or output['authorized']:
@@ -45,7 +56,10 @@ def health(path, max_age=15, max_stall=30, now=None, require_remote=True):
             if beat.get('daa', 0) >= output['accepted_daa'] + json.loads(meta.get('health_limits', '{}')).get('delay_daa', 0):
                 issues.append('RECOVERY_DEADLINE_REACHED')
         return {'healthy': not issues, 'issues': sorted(set(issues)),
-                'heartbeat': beat, 'tip': meta.get('tip')}
+                'heartbeat': beat, 'tip': meta.get('tip'),
+                'custody': {'quarantined_outputs': len(quarantined),
+                            'cold_releases_observed': sum(t.get('custody') == 'COLD_RELEASED'
+                                                         for t in state.get('terminal', {}).values())}}
 
 
 def main():
