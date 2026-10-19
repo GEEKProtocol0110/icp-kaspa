@@ -45,6 +45,12 @@ govern receiver acceptance or key release.
 An acknowledgment is an authenticated recipient claim, not proof of execution
 or factual truth. Local replay rejection does not provide global read limits.
 
+The [R0 read-ticket/release proposal](READ-TICKET-RELEASE-DRAFT.md) defines a
+candidate service-enforced model, separate native ticket authority, stable
+grant/budget accounting and irreversible disclosure history. A P2PK witness
+does not enforce those access rules on chain. The proposal changes no current
+security claim and explicitly leaves the all-secret/quantum target unresolved.
+
 ## Implemented protected-v1 claim
 
 While value remains under the covenant, a compromised owner key cannot change

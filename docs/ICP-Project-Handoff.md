@@ -4,6 +4,13 @@
 
 ## Current state
 
+The next design checkpoint is docs/READ-TICKET-RELEASE-DRAFT.md: a proposed
+service-enforced read-ticket/release model with exact recipient/key binding,
+one durable response per grant, source/claim persistence, quota semantics and
+separate reorg/disclosure history. It is not implemented or a new custody rule.
+Build a synthetic local ledger/fake-chain experiment before remote delivery;
+wire/crypto, ticket/refund and service-recovery gates remain explicit.
+
 Read docs/SECURITY-TARGET.md first for the current compromise matrix, source
 paper mapping and unresolved next-generation design gates. The broader direction
 includes institutional custody and controlled access to encrypted off-chain

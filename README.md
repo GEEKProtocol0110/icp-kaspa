@@ -36,6 +36,12 @@ Data tickets, private key delivery and release limits remain research work.
 The [security target](docs/SECURITY-TARGET.md) maps this direction and the source
 paper to the current implementation and its unresolved design choices.
 
+The [read-ticket and key-release draft](docs/READ-TICKET-RELEASE-DRAFT.md)
+defines a proposed service-enforced experiment: exact grant/recipient binding,
+durable one-use accounting, consumed-ticket observations and crash/reorg rules.
+It is a design proposal; remote key release and on-chain access enforcement
+remain unimplemented.
+
 **Current stage: experimental Testnet-10 prototype.** The v0 vault/watchtower
 and protected-v1 lifecycle have passed funded TN10 acceptance runs. The latest
 suite covers **221 offline tests: 68 Rust + 153 Python**. Independent
@@ -154,7 +160,7 @@ Source lives in `contracts/`, `src/` and `scripts/`; verification lives in
 | Horizon | Work |
 | --- | --- |
 | Now | Reproducible covenant vaults, protected recovery, durable watchtower, quarantine tracking and bounded local catch-up |
-| Next | Settle surviving authority, continued cold custody and rotation rules; validate operational failures and independent hosting on TN10 |
+| Next | Model the [proposed read-ticket/release ledger](docs/READ-TICKET-RELEASE-DRAFT.md) with synthetic data; settle custody authority/rotation gates and validate independent hosting on TN10 |
 | Harden | Cold-stage rescue and rotation specification, pruning/deep-reorg reconciliation, retention, fee estimation and adversarial review |
 | Research | Data-release tickets, proof systems, DAG Zippers and STATIC; separately specified before implementation |
 
