@@ -82,6 +82,15 @@ admission/authentication/administration are fixtures, and restoring the witness
 with every store permits nonce reuse. No real keys or chain adapters are connected.
 Revocation and reorg after dispatch acceptance still cannot recall bytes.
 
+The [signed coordinator lab](SIGNED-COORDINATOR-LAB.md) adds conventional
+two-role permissions, service-issued recipient challenges and signed grant
+revocation to the recovery model. It binds actual admission/request digests
+and atomically claims signed nonces with the relevant decision. Recipient
+signing identity is pinned, but delivery-key binding and record/chain facts
+remain fixtures. A copied signed request can be relayed once; restoring all
+stores with the witness loses accepted revocation history. No encrypted key
+response, remote transport, hardware isolation or R0 wire adoption is supplied.
+
 ## Implemented protected-v1 claim
 
 While value remains under the covenant, a compromised owner key cannot change

@@ -64,10 +64,11 @@ these vault rules no longer protect their later transfers.
 | Automated recovery monitoring | An earlier testnet run recovered an unapproved withdrawal | [Watchtower run](docs/ICP-Watchtower-Live-Proof.md) |
 | Recording a data commitment on Kaspa | One testnet transaction observed through two node endpoints | [Transfer anchor run](docs/ICP-Transfer-Anchor-Live-Proof.md) |
 | A message encrypted for one recipient | Local HPKE encryption, delivery-key possession checks, sender approval and signed receipts; no network delivery | [Recipient-encryption lab](docs/RECIPIENT-ENCRYPTION-LAB.md) |
+| Signed release requests | Exact two-role permissions, recipient challenges and signed revocations over dummy deliveries | [Signed coordinator lab](docs/SIGNED-COORDINATOR-LAB.md) |
 | Coordinated release recovery | Synthetic vault/ledger/delivery failures, stale-writer fencing and backup continuity; no real keys | [Coordinator model](docs/RELEASE-COORDINATOR-MODEL.md) |
 | Encrypted messages and release accounting | Local experiments; the release model uses simulated chain data and a non-secret placeholder | [Transfer lab](docs/TRANSFER-LAB.md) · [Release model](docs/RELEASE-LEDGER-MODEL.md) |
 
-The automated suite contains **354 tests: 68 Rust + 286 Python**.
+The automated suite contains **402 tests: 68 Rust + 334 Python**.
 [GitHub Actions](.github/workflows/verify.yml) checks the build, tests and demos.
 Individual testnet runs are dated evidence, not performance or security
 guarantees; later software changes also have their own offline checks.
@@ -96,8 +97,10 @@ one authorized release does not mean only one viewing.
 The new [coordinator simulation](docs/RELEASE-COORDINATOR-MODEL.md) now tests
 vault, ledger and delivery failures together. A separate fake authority fences
 old writers and detects component backups restored behind its checkpoints.
-It uses non-secret placeholders and trusted authorization fixtures. Real keys,
-remote release and production enforcement remain separate review gates.
+The [signed coordinator lab](docs/SIGNED-COORDINATOR-LAB.md) now adds two-role
+permissions, recipient-signed challenges and signed revocations to that recovery
+flow. Responses stay non-secret; record/chain facts and delivery-key binding
+remain fixtures. Real-key delivery and production enforcement need separate review.
 
 ## Explore or build
 
@@ -126,7 +129,7 @@ move funds. For live testnet instructions, use the developer setup guide.
 
 | Priority | Next work |
 | --- | --- |
-| Private data access | Review the [coordinator model](docs/RELEASE-COORDINATOR-MODEL.md); specify and test signed authorization/retrieval with synthetic responses before real delivery |
+| Private data access | Review the [signed coordinator lab](docs/SIGNED-COORDINATOR-LAB.md); specify verified delivery-key binding and response attestations before real delivery |
 | Reliable operation | Select and validate independent fencing/storage and recovery enforcement; validate separate signer hosts and alerts |
 | Stronger custody | Specify key replacement and recovery from the cold stage, then test and independently review the design |
 | Longer-term research | Proof systems and broader data-access enforcement, with separate specifications and evidence |

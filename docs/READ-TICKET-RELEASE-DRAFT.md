@@ -258,7 +258,11 @@ state/accounting experiment. A separate [coordinator recovery model](RELEASE-COO
 now tests fake vault/ledger/delivery persistence and independent checkpoints
 following part of the [release-service design](RELEASE-SERVICE-DESIGN.md).
 Its admission/authentication/chain/administrative inputs remain trusted fixtures,
-with no real keys or native effects. Next review recovery and specify/test the
-signed R0 authorization/retrieval/revocation contract with synthetic responses.
-Connect real keys, chain adapters and remote delivery only after their separate
-gates pass; a dated anchor observation is not a current access grant.
+with no real keys or native effects. The separate [signed coordinator lab](SIGNED-COORDINATOR-LAB.md)
+now integrates conventional two-role permissions, recipient challenges and signed
+revocations into those synthetic recovery decisions. Its encoding is a separate
+experiment, not R0 wire adoption; delivery binding and record/chain facts remain
+fixtures. Next review those boundaries and specify/test verified delivery-key
+binding plus response attestations while responses remain synthetic. Connect
+real keys, chain adapters and remote delivery only after their separate gates
+pass; a dated anchor observation is not a current access grant.

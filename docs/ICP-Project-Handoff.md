@@ -1,6 +1,6 @@
 # ICP continuation checkpoint
 
-**October 19, 2026: synthetic coordinator recovery and fencing model implemented.**
+**October 19, 2026: signed coordinator permissions and recipient requests implemented as a local lab.**
 
 For a nontechnical introduction, open [ICP in plain English](PLAIN-ENGLISH.md).
 The [documentation directory](README.md) separates explanations, dated testnet
@@ -9,23 +9,40 @@ engineering and operational detail needed to continue development.
 
 ## Current state
 
-The latest module is scripts/release_coordinator_model.py. Read
+The latest module is scripts/signed_coordinator_lab.py. Read
+[SIGNED-COORDINATOR-LAB.md](SIGNED-COORDINATOR-LAB.md) and
+[its verification record](../evidence/signed-coordinator-verification.md).
+Separate approver/sender, recipient, service-challenge and revoker Ed25519
+roles bind complete permissions and fresh purpose-bound requests. Shared base
+transaction helpers commit signed evidence and used nonces atomically with
+reservation/delivery; the response context binds permission and admission digests.
+Forty-eight new tests bring the suite to 402 (68 Rust + 334 Python), including
+an actual subprocess crash in the signed reservation commit/acknowledgment gap.
+
+This has a distinct experimental lab encoding, not an adopted R0 wire format.
+Delivery-key binding, record/chain facts and administration remain fixtures;
+responses stay non-secret. The earlier HPKE lab is not connected. A copied
+signed retrieval can be relayed once, and joint authority/store rollback loses
+signed revocations. Keep the independent authority outside component restores.
+Next review signed boundaries and specify/test verifiable delivery-key binding
+plus response attestation with synthetic responses. Real key custody/delivery,
+protected enforcement, transport and native ticket/refund remain separate gates.
+
+The earlier recovery module is scripts/release_coordinator_model.py. Read
 [RELEASE-COORDINATOR-MODEL.md](RELEASE-COORDINATOR-MODEL.md) and
 [its verification record](../evidence/release-coordinator-verification.md).
 Separate ledger/vault/delivery SQLite journals pin an independent authority
 identity. Active writer generations, exact acknowledgments and cross-store
-response checks gate recovery and dispatch. Fifty-two new tests bring the suite
-to 354 (68 Rust + 286 Python), including real process termination and restore
+response checks gate recovery and dispatch. At that checkpoint, fifty-two new
+tests brought the suite to 354 (68 Rust + 286 Python), including real process termination and restore
 counterexamples. Keep the authority outside component backup/restore operations.
 
-All responses remain non-secret placeholders. Admission, request authentication,
-record/ticket/chain facts and administration are trusted synthetic fixtures;
-no existing cryptographic lab or native effect is integrated. Restoring the
-witness with all stores permits nonce reuse; accepted dispatch cannot recall
-bytes. No production fencing provider, protected vault, remote endpoint or R0
-wire/suite is selected. Next review recovery and specify/test signed R0
-authorization/retrieval/revocation while responses remain synthetic. Real key
-storage, independent enforcement and native ticket/refund need separate gates.
+That base experiment retains its unsigned harness API; the signed layer above
+adds separate entry points. Record/ticket/chain facts and administration remain
+fixtures in both. Restoring the witness with all stores loses history, and
+accepted dispatch cannot recall bytes. No production fencing provider, protected
+vault, remote endpoint or R0 wire/suite is selected. Real key storage/delivery,
+independent enforcement and native ticket/refund need separate gates.
 The governing proposal remains [RELEASE-SERVICE-DESIGN.md](RELEASE-SERVICE-DESIGN.md).
 
 The earlier recipient module is scripts/recipient_lab.py. Read

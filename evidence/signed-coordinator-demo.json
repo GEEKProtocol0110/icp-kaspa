@@ -1,0 +1,148 @@
+{
+  "admission_request": {
+    "challenge": {
+      "body": {
+        "admission_hash": null,
+        "authority": "model:authority-410431bff3af5c9b3d846d051d6f5283",
+        "binding": "model:delivery-certificate",
+        "budget": "model:budget",
+        "delivery_epoch": 0,
+        "expires_at": 130,
+        "generation": 1,
+        "grant": "model:grant",
+        "issued_at": 100,
+        "mode": "LOCAL_SIGNED_COORDINATOR_SYNTHETIC_RESPONSES_NO_CHAIN",
+        "network": "testnet-10-simulation",
+        "nonce": "model:challenge-d4e73e53a40ed337b11bc3ca758282e7",
+        "permission_hash": "6800bc641baa63a5502892e0f8e7060ac2b0a736d7ce10ffbdcc868d5f3ae8d0",
+        "policy_epoch": 0,
+        "policy_id": "6878bb7eaa8fbeaae5b3315d3ea35553ca5ece09faf7487765f4e73685c16107",
+        "purpose": "reserve",
+        "recipient_key": "b6c4be6493f779ef8b8058d57034f8a0c5306bedc9f1d3e1ab45835b13a26ab8",
+        "request": "model:approved-recipient-request",
+        "response_hash": null,
+        "service": "model:service",
+        "version": "icp-signed-coordinator-lab-v0"
+      },
+      "signature": "1dfc63e9805b3d70ccac85ed5d508a83ba25573ae16a661401794526b8d44701683a3d0c428d5c06a6d6b3a4a3946fc62ae2d9affdafbea5665b9228115e350f"
+    },
+    "signature": "eb6e8fb074a2ba671870d6b56d2dd81d4cf98f0918d62e355c4d064b4ab909947842df978cbcd15afb047e38d76e42115e80d84542cba7e28d23420acd72c30c"
+  },
+  "broadcasts": 0,
+  "content_keys": 0,
+  "identical_retry": true,
+  "mode": "LOCAL_SIGNED_COORDINATOR_SYNTHETIC_RESPONSES_NO_CHAIN",
+  "permission": {
+    "approval": "5d1ea69d4cd01df294449597b3eff55d032266633d259150bfa8d9d27140c6a4a488b62f61d3f8f0795e8835a1eeda765fd5aa3cd3c0c3aa473e3cea9f8b560b",
+    "body": {
+      "budget": "model:budget",
+      "context": {
+        "binding": "model:delivery-certificate",
+        "challenge": "model:request-challenge",
+        "cipher": "model:cipher-digest",
+        "consume": "model:exact-consume",
+        "delivery_epoch": 0,
+        "expires": 200,
+        "grant": "model:grant",
+        "not_before": 100,
+        "policy_epoch": 0,
+        "recipient": "model:recipient",
+        "record": "model:record/version-1",
+        "request": "model:approved-recipient-request",
+        "size": 128,
+        "ticket": "model:issue/outpoint-0",
+        "window_end": 180,
+        "window_start": 100
+      },
+      "mode": "LOCAL_SIGNED_COORDINATOR_SYNTHETIC_RESPONSES_NO_CHAIN",
+      "network": "testnet-10-simulation",
+      "policy_id": "6878bb7eaa8fbeaae5b3315d3ea35553ca5ece09faf7487765f4e73685c16107",
+      "recipient_key": "b6c4be6493f779ef8b8058d57034f8a0c5306bedc9f1d3e1ab45835b13a26ab8",
+      "service": "model:service",
+      "version": "icp-signed-coordinator-lab-v0"
+    },
+    "sender_signature": "3a4254a395f37562d4098b62a3960fc4e2ab58296c5d6e5b9c4364c0dbe9546cd6da8a99a79b1bc5f94809976b52ec17399bfc0ee4ed5aa63cc0e9c5f894fc01"
+  },
+  "policy": {
+    "approver": "b9fc8ecea2146be6a12b94f9db387a870afa322f9d7a5dc7ad7fdfb42914d90d",
+    "binding_label": "model:delivery-certificate",
+    "budget": "model:budget",
+    "byte_limit": 1024,
+    "challenge_lifetime": 30,
+    "challenge_limit": 16,
+    "count_limit": 4,
+    "freshness": 5,
+    "recipient": "b6c4be6493f779ef8b8058d57034f8a0c5306bedc9f1d3e1ab45835b13a26ab8",
+    "recipient_label": "model:recipient",
+    "revoker": "a4d4dfb1d7c4f4cb18a3222b294a569e7df89dc125707852a4efce491f7d6557",
+    "sender": "51908f06495c5201d555f41a0ba1049757f45bda10aba059690cc790786c4e47",
+    "service": "model:service",
+    "service_signer": "670eb8dcec964e0fd298246d72f148f6190c794557dd4ed4729f4f7abf378eae"
+  },
+  "retrieval_request": {
+    "challenge": {
+      "body": {
+        "admission_hash": "2b9b053e32f8b08a16b01fa2c021b2c01252d30b8f9a113eafd9888cbd35feee",
+        "authority": "model:authority-410431bff3af5c9b3d846d051d6f5283",
+        "binding": "model:delivery-certificate",
+        "budget": "model:budget",
+        "delivery_epoch": 0,
+        "expires_at": 130,
+        "generation": 1,
+        "grant": "model:grant",
+        "issued_at": 100,
+        "mode": "LOCAL_SIGNED_COORDINATOR_SYNTHETIC_RESPONSES_NO_CHAIN",
+        "network": "testnet-10-simulation",
+        "nonce": "model:challenge-638612615d4534559cdd523bb94d7746",
+        "permission_hash": "6800bc641baa63a5502892e0f8e7060ac2b0a736d7ce10ffbdcc868d5f3ae8d0",
+        "policy_epoch": 0,
+        "policy_id": "6878bb7eaa8fbeaae5b3315d3ea35553ca5ece09faf7487765f4e73685c16107",
+        "purpose": "retrieve",
+        "recipient_key": "b6c4be6493f779ef8b8058d57034f8a0c5306bedc9f1d3e1ab45835b13a26ab8",
+        "request": "model:approved-recipient-request",
+        "response_hash": "edb731b8c27a8a9e1320a8381468c7ceff94e9fb1e20a1206e0068437512bb44",
+        "service": "model:service",
+        "version": "icp-signed-coordinator-lab-v0"
+      },
+      "signature": "5f9b6e4421e677f6bc1817aed89a18492568d5764f9d577472fd8bec04710dd5f8dc6f3e44e787e41c6034b6f2ee18d178bdb28b102003eccc50477088ac8802"
+    },
+    "signature": "94937c19d8a31b87a2e7c7b54964b67ea118f7e241d3a2be4f54930c71dd35a0ba3218823adbcc866dceafc6a451b149c492d78dc9de8ff4211cbb6aefccd201"
+  },
+  "revocation": {
+    "body": {
+      "action": "revoke-grant",
+      "budget": "model:budget",
+      "expires_at": 130,
+      "grant": "model:grant",
+      "issued_at": 100,
+      "mode": "LOCAL_SIGNED_COORDINATOR_SYNTHETIC_RESPONSES_NO_CHAIN",
+      "network": "testnet-10-simulation",
+      "nonce": "model:revocation-1",
+      "permission_hash": "6800bc641baa63a5502892e0f8e7060ac2b0a736d7ce10ffbdcc868d5f3ae8d0",
+      "policy_id": "6878bb7eaa8fbeaae5b3315d3ea35553ca5ece09faf7487765f4e73685c16107",
+      "sequence": 1,
+      "service": "model:service",
+      "version": "icp-signed-coordinator-lab-v0"
+    },
+    "signature": "9b225bc167485a508f5122bbbd736e36710ac3f7109422688fc85f57c83cb6e057959700dc26069718d7cb3e7a0acab29cc2cca2f6bc2d61ef08e0b7ec28a400"
+  },
+  "rpc_calls": 0,
+  "status": {
+    "charges": {
+      "100": {
+        "bytes": 128,
+        "count": 1,
+        "end": 180
+      }
+    },
+    "committed": true,
+    "grant": "model:grant",
+    "mode": "SYNTHETIC_COORDINATOR_NO_KEYS_NO_CHAIN",
+    "possible_disclosure": true,
+    "prepared": true,
+    "reserved": true,
+    "response_hash": "edb731b8c27a8a9e1320a8381468c7ceff94e9fb1e20a1206e0068437512bb44",
+    "revoked": true,
+    "used": true
+  }
+}

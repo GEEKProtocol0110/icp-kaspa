@@ -11,9 +11,36 @@ engineering checkpoint first, followed by earlier milestones.
 | At a glance | Current position |
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
-| Data access | Local recipient-specific encryption and simulated release accounting; no remote release service |
-| Automated coverage | 354 tests: 68 Rust + 286 Python |
-| Next engineering work | Review coordinated recovery; specify signed authorization/retrieval, production fencing/storage and native ticket/refund implementations |
+| Data access | Local recipient encryption, signed request checks and synthetic recovery; no remote release service |
+| Automated coverage | 402 tests: 68 Rust + 334 Python |
+| Next engineering work | Review signed recovery; specify delivery-key binding/response attestations, production enforcement and native ticket/refund implementations |
+
+## Signed coordinator permission/request checkpoint
+
+- scripts/signed_coordinator_lab.py adds a separate, strictly encoded lab format
+  for approver/sender permission signatures, service challenge signatures,
+  recipient admission/retrieval proofs and distinct-signer grant revocations.
+  Five Ed25519 roles, service/budget and limits are pinned in the durable policy.
+- Evidence and permanent nonce claims share the same checkpointed ledger or
+  delivery event as the action. The response context binds actual permission
+  and original signed-request digests. Recovery retains signatures, charges
+  and responses, but invalidates old-generation outstanding challenges.
+- The recipient helper verifies the intended permission and expected response
+  digest. Signed revocation binds the exact grant/permission, next global
+  sequence and unique ID; accepted revocation blocks already signed retrieval.
+- 48 new tests bring the suite to 402 (68 Rust + 334 Python), including an
+  actual process exit after reservation commit and before checkpoint acknowledgment.
+  All Python tests pass locally; required native/build/template checks run in CI.
+- Responses remain dummy values. Records, delivery binding, native ticket/chain
+  facts and administration remain trusted fixtures. No HPKE integration, content
+  keys, transport endpoint, production enforcement or adopted R0 wire is added.
+- Counterexamples relay one copied signed request and lose an accepted signed
+  revocation by restoring the authority with all stores. These remain trusted
+  service/continuity boundaries, not production anti-rollback or secure transport.
+- Read docs/SIGNED-COORDINATOR-LAB.md and
+  evidence/signed-coordinator-verification.md. Next: review signed boundaries and
+  specify/test recipient delivery-key binding plus response attestation with
+  synthetic responses before separate real-key/native-ticket/remote milestones.
 
 ## Synthetic coordinator recovery checkpoint
 

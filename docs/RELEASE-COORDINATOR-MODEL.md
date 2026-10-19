@@ -7,6 +7,13 @@ release-service recovery design. It has no encryption, real keys, signature
 verification, native transactions, RPC, transport or remote release endpoint.
 Its mode is `SYNTHETIC_COORDINATOR_NO_KEYS_NO_CHAIN`.
 
+A separate [signed coordinator lab](SIGNED-COORDINATOR-LAB.md) now extends
+these transaction boundaries with real conventional permission/challenge and
+revocation signatures over the same non-secret response model. The unsigned
+harness described here remains a separate experiment; its fixture entry points
+are not the signed lab's API. Shared protected save helpers keep signed evidence
+and permanent claims in one component event without changing this model's scope.
+
 ## What it demonstrates
 
 Imagine a service saves a delivery, crashes before replying, and starts again.
@@ -163,8 +170,8 @@ boundary. Retention, resource bounds and production performance are unresolved;
 this is not a storage implementation to deploy behind an API. It establishes
 no quantum safety, independent audit or protection for existing real data.
 
-Next: review this recovery model against the service design, specify the
-signed R0 authorization/retrieval/revocation wire contract, and test that
-integration while responses remain synthetic. Real key storage, delivery,
-independent enforcement and native ticket/refund implementations need their
-own review and acceptance milestones.
+Next: review this recovery model and the separate
+[signed coordinator lab](SIGNED-COORDINATOR-LAB.md) against the service design.
+Verified delivery-key binding, response attestations and R0 wire adoption
+remain review gates. Real key storage/delivery, independent enforcement and
+native ticket/refund implementations need separate acceptance milestones.

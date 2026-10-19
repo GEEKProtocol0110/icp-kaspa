@@ -9,7 +9,10 @@ Current code includes the [local recipient-encryption lab](RECIPIENT-ENCRYPTION-
 [synthetic release ledger](RELEASE-LEDGER-MODEL.md) and a separate
 [synthetic coordinator recovery model](RELEASE-COORDINATOR-MODEL.md). The latter
 implements a bounded recovery/fencing simulation with trusted admission and
-authentication fixtures; it does not implement this complete service.
+authentication fixtures; it does not implement this complete service. The
+separate [signed coordinator lab](SIGNED-COORDINATOR-LAB.md) now adds conventional
+permission, recipient-request and revocation signatures to those boundaries,
+while responses, record/chain facts and delivery bindings remain synthetic.
 
 ## In plain English
 
