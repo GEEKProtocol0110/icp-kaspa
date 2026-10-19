@@ -30,9 +30,15 @@ a fresh, longer delay govern release.
 The goal is to make custody policy visible, enforceable and testable on Kaspa:
 pinned destinations, explicit authority, bounded fees and time to respond.
 
+The broader direction includes institutional custody and controlled access to
+encrypted off-chain data, with Kaspa governing policy and proof verification.
+Data tickets, private key delivery and release limits remain research work.
+The [security target](docs/SECURITY-TARGET.md) maps this direction and the source
+paper to the current implementation and its unresolved design choices.
+
 **Current stage: experimental Testnet-10 prototype.** The v0 vault/watchtower
 and protected-v1 lifecycle have passed funded TN10 acceptance runs. The latest
-controller changes pass **138 offline tests: 59 Rust + 79 Python**. Independent
+suite passes **141 offline tests: 62 Rust + 79 Python**. Independent
 security review and production operation remain ahead.
 
 ## The custody lifecycle
@@ -48,7 +54,7 @@ flowchart TD
 
 This is the protected-v1 contract flow. Watcher approval is an off-chain policy
 decision; the covenant enforces the spending paths. The watcher never signs a
-cold release. The final cold exit is P2PK and ends covenant protection.
+cold release. Both recipient and cold exits are P2PK and end covenant protection.
 V0's recovery goes directly to its fixed recovery address.
 
 ## What is running in code
@@ -113,6 +119,7 @@ For fresh test keys, node setup and a journaled TN10 pilot, follow the
 | Start here | Purpose |
 | --- | --- |
 | [Architecture](docs/ARCHITECTURE.md) | Contracts, watcher, signer and trust boundaries |
+| [Security target](docs/SECURITY-TARGET.md) | Compromise matrix, paper mapping and tested payout boundaries |
 | [Project status](PROJECT-STATUS.md) | Current engineering checkpoint |
 | [Vault specification](docs/VAULT-SPEC.md) | V0 invariants and threat model |
 | [Protected recovery](docs/PROTECTED-RECOVERY.md) | V1 state transitions and role-specific CLI |
@@ -128,7 +135,7 @@ Source lives in `contracts/`, `src/` and `scripts/`; verification lives in
 | Horizon | Work |
 | --- | --- |
 | Now | Reproducible covenant vaults, protected recovery, durable watchtower, quarantine tracking and bounded local catch-up |
-| Next | Independent watcher/signer hosts, external alert acceptance and a fresh journaled TN10 operational run |
+| Next | Settle surviving authority, continued cold custody and rotation rules; validate operational failures and independent hosting on TN10 |
 | Harden | Cold-stage rescue and rotation specification, pruning/deep-reorg reconciliation, retention, fee estimation and adversarial review |
 | Research | Data-release tickets, proof systems, DAG Zippers and STATIC; separately specified before implementation |
 

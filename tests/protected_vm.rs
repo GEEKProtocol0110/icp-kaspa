@@ -50,6 +50,81 @@ fn p2pk(scalar: u8) -> ScriptPublicKey {
     ))
 }
 
+fn verify_input(tx: &Transaction, entries: &[UtxoEntry]) -> Result<(), String> {
+    let populated = PopulatedTransaction::new(tx, entries.to_vec());
+    let cache = Cache::new(1000);
+    let reused = SigHashReusedValuesUnsync::new();
+    TxScriptEngine::from_transaction_input_with_script_units_limit(
+        &populated,
+        &tx.inputs[0],
+        0,
+        &entries[0],
+        EngineCtx::new(&cache).with_reused(&reused),
+        EngineFlags {
+            covenants_enabled: true,
+            ..Default::default()
+        },
+        tx.inputs[0].compute_commit.allowed_script_units(),
+    )
+    .execute()
+    .map_err(|e| e.to_string())
+}
+
+fn output_utxo(source: &Transaction) -> UtxoEntry {
+    UtxoEntry::new(
+        source.outputs[0].value,
+        source.outputs[0].script_public_key.clone(),
+        2000,
+        false,
+        None,
+    )
+}
+
+// Spend the actual terminal output, with no covenant redeem script. Public
+// deterministic fixture keys model key possession, not a quantum computation.
+fn spend_p2pk(source: &Transaction, signer: u8, destination: u8) -> (Transaction, UtxoEntry) {
+    let utxo = output_utxo(source);
+    let mut tx = Transaction::new(
+        1,
+        vec![TransactionInput::new_with_compute_budget(
+            TransactionOutpoint {
+                transaction_id: source.id(),
+                index: 0,
+            },
+            vec![],
+            0,
+            100,
+        )],
+        // The old covenant fee cap also ends at its terminal output.
+        vec![TransactionOutput::new(
+            utxo.amount - FEE - 1,
+            p2pk(destination),
+        )],
+        0,
+        Default::default(),
+        0,
+        vec![],
+    );
+    icp_testnet::commit_storage_mass(&tx, std::slice::from_ref(&utxo)).unwrap();
+    let populated = MutableTransaction::with_entries(tx.clone(), vec![utxo.clone()]);
+    let hash = calc_schnorr_signature_hash(
+        &populated.as_verifiable(),
+        0,
+        SIG_HASH_ALL,
+        &SigHashReusedValuesUnsync::new(),
+    );
+    let mut signature = key(signer)
+        .sign_schnorr(Message::from_digest_slice(&hash.as_bytes()).unwrap())
+        .as_ref()
+        .to_vec();
+    signature.push(SIG_HASH_ALL.to_u8());
+    let mut script = ScriptBuilder::new();
+    script.add_data(&signature).unwrap();
+    tx.inputs[0].signature_script = script.drain();
+    tx.finalize();
+    (tx, utxo)
+}
+
 struct Attempt {
     a: SilAbiArtifact,
     tx: Transaction,
@@ -143,23 +218,7 @@ impl Attempt {
         self
     }
     fn result(&self) -> Result<(), String> {
-        let populated = PopulatedTransaction::new(&self.tx, self.entries.clone());
-        let cache = Cache::new(1000);
-        let reused = SigHashReusedValuesUnsync::new();
-        TxScriptEngine::from_transaction_input_with_script_units_limit(
-            &populated,
-            &self.tx.inputs[0],
-            0,
-            &self.entries[0],
-            EngineCtx::new(&cache).with_reused(&reused),
-            EngineFlags {
-                covenants_enabled: true,
-                ..Default::default()
-            },
-            self.tx.inputs[0].compute_commit.allowed_script_units(),
-        )
-        .execute()
-        .map_err(|e| e.to_string())
+        verify_input(&self.tx, &self.entries)
     }
     fn accepts(self) {
         assert_eq!(self.signed().result(), Ok(()));
@@ -414,4 +473,54 @@ fn native_builder_produces_valid_chain_to_cold_release() {
     }
     assert_eq!(utxo.amount, VALUE - 3 * FEE);
     assert_eq!(utxo.script_public_key, p2pk(4));
+}
+
+#[test]
+fn normal_payout_ends_destination_delay_and_fee_constraints() {
+    let payout = Attempt::new(1, "execute").signed();
+    assert_eq!(payout.result(), Ok(()));
+    let (spend, utxo) = spend_p2pk(&payout.tx, 3, 5);
+    assert_eq!(verify_input(&spend, &[utxo]), Ok(()));
+    assert_eq!(spend.inputs[0].sequence, 0);
+    assert_eq!(spend.lock_time, 0);
+    assert_eq!(spend.outputs[0].script_public_key, p2pk(5));
+    let (wrong_role, utxo) = spend_p2pk(&payout.tx, 1, 5);
+    assert!(verify_input(&wrong_role, &[utxo]).is_err());
+}
+
+#[test]
+fn cold_payout_ends_destination_delay_and_fee_constraints() {
+    let payout = Attempt::new(2, "release").signed();
+    assert_eq!(payout.result(), Ok(()));
+    let (spend, utxo) = spend_p2pk(&payout.tx, 4, 5);
+    assert_eq!(verify_input(&spend, &[utxo]), Ok(()));
+    assert_eq!(spend.inputs[0].sequence, 0);
+    assert_eq!(spend.lock_time, 0);
+    assert_eq!(spend.outputs[0].script_public_key, p2pk(5));
+    let (wrong_role, utxo) = spend_p2pk(&payout.tx, 2, 5);
+    assert!(verify_input(&wrong_role, &[utxo]).is_err());
+}
+
+#[test]
+fn all_role_keys_allow_linked_recovery_and_final_p2pk_spend() {
+    let initiate = Attempt::new(0, "initiate").signed();
+    assert_eq!(initiate.result(), Ok(()));
+    let mut previous = initiate.tx;
+    for (stage, entry) in [(1, "recover"), (2, "release")] {
+        let mut next = Attempt::new(stage, entry);
+        next.tx.inputs[0].previous_outpoint = TransactionOutpoint {
+            transaction_id: previous.id(),
+            index: 0,
+        };
+        next.entries = vec![output_utxo(&previous)];
+        let next = next.signed();
+        assert_eq!(next.result(), Ok(()));
+        previous = next.tx;
+    }
+    assert_eq!(previous.outputs[0].script_public_key, p2pk(4));
+    let (spend, utxo) = spend_p2pk(&previous, 4, 5);
+    assert_eq!(verify_input(&spend, &[utxo]), Ok(()));
+    assert_eq!(spend.outputs[0].script_public_key, p2pk(5));
+    // VM-only: sequence commitments are checked, actual age is a node gate.
+    // This accepted path needs the role keys; it does not rewrite DAG history.
 }
