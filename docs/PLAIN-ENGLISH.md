@@ -109,7 +109,9 @@ observations and checks recovery without moving coins or delivering data keys.
 
 A separate [ticket observer](NATIVE-TICKET-OBSERVER.md) checks whether a ticket
 was created, used or refunded. If the chain changes, its answer changes too.
-Its new tests use made-up chain records; connecting it to permission checks and
+Its tests use made-up chain records. The [connected controller](NATIVE-TICKET-BINDING.md)
+now requires current matching observations before new work, while remembering
+past choices and charges through a chain change. Real permission checks and
 proving a live ticket lifecycle are still ahead.
 
 The older model allows copied databases to accept separate claims. The new
@@ -132,7 +134,7 @@ original document is factually true.
 | Simulation or model | Invented chain observations or placeholders exercise the rules; they are not live-chain evidence |
 | Proposal or research | A direction being specified; a working, secure deployment has not been established |
 
-There are **562 automated tests** today. Passing tests helps catch mistakes; it
+There are **598 automated tests** today. Passing tests helps catch mistakes; it
 does not replace an independent security review or prove production readiness.
 The project is still an experimental Testnet-10 prototype.
 

@@ -60,6 +60,7 @@ signed transaction outboxes and private backups out of the repository.
 | [Native ticket design](NATIVE-TICKET-DESIGN.md) | Proposed TN10 issue/consume/refund policy, permanent branch choice and recovery rules; native layouts tested separately in the lab |
 | [Native ticket lab](NATIVE-TICKET-LAB.md) | Working offline native layout/signature experiment and mutation tests; fabricated inputs, no RPC or real authorization |
 | [Native ticket observer](NATIVE-TICKET-OBSERVER.md) | Read-only native projections, exact UTXOs and reversible trusted-node history; synthetic evidence, no controller integration |
+| [Observer/controller integration](NATIVE-TICKET-BINDING.md) | Current native observations gate the persistent fixture lifecycle; synthetic scans, no live ticket or real authorization |
 | [Native ticket controller](NATIVE-TICKET-CONTROLLER.md) | Persistent fixture branch/outbox recovery with native verification, crash tests and synthetic views; no RPC or real authorization |
 | [Release-service design](RELEASE-SERVICE-DESIGN.md) | Proposed key ownership, exact-response delivery, revocation, fencing and backup recovery; no implemented service |
 

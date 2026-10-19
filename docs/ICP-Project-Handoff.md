@@ -1,6 +1,6 @@
 # ICP continuation checkpoint
 
-**October 19, 2026: separate read-only native ticket observer implemented.**
+**October 19, 2026: observer-bound fixture controller implemented.**
 
 For a nontechnical introduction, open [ICP in plain English](PLAIN-ENGLISH.md).
 The [documentation directory](README.md) separates explanations, dated testnet
@@ -9,7 +9,23 @@ engineering and operational detail needed to continue development.
 
 ## Current state
 
-The latest milestone is [NATIVE-TICKET-OBSERVER.md](NATIVE-TICKET-OBSERVER.md).
+The latest milestone is [NATIVE-TICKET-BINDING.md](NATIVE-TICKET-BINDING.md).
+scripts/native_ticket_binding.py binds exact native tracker pairs to a separate
+controller policy. It rechecks unspent observations before new work, rejects
+legacy fake-map reconciliation, requires fresh scans/reconciliation after
+recovery, and preserves branch/charge/outbox/attempt history across reorgs.
+Unsigned native worker pins describe potential outcomes without signing either
+terminal branch. Build native_ticket_worker and ticket_read before Python tests.
+
+Full local verification is 598 tests (110 Rust + 488 Python), with 34 new Python
+and two Rust tests. CI runs the offline integration demo. No live RPC, funded
+ticket or real key is connected. A change after the final sample can still
+precede a fake effect; direct fixture-worker use and joint authority rollback
+remain explicit limits. Next prepare a fresh-key TN10 pilot plan and review
+signing, wire, authorization and protected-key boundaries. Read
+[the verification record](../evidence/native-ticket-binding-verification.md).
+
+The preceding milestone is [NATIVE-TICKET-OBSERVER.md](NATIVE-TICKET-OBSERVER.md).
 scripts/native_ticket_observer.py maintains separate reversible per-node history;
 examples/ticket_read.rs only projects native transactions or reads scans/UTXOs.
 Build both ticket_read and native_ticket_worker before the Python suite; CI and

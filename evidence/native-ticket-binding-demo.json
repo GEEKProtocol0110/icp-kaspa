@@ -1,0 +1,15 @@
+{
+  "branch": "consume",
+  "broadcasts": 0,
+  "charge": {
+    "bytes": 128,
+    "count": 1,
+    "window_end": 180,
+    "window_start": 100
+  },
+  "content_keys": 0,
+  "mode": "SYNTHETIC_OBSERVER_CONTROLLER_NO_LIVE_PROOF",
+  "permanent_state_preserved": true,
+  "real_rpc_calls": 0,
+  "reorg_blocks_new_effect": true
+}

@@ -1,13 +1,13 @@
 //! Bounded private stdin/stdout fixture channel; no files, RPC or external keys.
 use icp_testnet::native_ticket_lab::{
-    Action, Plan, canonical, fixture_terminal, prepare_record, verify_record,
+    Action, Plan, canonical, fixture_terminal, observation_pin, prepare_record, verify_record,
 };
 use std::io::{self, Read};
 
 fn main() -> Result<(), String> {
     let args: Vec<String> = std::env::args().collect();
     if args.len() != 2 {
-        return Err("Expected validate, prepare or verify".into());
+        return Err("Expected validate, pin, prepare, terminal plan or verify".into());
     }
     let mut raw = Vec::new();
     io::stdin()
@@ -21,6 +21,8 @@ fn main() -> Result<(), String> {
         "validate" => {
             String::from_utf8(canonical(&Plan::from_json(&raw)?)?).map_err(|e| e.to_string())?
         }
+        "pin" => serde_json::to_string(&observation_pin(&Plan::from_json(&raw)?)?)
+            .map_err(|e| e.to_string())?,
         "prepare" => prepare_record(&raw)?,
         "consume-plan" | "refund-plan" => {
             let action = if args[1] == "consume-plan" {

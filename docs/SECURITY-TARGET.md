@@ -95,8 +95,12 @@ The separate [ticket observer](NATIVE-TICKET-OBSERVER.md) recomputes native IDs
 and checks exact accepted transaction semantics, positive ticket UTXOs and
 reversible chain depth. Freshness and two-host agreement are trusted-node
 observations, not consensus proofs, permission or signer enforcement. Tests
-use synthetic scans; no RPC was called for this milestone and the controller
-still uses its separate fake acceptance model.
+use synthetic scans; no RPC was called for that milestone. The later
+[connected fixture controller](NATIVE-TICKET-BINDING.md) now gates new work on
+current tracker facts, with policy-pinned paths, native semantics and freshness.
+Submission effects remain strictly fake, and no real permission or data key is
+connected. The explicit post-sample counterexample still allows an effect after
+a chain change; there is no atomic chain-to-effect or independent signer claim.
 
 The [release-service design](RELEASE-SERVICE-DESIGN.md) proposes a private key
 vault, authoritative grant/response ledger and delivery gate, with independent

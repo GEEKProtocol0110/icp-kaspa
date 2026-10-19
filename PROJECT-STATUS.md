@@ -12,8 +12,28 @@ engineering checkpoint first, followed by earlier milestones.
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
-| Automated coverage | 562 tests: 108 Rust + 454 Python |
-| Next engineering work | Explicit observer/controller integration with synthetic tests; review authorization, protected key ownership and independent enforcement |
+| Automated coverage | 598 tests: 110 Rust + 488 Python |
+| Next engineering work | Fresh-key TN10 ticket pilot plan and independent review of signing, wire rules, authorization and protected key ownership |
+
+## Observer/controller integration checkpoint
+
+- The [connected fixture controller](docs/NATIVE-TICKET-BINDING.md) pins two
+  separate observer stores and exact native semantics in its policy. New work
+  rechecks current observations under the controller lease; copied dictionaries
+  and legacy fake acceptance maps cannot satisfy this variant.
+- Native unsigned pins identify alternative outcomes without signing them.
+  Complete saved signed records still receive the separate native integrity/VM
+  checks. Reorgs and observation-store restore cannot rewind permanent branch,
+  charge, outbox or submission history.
+- 34 new Python and two native tests bring full local verification to 598
+  (110 Rust + 488 Python). Tests cover restart, depth, freshness, exact context,
+  lost replies, a reorg between intent and final lease and an explicit change
+  after the last sample that still allows the local fake effect.
+- The experiment uses fabricated native inputs and synthetic full RPC bodies.
+  No live calls, funded ticket, real authorization or content key is connected.
+  Direct known-key worker use and joint service-authority rollback remain limits.
+  Read the [verification record](evidence/native-ticket-binding-verification.md).
+  Next: prepare a fresh-key TN10 pilot plan and review the independent boundaries.
 
 ## Read-only native ticket observer checkpoint
 

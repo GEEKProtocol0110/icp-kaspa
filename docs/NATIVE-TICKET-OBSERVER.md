@@ -66,7 +66,9 @@ movement latches a halt rather than extending freshness.
 
 Use these databases only for chain observations. They do not contain or rewind
 service branch choices, charges, signing history or outboxes. The observer is
-not connected to the fixture controller's `FakeNode` model or any release gate.
+connected to the [observer-bound fixture controller](NATIVE-TICKET-BINDING.md)
+through a policy-pinned, synthetic-tested boundary. That variant still has only
+fake submission effects and no release gate.
 
 ## Trust and remaining work
 
@@ -81,5 +83,6 @@ Local code, the clock, fixture pins, node configuration and observation storage
 are trusted. There is no independent database anti-rollback witness here, and
 this observer does not create authorization. No live ticket lifecycle, reviewed
 N0/R0 wire adoption, independently enforced signing or protected key delivery is
-established. Next test an explicit observer/controller boundary with synthetic
-records while retaining permanent service history through chain rollbacks.
+established. The separate [integration](NATIVE-TICKET-BINDING.md) now tests an
+explicit controller boundary with synthetic records while preserving permanent
+service history through chain rollbacks.

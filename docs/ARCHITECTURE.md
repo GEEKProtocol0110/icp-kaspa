@@ -20,6 +20,7 @@ threat model and paper comparison are in [SECURITY-TARGET.md](SECURITY-TARGET.md
 | [Bound response lab](BOUND-RESPONSE-LAB.md) | HPKE enrollment and signed response records in checkpointed recovery | Encrypts random enrollment token only; response bundle remains unencrypted and non-secret |
 | [Native ticket lab](NATIVE-TICKET-LAB.md) | Native signed issue/consume/refund fixtures, strict plans and VM/mutation tests | Fabricated source, known keys and invented evidence digests; no persistent branch choice, RPC or authorization |
 | [Native ticket observer](NATIVE-TICKET-OBSERVER.md) | Read-only native ID/semantic projection, positive exact UTXOs, per-node chain rollback and freshness | Synthetic evidence only; separate from signing, controller decisions and release |
+| [Observer/controller integration](NATIVE-TICKET-BINDING.md) | Policy-pinned native tracker facts gate new fixture work; reversible history stays outside permanent service journals | Synthetic scans/effects; no atomic chain-to-signing guarantee, real permission or independent signer |
 | [Native ticket controller](NATIVE-TICKET-CONTROLLER.md) | Permanent fixture branch choice, private native outboxes and recovery under a separate checkpoint authority | Trusted one-host model with synthetic acceptance; no independently enforced signer or real authorization |
 | [Signed coordinator lab](SIGNED-COORDINATOR-LAB.md) | Two-role permission, recipient challenge and revocation signatures over checkpointed synthetic decisions | No real record validation, delivery-key proof, content keys, transport or native tickets |
 | [Coordinator recovery model](RELEASE-COORDINATOR-MODEL.md) | Separate fake vault/ledger/delivery journals and independent fencing/checkpoints | Trusted one-host simulation with admission/authentication fixtures; no real keys or native tickets |
@@ -35,8 +36,8 @@ The [native ticket design](NATIVE-TICKET-DESIGN.md) selects a proposed N0
 transaction profile: funding creates a dedicated P2PK ticket and change;
 consumption returns its test coins to a pinned destination. Only never-reserved,
 permanently closed tickets may select refund instead. Fixture branch selection
-and a separate read-only observer now exist; their integration and independent
-signer enforcement remain gates. Native
+and a separate read-only observer now exist. A connected controller tests their
+integration with synthetic scans. Independent signer enforcement remains a gate. Native
 transaction IDs do not commit signature scripts, mass or V1 compute budgets,
 so complete outbox integrity is separate from exact accepted-chain semantics.
 
