@@ -75,6 +75,14 @@ excluded by the ID and signature hash, and from complete outbox integrity. It
 adds no native ticket implementation, live acceptance, timed key recovery or
 stronger claim.
 
+The [native ticket lab](NATIVE-TICKET-LAB.md) now signs fabricated linked
+issue/consume/refund layouts and tests them in the native VM. Tests demonstrate
+ID/signature exclusions for compute budget and storage mass, full-hash integrity
+checks, and arbitrary controller-signed P2PK spends outside ticket policy.
+Both alternative terminal branches can be signed offline: the lab does not
+enforce durable branch selection, actual authorization, consensus access limits
+or chain acceptance. No real data key or release-model connection is added.
+
 The [release-service design](RELEASE-SERVICE-DESIGN.md) proposes a private key
 vault, authoritative grant/response ledger and delivery gate, with independent
 writer fencing and recovery checkpoints. It makes encrypted candidate responses

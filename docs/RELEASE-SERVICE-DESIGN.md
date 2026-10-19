@@ -23,6 +23,10 @@ reserved for release can select refund. Branch selection, full signed outboxes
 and independent signer/effect fencing must survive recovery. This is a design
 extension; native implementation and accepted-chain integration remain gates.
 
+The later [native ticket lab](NATIVE-TICKET-LAB.md) now prepares and verifies
+native transaction fixtures. It has no persistent controller, real permission
+verification, observation or integration with this service; these gates remain.
+
 ## In plain English
 
 The service would hold the key to an encrypted record. It would check the exact

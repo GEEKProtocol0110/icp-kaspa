@@ -1,6 +1,6 @@
 # ICP continuation checkpoint
 
-**October 19, 2026: native ticket/consume/refund design added; latest executable layer remains the local bound response lab.**
+**October 19, 2026: offline native ticket preparation and mutation tests implemented.**
 
 For a nontechnical introduction, open [ICP in plain English](PLAIN-ENGLISH.md).
 The [documentation directory](README.md) separates explanations, dated testnet
@@ -9,19 +9,36 @@ engineering and operational detail needed to continue development.
 
 ## Current state
 
-The latest design is [NATIVE-TICKET-DESIGN.md](NATIVE-TICKET-DESIGN.md), with
+The latest executable milestone is [NATIVE-TICKET-LAB.md](NATIVE-TICKET-LAB.md),
+implemented in src/native_ticket_lab.rs and examples/native_ticket_lab.rs.
+It builds linked native issue/consume/refund fixtures with known public keys,
+strict canonical plans, exact layout/mass checks, native Schnorr/VM verification
+and complete saved-hash comparison. Public vectors include every plan and
+commitment; no signed outbox or private material is published.
+
+Twenty-eight new Rust tests bring local verification to 475 (96 Rust + 379
+Python). They also prove the scope limits: ordinary P2PK admits arbitrary
+controller-signed spends, and both alternative terminal branches can be signed.
+Evidence/approval/closure digests are invented, not verified permissions.
+No RPC, persistent controller, live observation or real-key connection exists.
+Its lab namespace/prefix does not adopt the proposed N0/R0 wire protocol.
+
+Next: separate fixture-only durable controller with one permanent branch,
+exact saved transaction recovery and crash/unknown-effect tests. Keep funded
+sessions, real keys, chain adapters and release models disconnected. Read
+[the verification record](../evidence/native-ticket-lab-verification.md).
+
+The governing design is [NATIVE-TICKET-DESIGN.md](NATIVE-TICKET-DESIGN.md), with
 review scope in [its checkpoint record](../evidence/native-ticket-design-review.md).
 It selects the proposed N0 issue/two-output and terminal/one-output layouts,
 fixed experimental fees, noncircular commitments, irreversible branch selection
 and never-reserved-only refunds. Refund recovers coins, never permissions/quota.
 Native IDs do not identify every saved field; pin complete outboxes separately.
-Service fencing/expiry cannot retract copied signed spends. No native ticket
-implementation or funded run was added; the 447-test code is unchanged.
-Next build a separate offline N0 native preparer and adversarial mutation tests
-using fabricated UTXOs/public keys. Freeze closed schemas and vectors there.
-Do not add RPC, broadcast, real keys or a model-grant connection in that step.
+Service fencing/expiry cannot retract copied signed spends. The later lab
+above tests native layouts; complete N0 schemas/authorization, independent
+signer continuity and accepted-chain integration remain gates.
 
-The latest module is scripts/bound_response_lab.py. Read
+The earlier bound response module is scripts/bound_response_lab.py. Read
 [BOUND-RESPONSE-LAB.md](BOUND-RESPONSE-LAB.md) and
 [its verification record](../evidence/bound-response-verification.md).
 The signed policy's binding label now commits to a pinned X25519 delivery key,

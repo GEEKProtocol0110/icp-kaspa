@@ -8,6 +8,11 @@ lab encodings and funded sessions are unchanged. This selects a bounded first
 native experiment under the [release-service design](RELEASE-SERVICE-DESIGN.md);
 it does not adopt the complete R0 wire protocol or authorize a funded run.
 
+The subsequent [native ticket lab](NATIVE-TICKET-LAB.md) now implements an
+offline native layout/signature experiment with fabricated inputs. It has a
+separate lab encoding, invented evidence digests and no durable branch
+controller, authorization or live observation. The N0/R0 gates below remain.
+
 ## In plain English
 
 A service would create a small testnet output as a ticket for one approved
@@ -255,10 +260,15 @@ authorization or erase a response already in flight.
 
 ## 6. Acceptance gates and next implementation
 
-The next executable milestone is an **offline native N0 preparer and mutation
+The first executable milestone is an **offline native N0 preparer and mutation
 test suite**, using public fixture keys and fabricated UTXO entries. It must
 have no RPC, broadcast, real data or connection to the release models. Public
 fixtures are intentionally known; never fund their addresses.
+
+The subsequent [lab](NATIVE-TICKET-LAB.md) now tests that milestone's native
+layout/signature portion using a separate fixture encoding. Actual N0
+authorization and durable branch control remain unimplemented. The next lab
+step is a fixture-only controller with exact outbox and crash recovery.
 
 | Adversarial case | Required evidence before progressing |
 | --- | --- |

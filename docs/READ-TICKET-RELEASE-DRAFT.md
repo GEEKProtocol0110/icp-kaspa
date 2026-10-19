@@ -272,7 +272,10 @@ experiment, not R0 wire adoption; delivery binding and record/chain facts remain
 fixtures. The separate [bound response lab](BOUND-RESPONSE-LAB.md) now adds
 HPKE enrollment and durable response signatures while delivery remains a
 non-secret placeholder. The [native ticket proposal](NATIVE-TICKET-DESIGN.md)
-now specifies an initial transaction profile and refund boundary. Next build
-and mutation-test its native preparer offline. Connect real keys, chain adapters
+now specifies an initial transaction profile and refund boundary. The separate
+[native ticket lab](NATIVE-TICKET-LAB.md) tests its native layouts/signatures
+offline with fabricated inputs and invented authorization digests. Next add
+durable branch selection and crash recovery while retaining those fixture-only
+boundaries. Connect real keys, chain adapters
 and remote delivery only after their separate gates pass; a dated anchor observation is
 not a current access grant.

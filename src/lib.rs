@@ -1,4 +1,5 @@
 //! ICP testnet prototype. See docs/VAULT-SPEC.md for the limited threat model.
+pub mod native_ticket_lab;
 pub mod protected;
 use kaspa_consensus_core::{
     config::params::TESTNET_PARAMS,

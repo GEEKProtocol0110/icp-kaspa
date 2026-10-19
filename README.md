@@ -65,11 +65,12 @@ these vault rules no longer protect their later transfers.
 | Recording a data commitment on Kaspa | One testnet transaction observed through two node endpoints | [Transfer anchor run](docs/ICP-Transfer-Anchor-Live-Proof.md) |
 | A message encrypted for one recipient | Local HPKE encryption, delivery-key possession checks, sender approval and signed receipts; no network delivery | [Recipient-encryption lab](docs/RECIPIENT-ENCRYPTION-LAB.md) |
 | Delivery-key checks and signed response records | Encrypted enrollment challenge plus exact saved signatures over dummy responses; no real key delivery | [Bound response lab](docs/BOUND-RESPONSE-LAB.md) |
+| Native ticket transactions | Offline issue/consume/refund examples signed and checked in Kaspa's script engine; fabricated inputs | [Native ticket lab](docs/NATIVE-TICKET-LAB.md) |
 | Signed release requests | Exact two-role permissions, recipient challenges and signed revocations over dummy deliveries | [Signed coordinator lab](docs/SIGNED-COORDINATOR-LAB.md) |
 | Coordinated release recovery | Synthetic vault/ledger/delivery failures, stale-writer fencing and backup continuity; no real keys | [Coordinator model](docs/RELEASE-COORDINATOR-MODEL.md) |
 | Encrypted messages and release accounting | Local experiments; the release model uses simulated chain data and a non-secret placeholder | [Transfer lab](docs/TRANSFER-LAB.md) · [Release model](docs/RELEASE-LEDGER-MODEL.md) |
 
-The automated suite contains **447 tests: 68 Rust + 379 Python**.
+The automated suite contains **475 tests: 96 Rust + 379 Python**.
 [GitHub Actions](.github/workflows/verify.yml) checks the build, tests and demos.
 Individual testnet runs are dated evidence, not performance or security
 guarantees; later software changes also have their own offline checks.
@@ -106,10 +107,10 @@ recipient encryption-key possession and saves a signature with each exact dummy
 response. Responses remain non-secret; record/chain facts remain fixtures.
 Real-key delivery and production enforcement need separate review.
 
-The [native ticket proposal](docs/NATIVE-TICKET-DESIGN.md) now defines a first
-issue/consume/refund layout. Only never-reserved tickets could be refunded;
-refunds would not restore access permission or quota. This is an offline design,
-with native preparation and acceptance testing still ahead.
+The [native ticket lab](docs/NATIVE-TICKET-LAB.md) now builds and checks that
+proposal's transaction layouts with fabricated inputs and known test keys.
+It demonstrates valid native signatures and detects altered transactions.
+Durable branch choice, real authorization and live acceptance remain ahead.
 
 ## Explore or build
 
@@ -138,7 +139,7 @@ move funds. For live testnet instructions, use the developer setup guide.
 
 | Priority | Next work |
 | --- | --- |
-| Private data access | Build and mutation-test the [native ticket proposal](docs/NATIVE-TICKET-DESIGN.md) offline; review wire formats and protected key ownership before real delivery |
+| Private data access | Add durable branch choice and crash recovery around the [native ticket lab](docs/NATIVE-TICKET-LAB.md); review authorization and protected key ownership before real delivery |
 | Reliable operation | Select and validate independent fencing/storage and recovery enforcement; validate separate signer hosts and alerts |
 | Stronger custody | Specify key replacement and recovery from the cold stage, then test and independently review the design |
 | Longer-term research | Proof systems and broader data-access enforcement, with separate specifications and evidence |
