@@ -1,5 +1,5 @@
 {
-  ".github/workflows/verify.yml": "ad6ddf0aec67fc0d15c27cbf04006ec88e4aceb91c5fb6cbd0ad11041d7e0deb",
+  ".github/workflows/verify.yml": "df7c2ae2e97449db7bd3414ad8307968fd3ab550cd7b9f9f3ff81a0af8431c75",
   ".gitignore": "4dab596181af756f6d404ac5a5788e05ed70c2e24222bf30cbd9713e8f5e5059",
   "AGENTS.md": "26c22d9a5d1c5a0814aa662d2c2a41e5e6084252b122d549c4749921280b8b28",
   "Cargo.lock": "b441a75a4d0e0e3c84abd502505dae2055970edf23e66721ce5b2792baeeb0c9",
@@ -83,7 +83,7 @@
   "evidence/signer-verification.md": "bee1fda2a1749e05f96a16f4c0f136a896175f48b81587496ccd45815c573417",
   "evidence/tn10-node.json": "1d49f0089c9b73f8631b36759297e7ff8f3e1ac36ec4c7ab571278136d292b5f",
   "evidence/transfer-lab-demo.json": "4ab2a1e07f9a95a58098a8f58155b6a84e84f7856718c32dbe504c3b8633b6df",
-  "evidence/transfer-lab-verification.md": "dcbd2a79e67618060423563664b1333f3f9f2d385f993e04021c213b951b3426",
+  "evidence/transfer-lab-verification.md": "c9ce16a29507c735188d0abb4b0a32541ce8f8aad3ab7c6ed78a1d4af74ddf20",
   "evidence/watchtower-live.json": "9fdf6e7efe6659e4fb96a311167eebaa960cb51a9806297565abdb35164bd548",
   "evidence/watchtower-tests.txt": "a1822a762ffcdbcea698899665c48c9feb6651d4e167cd2ecafc1e8cb82278ea",
   "examples/fund_protected_pilot.rs": "5c77c77f6a01d2db75b5f412464c6924854c7ac66b7dd2aab82af581d326812c",

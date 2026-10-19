@@ -21,6 +21,7 @@ of this transcript does not independently prove the reported decryption.
 - Both checksum-pinned fixture compilers passed; custody artifacts unchanged.
 - Exact lab dependency versions resolved as binary wheels. Shell/systemd,
   documentation-link, attribution and diff-whitespace checks passed.
+- Workflow YAML parsed successfully, including the quoted binary-wheel command.
 
 The new checks cover ciphertext/hash/tag tampering, valid re-signatures over
 mismatched associated data, incorrect roles/keys, missing or exchanged role
