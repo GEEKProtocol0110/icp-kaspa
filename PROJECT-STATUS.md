@@ -12,8 +12,26 @@ engineering checkpoint first, followed by earlier milestones.
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
-| Automated coverage | 475 tests: 96 Rust + 379 Python |
-| Next engineering work | Add durable native fixture branch/outbox recovery; review authorization, protected key ownership and independent enforcement |
+| Automated coverage | 516 tests: 100 Rust + 416 Python |
+| Next engineering work | Dedicated read-only native ticket observation; review authorization, protected key ownership and independent enforcement |
+
+## Persistent native fixture controller checkpoint
+
+- [Controller](docs/NATIVE-TICKET-CONTROLLER.md) saves exact native issue and
+  selected terminal outboxes under the existing hash-chained journal and separate
+  trusted checkpoint/fencing authority. Branch choice commits before signing.
+- Recovery verifies exact native records without re-signing. Uncertain synthetic
+  submissions reconcile only; branch, charge and original deadlines remain.
+  Status exposes metadata/hashes, not signed transaction bytes.
+- 37 new Python and four new Rust tests bring full local verification to 516
+  (100 Rust + 416 Python), including actual process exits and concurrent stores.
+  Shared-authority component rollback halts; joint authority rollback remains
+  an explicit counterexample. Read the
+  [verification record](evidence/native-ticket-controller-verification.md).
+- No actual authorization, native observation, funded transaction, real key or
+  remote release is added. Direct known-key worker use bypasses the controller;
+  independent deployment enforcement remains a gate. Next: read-only native
+  ticket observation, separate from all private signing/effect paths.
 
 ## Offline native ticket checkpoint
 

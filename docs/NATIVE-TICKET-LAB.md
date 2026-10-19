@@ -93,7 +93,9 @@ policy counterexamples. Existing custody behavior is unchanged.
 VM success does not establish UTXO existence, live acceptance, mass/fee relay
 policy, confirmation confidence or real permission. Deterministic known test
 keys and nonce inputs are for reproducible vectors, never production material.
-The next milestone is a separate durable fixture controller that serializes
-branch choice and recovers the same saved transaction through crashes. Native
-observation, independent signer enforcement, reviewed authorization/wire,
+The separate [fixture controller](NATIVE-TICKET-CONTROLLER.md) is now
+implemented, with private native-record verification and persistent recovery.
+The original standalone demo still signs both alternative branches; use the
+controller guide for its additional guarantees and trusted-host limitations.
+Native observation, independent signer enforcement, reviewed authorization/wire,
 real-key custody and remote delivery remain later gates.

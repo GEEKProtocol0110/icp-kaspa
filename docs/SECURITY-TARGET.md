@@ -83,6 +83,14 @@ Both alternative terminal branches can be signed offline: the lab does not
 enforce durable branch selection, actual authorization, consensus access limits
 or chain acceptance. No real data key or release-model connection is added.
 
+The separate [native fixture controller](NATIVE-TICKET-CONTROLLER.md) now
+preserves a branch, charge and exact signed outboxes under the trusted recovery
+model. It checks complete saved native records and never retries uncertain
+synthetic effects. A real process crash and concurrent connections are tested.
+Its independent authority remains a trusted local fake: joint restore can lose
+history, direct worker use bypasses the controller, and no actual approval,
+consensus observation or production signer enforcement is supplied.
+
 The [release-service design](RELEASE-SERVICE-DESIGN.md) proposes a private key
 vault, authoritative grant/response ledger and delivery gate, with independent
 writer fencing and recovery checkpoints. It makes encrypted candidate responses
