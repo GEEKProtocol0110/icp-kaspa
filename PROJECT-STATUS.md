@@ -12,8 +12,27 @@ engineering checkpoint first, followed by earlier milestones.
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
-| Automated coverage | 516 tests: 100 Rust + 416 Python |
-| Next engineering work | Dedicated read-only native ticket observation; review authorization, protected key ownership and independent enforcement |
+| Automated coverage | 562 tests: 108 Rust + 454 Python |
+| Next engineering work | Explicit observer/controller integration with synthetic tests; review authorization, protected key ownership and independent enforcement |
+
+## Read-only native ticket observer checkpoint
+
+- [Observer](docs/NATIVE-TICKET-OBSERVER.md) uses a dedicated read-only native
+  binary to recompute RPC transaction IDs and project exact issue/consume/refund
+  semantics. It checks exact ticket UTXOs and reverses accepted-chain events.
+- Separate per-endpoint databases, fresh scans after restart, bounded local
+  reply checks, successor depth and positive branch-linked UTXO samples block
+  stale or incomplete status. Paired observations must match and come from
+  distinct hostnames; different names do not establish operator independence.
+- 38 new Python and eight Rust tests bring local verification to 562
+  (108 Rust + 454 Python). Reorgs reset observations without changing the
+  controller's branch, charge or outbox. Read the
+  [verification record](evidence/native-ticket-observer-verification.md).
+- The public demo uses fabricated full RPC bodies with native fixture IDs.
+  The demo makes zero RPC calls, signatures or broadcasts; tests use known-key
+  native fixtures. This milestone made no live RPC calls. No actual native
+  ticket, controller integration, permission or data-key delivery is claimed.
+  Next: test an explicit observer/controller boundary with synthetic inputs.
 
 ## Persistent native fixture controller checkpoint
 

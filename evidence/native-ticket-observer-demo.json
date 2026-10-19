@@ -1,0 +1,170 @@
+{
+  "broadcasts": 0,
+  "mode": "SYNTHETIC_TICKET_SCANS_NO_RPC_NO_FUNDS",
+  "rpc_calls": 0,
+  "signatures_created": 0,
+  "snapshots": [
+    {
+      "mode": "TRUSTED_NODE_TICKET_OBSERVATION_ONLY",
+      "observations": [
+        {
+          "endpoint": "wss://synthetic-0.invalid/kaspa/testnet-10/wrpc/borsh",
+          "issue": {
+            "block": "0000000000000000000000000000000000000000000000000000000000000001",
+            "position": 1,
+            "transaction_id": "e974a1344d5e9bfacf0dbe9bbf2b2277741a4a177739e2defe7d88d87c396356"
+          },
+          "issue_successors": 2,
+          "mode": "TRUSTED_NODE_TICKET_OBSERVATION_ONLY",
+          "observed_at": 100,
+          "pin_id": "f442c895f0ff6510388f76f39a0d1be9ec3d6f8774a72814454fda6ae82f6ef5",
+          "required_successors": 2,
+          "sampled_target": "0000000000000000000000000000000000000000000000000000000000000003",
+          "spend": null,
+          "state": "ISSUED_UNSPENT_OBSERVED",
+          "terminal_successors": 0,
+          "tip": "0000000000000000000000000000000000000000000000000000000000000003",
+          "utxo_sample": {
+            "after": "0000000000000000000000000000000000000000000000000000000000000001",
+            "at": 100,
+            "before": "0000000000000000000000000000000000000000000000000000000000000001",
+            "found": true
+          }
+        },
+        {
+          "endpoint": "wss://synthetic-1.invalid/kaspa/testnet-10/wrpc/borsh",
+          "issue": {
+            "block": "0000000000000000000000000000000000000000000000000000000000000001",
+            "position": 1,
+            "transaction_id": "e974a1344d5e9bfacf0dbe9bbf2b2277741a4a177739e2defe7d88d87c396356"
+          },
+          "issue_successors": 2,
+          "mode": "TRUSTED_NODE_TICKET_OBSERVATION_ONLY",
+          "observed_at": 100,
+          "pin_id": "f442c895f0ff6510388f76f39a0d1be9ec3d6f8774a72814454fda6ae82f6ef5",
+          "required_successors": 2,
+          "sampled_target": "0000000000000000000000000000000000000000000000000000000000000003",
+          "spend": null,
+          "state": "ISSUED_UNSPENT_OBSERVED",
+          "terminal_successors": 0,
+          "tip": "0000000000000000000000000000000000000000000000000000000000000003",
+          "utxo_sample": {
+            "after": "0000000000000000000000000000000000000000000000000000000000000001",
+            "at": 100,
+            "before": "0000000000000000000000000000000000000000000000000000000000000001",
+            "found": true
+          }
+        }
+      ],
+      "state": "TWO_NODE_ISSUED_UNSPENT_OBSERVED"
+    },
+    {
+      "mode": "TRUSTED_NODE_TICKET_OBSERVATION_ONLY",
+      "observations": [
+        {
+          "endpoint": "wss://synthetic-0.invalid/kaspa/testnet-10/wrpc/borsh",
+          "issue": {
+            "block": "0000000000000000000000000000000000000000000000000000000000000001",
+            "position": 1,
+            "transaction_id": "e974a1344d5e9bfacf0dbe9bbf2b2277741a4a177739e2defe7d88d87c396356"
+          },
+          "issue_successors": 5,
+          "mode": "TRUSTED_NODE_TICKET_OBSERVATION_ONLY",
+          "observed_at": 101,
+          "pin_id": "f442c895f0ff6510388f76f39a0d1be9ec3d6f8774a72814454fda6ae82f6ef5",
+          "required_successors": 2,
+          "sampled_target": "0000000000000000000000000000000000000000000000000000000000000006",
+          "spend": {
+            "block": "0000000000000000000000000000000000000000000000000000000000000004",
+            "kind": "consume",
+            "position": 4,
+            "transaction_id": "3672944cee2c2c117debc0b8f7a03fbaa3e3c7ab49fa02450591ee14258b954c"
+          },
+          "state": "CONSUMPTION_OBSERVED",
+          "terminal_successors": 2,
+          "tip": "0000000000000000000000000000000000000000000000000000000000000006",
+          "utxo_sample": null
+        },
+        {
+          "endpoint": "wss://synthetic-1.invalid/kaspa/testnet-10/wrpc/borsh",
+          "issue": {
+            "block": "0000000000000000000000000000000000000000000000000000000000000001",
+            "position": 1,
+            "transaction_id": "e974a1344d5e9bfacf0dbe9bbf2b2277741a4a177739e2defe7d88d87c396356"
+          },
+          "issue_successors": 5,
+          "mode": "TRUSTED_NODE_TICKET_OBSERVATION_ONLY",
+          "observed_at": 101,
+          "pin_id": "f442c895f0ff6510388f76f39a0d1be9ec3d6f8774a72814454fda6ae82f6ef5",
+          "required_successors": 2,
+          "sampled_target": "0000000000000000000000000000000000000000000000000000000000000006",
+          "spend": {
+            "block": "0000000000000000000000000000000000000000000000000000000000000004",
+            "kind": "consume",
+            "position": 4,
+            "transaction_id": "3672944cee2c2c117debc0b8f7a03fbaa3e3c7ab49fa02450591ee14258b954c"
+          },
+          "state": "CONSUMPTION_OBSERVED",
+          "terminal_successors": 2,
+          "tip": "0000000000000000000000000000000000000000000000000000000000000006",
+          "utxo_sample": null
+        }
+      ],
+      "state": "TWO_NODE_CONSUMPTION_OBSERVED"
+    },
+    {
+      "mode": "TRUSTED_NODE_TICKET_OBSERVATION_ONLY",
+      "observations": [
+        {
+          "endpoint": "wss://synthetic-0.invalid/kaspa/testnet-10/wrpc/borsh",
+          "issue": {
+            "block": "0000000000000000000000000000000000000000000000000000000000000001",
+            "position": 1,
+            "transaction_id": "e974a1344d5e9bfacf0dbe9bbf2b2277741a4a177739e2defe7d88d87c396356"
+          },
+          "issue_successors": 5,
+          "mode": "TRUSTED_NODE_TICKET_OBSERVATION_ONLY",
+          "observed_at": 102,
+          "pin_id": "f442c895f0ff6510388f76f39a0d1be9ec3d6f8774a72814454fda6ae82f6ef5",
+          "required_successors": 2,
+          "sampled_target": "0000000000000000000000000000000000000000000000000000000000000009",
+          "spend": {
+            "block": "0000000000000000000000000000000000000000000000000000000000000007",
+            "kind": "refund",
+            "position": 4,
+            "transaction_id": "577c00e0b1022336961cf8e1f28c53dc13eb244c4d3572c8482f50c730b11c43"
+          },
+          "state": "REFUND_OBSERVED",
+          "terminal_successors": 2,
+          "tip": "0000000000000000000000000000000000000000000000000000000000000009",
+          "utxo_sample": null
+        },
+        {
+          "endpoint": "wss://synthetic-1.invalid/kaspa/testnet-10/wrpc/borsh",
+          "issue": {
+            "block": "0000000000000000000000000000000000000000000000000000000000000001",
+            "position": 1,
+            "transaction_id": "e974a1344d5e9bfacf0dbe9bbf2b2277741a4a177739e2defe7d88d87c396356"
+          },
+          "issue_successors": 5,
+          "mode": "TRUSTED_NODE_TICKET_OBSERVATION_ONLY",
+          "observed_at": 102,
+          "pin_id": "f442c895f0ff6510388f76f39a0d1be9ec3d6f8774a72814454fda6ae82f6ef5",
+          "required_successors": 2,
+          "sampled_target": "0000000000000000000000000000000000000000000000000000000000000009",
+          "spend": {
+            "block": "0000000000000000000000000000000000000000000000000000000000000007",
+            "kind": "refund",
+            "position": 4,
+            "transaction_id": "577c00e0b1022336961cf8e1f28c53dc13eb244c4d3572c8482f50c730b11c43"
+          },
+          "state": "REFUND_OBSERVED",
+          "terminal_successors": 2,
+          "tip": "0000000000000000000000000000000000000000000000000000000000000009",
+          "utxo_sample": null
+        }
+      ],
+      "state": "TWO_NODE_REFUND_OBSERVED"
+    }
+  ]
+}

@@ -75,7 +75,8 @@ bytes cannot be recalled. No production isolation or rollback resistance is clai
 
 Thirty-seven Python tests and four additional native tests cover restart,
 concurrent choice, real process death, partial acknowledgment, stale generations,
-corruption, restore, unknown outcomes and scope counterexamples. Next build
-dedicated read-only native ticket observation before any separately authorized
-TN10 pilot. Real authorization, independently enforced signing, reviewed N0/R0
+corruption, restore, unknown outcomes and scope counterexamples. The separate
+[read-only observer](NATIVE-TICKET-OBSERVER.md) now exists, with synthetic scan
+and reorg tests. It does not feed this controller. Next test their explicit
+integration before any separately authorized TN10 pilot. Real authorization, independently enforced signing, reviewed N0/R0
 wire rules and protected key delivery remain separate gates.

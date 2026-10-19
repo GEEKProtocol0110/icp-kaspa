@@ -66,12 +66,13 @@ these vault rules no longer protect their later transfers.
 | A message encrypted for one recipient | Local HPKE encryption, delivery-key possession checks, sender approval and signed receipts; no network delivery | [Recipient-encryption lab](docs/RECIPIENT-ENCRYPTION-LAB.md) |
 | Delivery-key checks and signed response records | Encrypted enrollment challenge plus exact saved signatures over dummy responses; no real key delivery | [Bound response lab](docs/BOUND-RESPONSE-LAB.md) |
 | Native ticket transactions | Offline issue/consume/refund examples signed and checked in Kaspa's script engine; fabricated inputs | [Native ticket lab](docs/NATIVE-TICKET-LAB.md) |
+| Native ticket observation | Read-only native ID/layout verification, exact UTXO matching and reversible chain history; synthetic test evidence | [Ticket observer](docs/NATIVE-TICKET-OBSERVER.md) |
 | Native transaction recovery | Persistent fixture branch choice and exact saved transactions through restart/crashes; synthetic submission only | [Ticket controller](docs/NATIVE-TICKET-CONTROLLER.md) |
 | Signed release requests | Exact two-role permissions, recipient challenges and signed revocations over dummy deliveries | [Signed coordinator lab](docs/SIGNED-COORDINATOR-LAB.md) |
 | Coordinated release recovery | Synthetic vault/ledger/delivery failures, stale-writer fencing and backup continuity; no real keys | [Coordinator model](docs/RELEASE-COORDINATOR-MODEL.md) |
 | Encrypted messages and release accounting | Local experiments; the release model uses simulated chain data and a non-secret placeholder | [Transfer lab](docs/TRANSFER-LAB.md) · [Release model](docs/RELEASE-LEDGER-MODEL.md) |
 
-The automated suite contains **516 tests: 100 Rust + 416 Python**.
+The automated suite contains **562 tests: 108 Rust + 454 Python**.
 [GitHub Actions](.github/workflows/verify.yml) checks the build, tests and demos.
 Individual testnet runs are dated evidence, not performance or security
 guarantees; later software changes also have their own offline checks.
@@ -118,6 +119,11 @@ branch choice and saved-transaction recovery. Unknown synthetic outcomes are
 reconciled without a second attempt. Actual authorization, independent signer
 enforcement and live acceptance remain ahead.
 
+The separate [ticket observer](docs/NATIVE-TICKET-OBSERVER.md) can read TN10
+chain changes without signing. Offline tests check native transaction bodies,
+exact ticket outputs and reorganizations. It is not connected to the controller
+or key delivery; this milestone makes no live ticket claim.
+
 ## Explore or build
 
 | Your goal | Start here |
@@ -145,7 +151,7 @@ move funds. For live testnet instructions, use the developer setup guide.
 
 | Priority | Next work |
 | --- | --- |
-| Private data access | Add dedicated read-only native ticket observation; review authorization and protected key ownership before real delivery |
+| Private data access | Connect observer facts to the fixture controller through an explicit, tested boundary; review authorization and protected key ownership before real delivery |
 | Reliable operation | Select and validate independent fencing/storage and recovery enforcement; validate separate signer hosts and alerts |
 | Stronger custody | Specify key replacement and recovery from the cold stage, then test and independently review the design |
 | Longer-term research | Proof systems and broader data-access enforcement, with separate specifications and evidence |
