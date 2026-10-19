@@ -6,10 +6,11 @@ Keep `.secrets/`, `runtime/`, signed outboxes and databases out of Git.
 
 ## Reproduce the build
 
-Use Linux x86_64, Python 3, a C compiler and the pinned Rust 1.99.1 toolchain.
+Use Linux x86_64, Python 3.11+, a C compiler and the pinned Rust 1.99.1 toolchain.
 From the checkout root:
 
 ```bash
+python3 -m pip install --only-binary=:all: -r requirements-lab.txt
 python3 scripts/compile.py
 python3 scripts/compile_protected.py --fixtures
 cargo fmt --check

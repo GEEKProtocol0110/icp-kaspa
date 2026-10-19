@@ -1,13 +1,15 @@
 # ICP continuation checkpoint
 
-**October 19, 2026: custody-boundary tests and paper-alignment checkpoint added.**
+**October 19, 2026: local send/receive verification experiment added.**
 
 ## Current state
 
 Read docs/SECURITY-TARGET.md first for the current compromise matrix, source
 paper mapping and unresolved next-generation design gates. The broader direction
 includes institutional custody and controlled access to encrypted off-chain
-data; the data/proof/key-release subsystem is not implemented. Block rate alone
+data. A local encrypted manifest/receipt experiment is now in scripts/transfer_lab.py
+and docs/TRANSFER-LAB.md. On-chain data tickets, proof enforcement and protected
+key delivery remain unimplemented. Block rate alone
 is not evidence of application capacity or exclusive feasibility.
 
 Internal Command Protocol is a standalone Kaspa testnet-10 project. Use
@@ -71,10 +73,16 @@ later P2PK spends are not monitored by this watcher.
   Earlier verification is recorded in evidence/quarantine-verification.md.
 - The catch-up checkpoint passed 138 tests (59 Rust, 79 Python), including 19 new
   batching/backlog/restart/logging tests. See evidence/chain-batching-verification.md.
-- Current verification: 141 tests (62 Rust, 79 Python). Three new native tests
+- The custody-boundary checkpoint passed 141 tests (62 Rust, 79 Python). Three native tests
   verify actual terminal-output spends and a linked recovery-to-P2PK path using
   public role keys. The old covenant's destination, delay and fee constraints end
   at both normal and cold payouts. See evidence/custody-boundary-verification.md.
+- Current verification: 170 tests (62 Rust, 108 Python). The 29 new local lab
+  checks cover encrypted exchange binding, distinct roles, strict input/expiry,
+  replay/restart/concurrency, receipt substitution and explicit attestation/DB
+  limits. Public transcript: evidence/transfer-lab-demo.json. No new funded run.
+  See evidence/transfer-lab-verification.md and install requirements-lab.txt
+  before running the complete Python suite.
 
 ## Signer/supervisor boundary
 

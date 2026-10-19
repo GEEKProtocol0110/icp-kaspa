@@ -2,6 +2,23 @@
 
 **Status: V1 PROTECTED RECOVERY PASSED FUNDED TESTNET-10 ACCEPTANCE.**
 
+## Local send/receive experiment
+
+- scripts/transfer_lab.py adds a separate local-only encrypted manifest and
+  signed receipt experiment. Policy approver, sender and recipient are distinct
+  Ed25519 roles. Fresh per-message AES-256-GCM keys/nonces bind payloads to context.
+- The receiver checks policy, signatures, size and expiry before authentication/
+  decryption, then commits a receipt under a unique local transfer ID. Restart,
+  concurrent acceptance and local replay checks pass. The DB pins its policy.
+- No chain anchor, RPC, read-ticket consumption, global release counter,
+  protected key delivery, remote execution proof or quantum-safe authentication
+  is supplied. Receipt/clock/DB trust boundaries have explicit tests.
+- Public synthetic transcript: evidence/transfer-lab-demo.json. Dependency
+  versions are pinned in requirements-lab.txt; full CI installs them and runs
+  the demo. No keys, plaintext or private sessions are published.
+- Current suite: 170 checks (62 Rust + 108 Python), including 29 lab tests.
+  Read docs/TRANSFER-LAB.md and evidence/transfer-lab-verification.md.
+
 ## Security target and paper alignment
 
 - docs/SECURITY-TARGET.md now maps the source paper to current code, records the
@@ -16,7 +33,7 @@
 - Historical live-proof limitations are now dated separately from later
   software. Remote cold signing remains future work; the recovery-only SSH kit
   exists and independent-host acceptance is still pending.
-- Full current suite: 141 tests (62 Rust + 79 Python). See
+- That checkpoint passed 141 tests (62 Rust + 79 Python). See
   evidence/custody-boundary-verification.md for verification and limits.
 
 ## Bounded catch-up and developer experience
@@ -60,7 +77,7 @@
   2,067 DAA units after quarantine creation (required: 1,800).
 - A second TN10 node observed the quarantine output while locked and the final
   normal/cold outputs. Both vaults exited. No daemon remains running.
-- The current 141 offline checks pass (62 Rust and 79 Python). Read docs/ICP-Protected-Recovery-Live-Proof.md and
+- The current 170 offline checks pass (62 Rust and 108 Python). Read docs/ICP-Protected-Recovery-Live-Proof.md and
   evidence/protected-live.json for exact IDs, scripts, amounts and observations.
 - This run spent 0.16 test KAS in eight accepted transaction fees. Total remaining
   across old and fresh session addresses: 2.64 test KAS. No real KAS was used.

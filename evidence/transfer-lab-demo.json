@@ -1,0 +1,47 @@
+{
+  "mode": "LOCAL_ONLY_NO_CHAIN_ANCHOR",
+  "receipt_verified": true,
+  "payload_matches": true,
+  "replay_rejected": true,
+  "policy": {
+    "version": "icp-transfer-lab-v0",
+    "network": "testnet-10",
+    "mode": "offchain-local",
+    "approver": "5a587f381ee1d14c167cb4c7b7e17a4da64e59c53b6e34e64cb28d5309320695",
+    "sender": "4ccadb0a54c53f8a9ed8ac7b7d4bb71fe145ae1cd97fa1235821ef49f732287a",
+    "recipient": "139006c063f0ed0b492ddb215350a18357ba361563a203f9069c4aa65516ae1b",
+    "max_bytes": 1048576,
+    "max_lifetime": 300
+  },
+  "envelope": {
+    "manifest": {
+      "version": "icp-transfer-lab-v0",
+      "network": "testnet-10",
+      "policy_id": "1966057f956507df823a3a5ad7d0953f2cf6afa17387b3b3c331b88e0a1bc8cf",
+      "transfer_id": "487224dbe43e8a2d4a0ebb65c8e8b3b4fe2d188d1caef17777d52fea4dddcf96",
+      "sender": "4ccadb0a54c53f8a9ed8ac7b7d4bb71fe145ae1cd97fa1235821ef49f732287a",
+      "recipient": "139006c063f0ed0b492ddb215350a18357ba361563a203f9069c4aa65516ae1b",
+      "issued_at": 1792382698,
+      "expires_at": 1792382998,
+      "nonce": "9f2032d32c109c8d5bdfae0c",
+      "ciphertext_hash": "8700286341a7836c9de4d7346bcc64f763317a95ddefa7f89c7afc49d7cb5576"
+    },
+    "ciphertext": "75e830f85f7737aa164dab9e417d88bc625856ae672320de9f6ffec4896c00c0e678e8f324f3dfbbfa5ad8",
+    "approval": "024d3af111b486a625bcf364a120815c13c6689abd7d992cd7098a4373e4cf12bc47e58a9b6f2799335813ea85f62f8112e0c7a5588d59d1c56ac17e29ec2c07",
+    "sender_signature": "4e0eeac37354eba79dd252d009e2b2402df6ba8031d7df2539cc0ba8b8efe1df241f2a9ad724dbda0f2d5b0d8ded1ab4def7f4ba1e2715643561c65097eb1307"
+  },
+  "receipt": {
+    "body": {
+      "version": "icp-transfer-lab-v0",
+      "network": "testnet-10",
+      "policy_id": "1966057f956507df823a3a5ad7d0953f2cf6afa17387b3b3c331b88e0a1bc8cf",
+      "transfer_id": "487224dbe43e8a2d4a0ebb65c8e8b3b4fe2d188d1caef17777d52fea4dddcf96",
+      "manifest_id": "4fb49ae61920786a4298bb14a90ef4ce3b3666ad9b66c886a4867b3cd4395528",
+      "ciphertext_hash": "8700286341a7836c9de4d7346bcc64f763317a95ddefa7f89c7afc49d7cb5576",
+      "recipient": "139006c063f0ed0b492ddb215350a18357ba361563a203f9069c4aa65516ae1b",
+      "accepted_at": 1792382698,
+      "status": "VERIFIED_LOCAL"
+    },
+    "signature": "6ac02774f3644b2380fececae67aa8dc982bc95e6753ac9ca21c566dde43174baf9d912950c04b8d679e71d1778a859de012a70960b12e40fa0ec52005f03e0a"
+  }
+}

@@ -38,7 +38,7 @@ paper to the current implementation and its unresolved design choices.
 
 **Current stage: experimental Testnet-10 prototype.** The v0 vault/watchtower
 and protected-v1 lifecycle have passed funded TN10 acceptance runs. The latest
-suite passes **141 offline tests: 62 Rust + 79 Python**. Independent
+suite passes **170 offline tests: 62 Rust + 108 Python**. Independent
 security review and production operation remain ahead.
 
 ## The custody lifecycle
@@ -66,6 +66,7 @@ V0's recovery goes directly to its fixed recovery address.
 | Watchtower | Exact-intent approval, accepted-chain observation, durable recovery outbox | Controller tests + earlier funded recovery run |
 | Custody tracking | Exact quarantine output through cold release; branch-aware rollback | Offline controller/restart/reorg tests |
 | Chain catch-up | Bounded local batches, recovery checks between batches, backlog health | 19 new offline tests |
+| Local transfer lab | Encrypted manifests, separate approver/sender signatures, recipient attestations and local replay checks | 29 offline tests; no chain anchor or key delivery |
 | Signer deployment kit | Recovery-only SSH endpoint, pinned policy/transport, supervised services | Offline protocol and restart tests; separate-host deployment pending |
 
 Both native CLIs enforce TN10 node identity and activation checks. A broadcast
@@ -93,10 +94,11 @@ they have not been through a new funded run.
 
 ## Build and verify
 
-Use Linux x86_64, Python 3, a C compiler and the pinned Rust **1.99.1** toolchain.
+Use Linux x86_64, Python 3.11+, a C compiler and the pinned Rust **1.99.1** toolchain.
 From the repository root:
 
 ```bash
+python3 -m pip install --only-binary=:all: -r requirements-lab.txt
 python3 scripts/compile.py
 python3 scripts/compile_protected.py --fixtures
 cargo fmt --check
@@ -113,6 +115,12 @@ are commit-pinned and Cargo is locked. See [TOOLCHAIN.json](TOOLCHAIN.json).
 For fresh test keys, node setup and a journaled TN10 pilot, follow the
 [quick start](docs/QUICKSTART.md). For protected-v1 roles and policy, read
 [protected recovery](docs/PROTECTED-RECOVERY.md) before signing.
+
+For the synthetic send/receive experiment, run `python3 scripts/transfer_lab.py`
+and read [TRANSFER-LAB.md](docs/TRANSFER-LAB.md). It uses conventional signatures
+and an out-of-band symmetric-key assumption. Its receipt authenticates a
+recipient claim; it does not prove remote decryption, factual truth or a Kaspa
+confirmation. This module changes no custody rule.
 
 ## Explore the project
 

@@ -15,8 +15,8 @@ cases, not existing customers, certifications or demonstrated deployments.
 | Layer | Intended responsibility | Current state |
 | --- | --- | --- |
 | Custody | Constrained withdrawals, monitoring and quarantine recovery | Experimental TN10 implementation and dated funded evidence |
-| Private data | Encrypted off-chain storage, transport and recipient-specific key delivery | Design/research; no implementation |
-| Access policy | Read-intent tickets, persistent release accounting and proof/state binding | Design/research; no implementation |
+| Private data | Encrypted off-chain storage, transport and recipient-specific key delivery | Local encryption/receipt experiment; remote storage/transport/key delivery unimplemented |
+| Access policy | Read-intent tickets, persistent release accounting and proof/state binding | Local signed policy/manifest checks; on-chain tickets, global accounting and proofs unimplemented |
 | Operations | Independent signer/watcher hosts, external alerts and failure recovery | Offline-tested deployment kit; independent-host acceptance pending |
 
 Sensitive records and decryption keys are not proposed as public ledger data.
@@ -33,6 +33,12 @@ advances one shared state sequentially; independent states can run in parallel.
 A global release counter may serialize access even when many vaults parallelize.
 This project has not published a comparative benchmark establishing exclusive
 feasibility on one chain.
+
+The additive [transfer lab](TRANSFER-LAB.md) explores local before-send and
+after-receive checks with conventional Ed25519 keys, AES-GCM and a trusted
+policy/clock/replay database. It has no chain anchor or protected key delivery.
+An acknowledgment is an authenticated recipient claim, not proof of execution
+or factual truth. Local replay rejection does not provide global read limits.
 
 ## Implemented protected-v1 claim
 
