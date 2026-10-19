@@ -2,6 +2,10 @@
 
 October 19, 2026. New module: `scripts/transfer_anchor.py`.
 
+This records the original observer checkpoint. The later journaled funded
+milestone is documented in [the live proof](../docs/ICP-Transfer-Anchor-Live-Proof.md)
+and [pilot runbook](../docs/TRANSFER-ANCHOR-PILOT.md).
+
 28 new offline tests cover the exact signed-envelope/policy commitment, pinned
 transaction ID, wrong/missing payload, accepted-chain-only evidence,
 selected-chain successor thresholds, DAA non-equivalence, whole-page atomicity,

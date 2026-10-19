@@ -1,6 +1,6 @@
 # ICP continuation checkpoint
 
-**October 19, 2026: read-only transfer commitment observer added.**
+**October 19, 2026: journaled funded transfer anchor passed two-endpoint observation.**
 
 ## Current state
 
@@ -16,9 +16,12 @@ The companion scripts/transfer_anchor.py now tracks an exact signed-transfer
 payload/transaction ID in trusted-node accepted-chain scans. Its separate DB
 retains reorg history and pins policy/bootstrap/observation settings; restart,
 RPC failure, stale data or catch-up backlog prevent usable status. Read
-docs/TRANSFER-ANCHOR.md. The public demo is synthetic, with no live anchor,
-key release or changed receiver acceptance. Next live gate is a separately
-journaled TN10 anchor with independent second-node observation.
+docs/TRANSFER-ANCHOR.md. The original public demo remains synthetic. The later
+funded pilot paid 0.02 test KAS, returned the remainder to its funding key and
+observed the exact anchor on two distinct endpoints with 29/20 selected-chain
+successors. Read docs/ICP-Transfer-Anchor-Live-Proof.md and the pilot runbook.
+No key release or receiver acceptance rule changed. Unknown outcomes resume
+through the read-only observe command; never replace an unreconciled anchor.
 
 Internal Command Protocol is a standalone Kaspa testnet-10 project. Use
 project-level attribution and repository-relative links. The original source
@@ -91,9 +94,14 @@ later P2PK spends are not monitored by this watcher.
   limits. Public transcript: evidence/transfer-lab-demo.json. No new funded run.
   See evidence/transfer-lab-verification.md and install requirements-lab.txt
   before running the complete Python suite.
-- Current suite: 198 checks (62 Rust, 136 Python), including 28 new anchor tests.
+- The observer checkpoint covered 198 checks (62 Rust, 136 Python), including 28 anchor tests.
   All Python tests pass locally. The refreshed host lacks Cargo/rustup; required
   Rust verification runs in GitHub CI. See evidence/transfer-anchor-verification.md.
+- Current suite: 221 checks (68 Rust, 153 Python). The pre-live 220-check build
+  passed CI and supplied the checksummed binaries used for the live run; the
+  published-evidence consistency check brings Python to 153 passing tests.
+  The exact 0.24-test-KAS donor output was spent once, returning 0.22 with a
+  0.02 fee. Existing custody-pilot journal contents are unchanged.
 
 ## Signer/supervisor boundary
 

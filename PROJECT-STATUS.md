@@ -2,7 +2,27 @@
 
 **Status: V1 PROTECTED RECOVERY PASSED FUNDED TESTNET-10 ACCEPTANCE.**
 
-## Transfer commitment observer
+## Funded transfer anchor observed
+
+- A fresh synthetic encrypted exchange was committed in TN10 transaction
+  dce0ddf4ad0e420918c2216a85e2b179650e6a10ac7566cb60d99eee69b585f1.
+  One submission spent the exact saved 0.24-test-KAS change output, returned
+  0.22 test KAS to the same key and paid a fixed 0.02-test-KAS fee.
+- Two distinct TLS endpoints reported the exact accepted transaction with
+  29/20 selected-chain successors, then independently reported its exact new
+  output as unspent. Both scans started at 2026-10-19 05:54:27 UTC.
+- New native preparation and journaled pilot preserve signed bytes before
+  submission, pin/claim the source, reject replacement runs and resume reads
+  without signing or broadcasting. Existing custody sessions were not rerun.
+- Current suite: 221 checks (68 Rust + 153 Python). The pre-live 220-check
+  checkpoint passed GitHub CI; the added public evidence consistency test
+  passes locally with all 153 Python tests. Native sources are unchanged since
+  that verified build. Final workflow results are recorded on PR #9.
+- Read docs/ICP-Transfer-Anchor-Live-Proof.md, docs/TRANSFER-ANCHOR-PILOT.md
+  and evidence/transfer-anchor-live.json. No protected key delivery, consensus
+  proof, live reorg experiment, independent-host isolation or quantum claim.
+
+## Original transfer commitment observer checkpoint
 
 - scripts/transfer_anchor.py now binds the complete signed encrypted exchange
   and trusted policy to a domain-separated transaction payload commitment.
@@ -14,7 +34,7 @@
   protected key delivery. The receiver is unchanged. No transfer anchor was
   broadcast; evidence/transfer-anchor-demo.json uses explicitly synthetic IDs
   and a simulated clock. No funded session was touched.
-- Current suite: 198 checks (62 Rust + 136 Python), including 28 new anchor
+- That checkpoint covered 198 checks (62 Rust + 136 Python), including 28 new anchor
   tests. Python passes locally; required Rust checks run in GitHub CI because
   the refreshed local host has no Rust toolchain. Read docs/TRANSFER-ANCHOR.md
   and evidence/transfer-anchor-verification.md.
@@ -94,7 +114,7 @@
   2,067 DAA units after quarantine creation (required: 1,800).
 - A second TN10 node observed the quarantine output while locked and the final
   normal/cold outputs. Both vaults exited. No daemon remains running.
-- The current suite contains 198 offline checks (62 Rust and 136 Python). Read docs/ICP-Protected-Recovery-Live-Proof.md and
+- The current suite contains 221 offline checks (68 Rust and 153 Python). Read docs/ICP-Protected-Recovery-Live-Proof.md and
   evidence/protected-live.json for exact IDs, scripts, amounts and observations.
 - This run spent 0.16 test KAS in eight accepted transaction fees. Total remaining
   across old and fresh session addresses: 2.64 test KAS. No real KAS was used.

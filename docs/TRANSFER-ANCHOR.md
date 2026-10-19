@@ -4,8 +4,10 @@
 alongside the [local transfer lab](TRANSFER-LAB.md). It can match a pinned
 transaction ID and exact payload in native accepted-chain scan responses,
 track selected-chain successors and undo observations after a reorganization.
-**This milestone has synthetic offline evidence only. No transfer anchor has
-been submitted or independently observed on TN10.**
+The original milestone used synthetic offline evidence. A later
+[journaled TN10 run](ICP-Transfer-Anchor-Live-Proof.md) submitted one anchor and
+observed it through two distinct endpoints, including its exact self-return
+output. That dated observation does not provide a consensus or finality proof.
 
 The observer does not change the receiver's acceptance rules. It does not sign
 or broadcast, deliver keys, consume read tickets, enforce release accounting or
@@ -146,8 +148,9 @@ Reviewed at rusty-kaspa revision
   This alone does not demonstrate submission, mass/fee adequacy or acceptance
   of this proposed anchor on a live node.
 
-Next: specify a funded-test-only anchoring transaction and journal submission,
-exact accepted-chain observation and an independent second-node check on TN10.
-Keep that evidence separate from these synthetic fixtures. Define revocation,
+The [pilot](TRANSFER-ANCHOR-PILOT.md) now specifies a bounded self-returning
+funding transaction and journals submission plus two-endpoint observation.
+Its [live evidence](ICP-Transfer-Anchor-Live-Proof.md) is separate from the
+synthetic fixtures. Next, define revocation,
 release authority and a replay/accounting protocol before connecting any chain
 observation to protected key delivery.

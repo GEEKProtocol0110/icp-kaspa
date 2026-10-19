@@ -218,5 +218,40 @@ class PilotTests(unittest.TestCase):
                     pilot.Node(self.config['nodes'][0]).call('anchor')
                 kill.assert_called_once_with(12345, pilot.signal.SIGKILL)
 
+    def test_saved_live_projection_is_internally_bound_to_signed_exchange(self):
+        # Checks recorded evidence consistency, not current chain membership.
+        from transfer_lab import verify_receipt
+        from transfer_anchor import commitment
+        path = Path(__file__).resolve().parents[1] / 'evidence/transfer-anchor-live.json'
+        report = json.loads(path.read_text())
+        transcript = report['exchange']; policy = pilot.transfer_policy(transcript)
+        self.assertTrue(verify_receipt(transcript['receipt'], transcript['envelope'], policy))
+        self.assertEqual(commitment(transcript['envelope'], policy), report['payload'])
+        self.assertEqual(report['fee_sompi'], pilot.FEE)
+        self.assertEqual(report['source_amount_sompi'] - pilot.FEE, report['return_amount_sompi'])
+        self.assertEqual(len(report['observations']), 2)
+        for observation in report['observations']:
+            active = []; tip = observation['bootstrap']['anchor']; matches = []
+            for scan in observation['scan_projections']:
+                self.assertEqual(scan['from'], tip)
+                for removed in scan['removed_chain_hashes']:
+                    self.assertEqual(active.pop(), removed)
+                active.extend(scan['added_chain_hashes'])
+                tip = active[-1] if active else observation['bootstrap']['anchor']
+                matches.extend(scan['matched_accepted_transactions'])
+                self.assertIn(scan['target'], active + [observation['bootstrap']['anchor']])
+            result = observation['result_at_run_completion']
+            self.assertEqual(result['state'], 'OBSERVED_COMMITMENT')
+            self.assertEqual(result['tip'], tip)
+            self.assertEqual(len(active) - active.index(result['accepting_block']) - 1,
+                             result['selected_chain_successors'])
+            self.assertGreaterEqual(result['selected_chain_successors'], 10)
+            self.assertEqual(len(matches), 1)
+            self.assertEqual(matches[0]['transaction']['verboseData']['transactionId'], report['transaction_id'])
+            out = observation['later_unspent_output']
+            self.assertEqual(pilot.point(out['outpoint']), report['transaction_id'] + ':0')
+            self.assertEqual(out['utxoEntry']['amount'], report['return_amount_sompi'])
+            self.assertEqual(out['utxoEntry']['scriptPublicKey'], report['transaction']['outputs'][0]['scriptPublicKey'])
+
 
 if __name__ == '__main__': unittest.main()
