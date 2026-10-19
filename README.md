@@ -64,9 +64,10 @@ these vault rules no longer protect their later transfers.
 | Automated recovery monitoring | An earlier testnet run recovered an unapproved withdrawal | [Watchtower run](docs/ICP-Watchtower-Live-Proof.md) |
 | Recording a data commitment on Kaspa | One testnet transaction observed through two node endpoints | [Transfer anchor run](docs/ICP-Transfer-Anchor-Live-Proof.md) |
 | A message encrypted for one recipient | Local HPKE encryption, delivery-key possession checks, sender approval and signed receipts; no network delivery | [Recipient-encryption lab](docs/RECIPIENT-ENCRYPTION-LAB.md) |
+| Coordinated release recovery | Synthetic vault/ledger/delivery failures, stale-writer fencing and backup continuity; no real keys | [Coordinator model](docs/RELEASE-COORDINATOR-MODEL.md) |
 | Encrypted messages and release accounting | Local experiments; the release model uses simulated chain data and a non-secret placeholder | [Transfer lab](docs/TRANSFER-LAB.md) · [Release model](docs/RELEASE-LEDGER-MODEL.md) |
 
-The automated suite contains **302 tests: 68 Rust + 234 Python**.
+The automated suite contains **354 tests: 68 Rust + 286 Python**.
 [GitHub Actions](.github/workflows/verify.yml) checks the build, tests and demos.
 Individual testnet runs are dated evidence, not performance or security
 guarantees; later software changes also have their own offline checks.
@@ -92,10 +93,11 @@ one authorized release does not mean only one viewing.
 [Release-service design](docs/RELEASE-SERVICE-DESIGN.md) ·
 [Understand the current limits](docs/SECURITY-TARGET.md)
 
-The service design now specifies key ownership, saved-response delivery,
-revocation and backup recovery. Its next implementation step is a simulation
-of those components failing and restarting together. Remote release remains
-behind separate implementation and review gates.
+The new [coordinator simulation](docs/RELEASE-COORDINATOR-MODEL.md) now tests
+vault, ledger and delivery failures together. A separate fake authority fences
+old writers and detects component backups restored behind its checkpoints.
+It uses non-secret placeholders and trusted authorization fixtures. Real keys,
+remote release and production enforcement remain separate review gates.
 
 ## Explore or build
 
@@ -124,8 +126,8 @@ move funds. For live testnet instructions, use the developer setup guide.
 
 | Priority | Next work |
 | --- | --- |
-| Private data access | Model the [release-service design](docs/RELEASE-SERVICE-DESIGN.md) across vault/ledger failures; review delivery/identity binding and native ticket/refund rules before remote release |
-| Reliable operation | Prevent competing service copies from reusing grants; define safe backup/recovery; validate separate signer hosts and alerts |
+| Private data access | Review the [coordinator model](docs/RELEASE-COORDINATOR-MODEL.md); specify and test signed authorization/retrieval with synthetic responses before real delivery |
+| Reliable operation | Select and validate independent fencing/storage and recovery enforcement; validate separate signer hosts and alerts |
 | Stronger custody | Specify key replacement and recovery from the cold stage, then test and independently review the design |
 | Longer-term research | Proof systems and broader data-access enforcement, with separate specifications and evidence |
 

@@ -254,9 +254,11 @@ Freeze the following before implementing remote release or funded tickets:
   object popularity. Encryption alone does not hide those access patterns.
 
 The [synthetic local ledger](RELEASE-LEDGER-MODEL.md) delivered the initial
-state/accounting experiment. Next: a synthetic-only coordinator recovery model
-following the [release-service design](RELEASE-SERVICE-DESIGN.md), with separate
-fake vault, fencing/checkpoint authority and delivery gate. Keep responses
-non-secret and the service-enforced model label explicit. Connect real keys,
-chain adapters and remote delivery only after their separate gates pass; do not
-reuse a dated anchor observation as a current access grant.
+state/accounting experiment. A separate [coordinator recovery model](RELEASE-COORDINATOR-MODEL.md)
+now tests fake vault/ledger/delivery persistence and independent checkpoints
+following part of the [release-service design](RELEASE-SERVICE-DESIGN.md).
+Its admission/authentication/chain/administrative inputs remain trusted fixtures,
+with no real keys or native effects. Next review recovery and specify/test the
+signed R0 authorization/retrieval/revocation contract with synthetic responses.
+Connect real keys, chain adapters and remote delivery only after their separate
+gates pass; a dated anchor observation is not a current access grant.

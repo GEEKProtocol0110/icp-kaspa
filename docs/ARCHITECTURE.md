@@ -17,6 +17,7 @@ threat model and paper comparison are in [SECURITY-TARGET.md](SECURITY-TARGET.md
 | [Transfer lab](TRANSFER-LAB.md) | Local encrypted messages, signatures and recipient receipts | Keys are supplied separately; a receipt is a recipient claim |
 | [Recipient lab](RECIPIENT-ENCRYPTION-LAB.md) | HPKE encryption to a distinct pinned delivery key, possession challenge and approver/sender/recipient signatures | One-host local experiment; no remote release, chain gating or quantum claim |
 | [Anchor observer](TRANSFER-ANCHOR.md) | Exact signed-exchange commitment checked against trusted-node scans; a later [TN10 run](ICP-Transfer-Anchor-Live-Proof.md) supplies dated two-endpoint observations | Chain changes can withdraw that observation; it does not authorize key release |
+| [Coordinator recovery model](RELEASE-COORDINATOR-MODEL.md) | Separate fake vault/ledger/delivery journals and independent fencing/checkpoints | Trusted one-host simulation with admission/authentication fixtures; no real keys or native tickets |
 | [Release ledger](RELEASE-LEDGER-MODEL.md) | Permanent local grant/quota history, model signatures, two fake observations and non-secret placeholders | No native tickets or real key delivery; database copies are not fenced |
 
 The [read-ticket/release draft](READ-TICKET-RELEASE-DRAFT.md) proposes a future
@@ -29,7 +30,9 @@ The separate [release-service design](RELEASE-SERVICE-DESIGN.md) specifies
 proposed content-key ownership, private response preparation, authoritative
 commit and delivery boundaries. It adds cross-store recovery, revocation order
 and independently maintained fencing/continuity requirements. These are design
-requirements for a future coordinator, not guarantees supplied by today's labs.
+requirements for a future service. The [coordinator model](RELEASE-COORDINATOR-MODEL.md)
+now tests a bounded subset of its cross-store recovery and fencing rules with
+non-secret placeholders; deployment enforcement and real delivery remain gates.
 
 ## Responsibilities and trust
 

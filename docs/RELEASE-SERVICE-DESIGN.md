@@ -5,8 +5,11 @@
 **Status: proposed service design, not an implemented or independently reviewed
 release service.** This extends the R0 draft's implementation gates. It enables
 no remote endpoint, real-key connection to simulated grants or funded ticket.
-Current code remains the [local recipient-encryption lab](RECIPIENT-ENCRYPTION-LAB.md)
-and the [synthetic release ledger](RELEASE-LEDGER-MODEL.md).
+Current code includes the [local recipient-encryption lab](RECIPIENT-ENCRYPTION-LAB.md),
+[synthetic release ledger](RELEASE-LEDGER-MODEL.md) and a separate
+[synthetic coordinator recovery model](RELEASE-COORDINATOR-MODEL.md). The latter
+implements a bounded recovery/fencing simulation with trusted admission and
+authentication fixtures; it does not implement this complete service.
 
 ## In plain English
 

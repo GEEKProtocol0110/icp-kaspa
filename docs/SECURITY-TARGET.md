@@ -73,6 +73,15 @@ part of the disclosure boundary and defines revocation/dispatch ordering.
 Those requirements are not implemented anti-rollback protection, hardware
 isolation or a reviewed remote release service.
 
+The [coordinator recovery model](RELEASE-COORDINATOR-MODEL.md) now exercises
+separate synthetic vault/ledger/delivery stores with an independent fake
+checkpoint authority. Trusted model boundaries reject stale generations and
+restored component histories behind acknowledged checkpoints. This is not
+production anti-rollback protection: all code/stores share a trusted host,
+admission/authentication/administration are fixtures, and restoring the witness
+with every store permits nonce reuse. No real keys or chain adapters are connected.
+Revocation and reorg after dispatch acceptance still cannot recall bytes.
+
 ## Implemented protected-v1 claim
 
 While value remains under the covenant, a compromised owner key cannot change

@@ -53,6 +53,7 @@ signed transaction outboxes and private backups out of the repository.
 | [Recipient-encryption lab](RECIPIENT-ENCRYPTION-LAB.md) | Local real encryption to a pinned delivery key with possession checks and signed receipts; no remote service |
 | [Transfer anchor observer](TRANSFER-ANCHOR.md) | Trusted-node observation code, a synthetic demo and links to the later testnet run |
 | [Release-ledger model](RELEASE-LEDGER-MODEL.md) | Local accounting/crash/reorg experiment; simulated chain data, no real key delivery |
+| [Release-coordinator model](RELEASE-COORDINATOR-MODEL.md) | Separate fake vault/ledger/delivery recovery and independent checkpoint/fencing simulation; no real keys |
 | [Read-ticket and key-release draft](READ-TICKET-RELEASE-DRAFT.md) | Proposed release protocol and unresolved implementation gates |
 | [Release-service design](RELEASE-SERVICE-DESIGN.md) | Proposed key ownership, exact-response delivery, revocation, fencing and backup recovery; no implemented service |
 

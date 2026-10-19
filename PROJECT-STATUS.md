@@ -12,8 +12,33 @@ engineering checkpoint first, followed by earlier milestones.
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local recipient-specific encryption and simulated release accounting; no remote release service |
-| Automated coverage | 302 tests: 68 Rust + 234 Python |
-| Next engineering work | Model coordinated vault/ledger/delivery recovery; review real delivery, fencing/storage and native ticket/refund implementations |
+| Automated coverage | 354 tests: 68 Rust + 286 Python |
+| Next engineering work | Review coordinated recovery; specify signed authorization/retrieval, production fencing/storage and native ticket/refund implementations |
+
+## Synthetic coordinator recovery checkpoint
+
+- scripts/release_coordinator_model.py models separate ledger, private fake-vault,
+  delivery journal and independent fencing/checkpoint authority stores. Normal
+  work requires recovery verification and an active writer generation enforced
+  at component loads/saves, with an authority identity pinned in each journal.
+- Durable candidates recover as the same exact placeholder after lost replies.
+  Status exposes no candidate bytes. A committed response without its matching
+  vault candidate halts; a restored component behind the independent witness
+  cannot silently reset claims, budget charges, revocations or retrieval nonces.
+- Revocation, fake reorgs, stale samples, original deadlines and inactive epochs
+  stop new release decisions without refund or replacement. Clock failures
+  latch a halt. Accepted delivery cannot recall bytes already in flight.
+- 52 new tests bring the suite to 354 tests (68 Rust + 286 Python), including
+  actual process crashes and independent connections. Python runs locally;
+  required Rust/build/template verification runs in the milestone's CI.
+- This uses trusted admission/authentication/administration fixtures and boolean
+  chain views. It does not integrate the earlier signed ledger or HPKE lab,
+  hold keys, provide production isolation/fencing or perform native transactions.
+  A counterexample restores the witness with all stores and reuses a nonce.
+- Read docs/RELEASE-COORDINATOR-MODEL.md and
+  evidence/release-coordinator-verification.md. Next: review recovery and the
+  signed R0 authorization/retrieval/revocation contract with synthetic responses
+  before separate real-key, native-ticket or remote-delivery milestones.
 
 ## Release-service design checkpoint
 
