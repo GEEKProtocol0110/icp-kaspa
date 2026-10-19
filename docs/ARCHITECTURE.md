@@ -28,6 +28,14 @@ P2PK ticket would serve as a chain witness; the service would enforce access
 rules and quotas. Used-grant and possible-disclosure history must survive
 changes to chain observations. The complete release service is unimplemented.
 
+The [native ticket design](NATIVE-TICKET-DESIGN.md) selects a proposed N0
+transaction profile: funding creates a dedicated P2PK ticket and change;
+consumption returns its test coins to a pinned destination. Only never-reserved,
+permanently closed tickets may select refund instead. Durable branch selection,
+signer fencing and a dedicated observer remain implementation gates. Native
+transaction IDs do not commit signature scripts, mass or V1 compute budgets,
+so complete outbox integrity is separate from exact accepted-chain semantics.
+
 The separate [release-service design](RELEASE-SERVICE-DESIGN.md) specifies
 proposed content-key ownership, private response preparation, authoritative
 commit and delivery boundaries. It adds cross-store recovery, revocation order

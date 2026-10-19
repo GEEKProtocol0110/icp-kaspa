@@ -93,6 +93,7 @@ one authorized release does not mean only one viewing.
 
 [Read the proposal](docs/READ-TICKET-RELEASE-DRAFT.md) ·
 [Release-service design](docs/RELEASE-SERVICE-DESIGN.md) ·
+[Native ticket design](docs/NATIVE-TICKET-DESIGN.md) ·
 [Understand the current limits](docs/SECURITY-TARGET.md)
 
 The new [coordinator simulation](docs/RELEASE-COORDINATOR-MODEL.md) now tests
@@ -104,6 +105,11 @@ flow. The new [bound response lab](docs/BOUND-RESPONSE-LAB.md) also checks
 recipient encryption-key possession and saves a signature with each exact dummy
 response. Responses remain non-secret; record/chain facts remain fixtures.
 Real-key delivery and production enforcement need separate review.
+
+The [native ticket proposal](docs/NATIVE-TICKET-DESIGN.md) now defines a first
+issue/consume/refund layout. Only never-reserved tickets could be refunded;
+refunds would not restore access permission or quota. This is an offline design,
+with native preparation and acceptance testing still ahead.
 
 ## Explore or build
 
@@ -132,7 +138,7 @@ move funds. For live testnet instructions, use the developer setup guide.
 
 | Priority | Next work |
 | --- | --- |
-| Private data access | Review the [bound response lab](docs/BOUND-RESPONSE-LAB.md); specify native ticket/consume/refund bindings and protected key ownership before real delivery |
+| Private data access | Build and mutation-test the [native ticket proposal](docs/NATIVE-TICKET-DESIGN.md) offline; review wire formats and protected key ownership before real delivery |
 | Reliable operation | Select and validate independent fencing/storage and recovery enforcement; validate separate signer hosts and alerts |
 | Stronger custody | Specify key replacement and recovery from the cold stage, then test and independently review the design |
 | Longer-term research | Proof systems and broader data-access enforcement, with separate specifications and evidence |

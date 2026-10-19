@@ -95,6 +95,12 @@ retries recover the same signed record. This encrypts the registration challenge
 only; the returned placeholder bundle is public test data, not a protected
 message or decryption key. Real key delivery is still future work.
 
+The [native ticket proposal](NATIVE-TICKET-DESIGN.md) describes creating and
+spending a small testnet ticket for a request. An expired or revoked ticket
+could return its test coins only if it had never been reserved for release.
+That refund would restore neither permission nor a release limit. This part
+is a design; its transaction code and live tests still need to be built.
+
 The older model allows copied databases to accept separate claims. The new
 simulation adds a trusted witness, but restoring that witness with every
 store still loses history. Both models also recognize that a chain change

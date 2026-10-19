@@ -17,6 +17,12 @@ The subsequent [bound response lab](BOUND-RESPONSE-LAB.md) checks encryption-key
 possession and saves service response signatures over non-secret placeholders;
 it still performs no real content-key delivery or native ticket operation.
 
+The subsequent [native ticket design](NATIVE-TICKET-DESIGN.md) selects a
+proposed N0 issue/consume/refund profile. Only permanently closed tickets never
+reserved for release can select refund. Branch selection, full signed outboxes
+and independent signer/effect fencing must survive recovery. This is a design
+extension; native implementation and accepted-chain integration remain gates.
+
 ## In plain English
 
 The service would hold the key to an encrypted record. It would check the exact

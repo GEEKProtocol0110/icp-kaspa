@@ -66,6 +66,15 @@ fake chain views and non-secret placeholders. It delivers no content key.
 Copied databases and reorgs after the final sample have explicit counterexample
 tests; neither global uniqueness nor atomic chain-to-delivery behavior is claimed.
 
+The [native ticket design](NATIVE-TICKET-DESIGN.md) now proposes a concrete
+TN10 issue/consume/refund profile. Refund is restricted to permanently closed,
+never-reserved tickets and does not reset quota. Service rules choose one
+terminal branch; P2PK consensus does not enforce that choice or service expiry.
+The document separates native ID-bound semantics from mass/compute fields
+excluded by the ID and signature hash, and from complete outbox integrity. It
+adds no native ticket implementation, live acceptance, timed key recovery or
+stronger claim.
+
 The [release-service design](RELEASE-SERVICE-DESIGN.md) proposes a private key
 vault, authoritative grant/response ledger and delivery gate, with independent
 writer fencing and recovery checkpoints. It makes encrypted candidate responses

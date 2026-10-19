@@ -146,6 +146,13 @@ own native implementation/VM tests. The existing anchor preparer permits only
 self-return funding and cannot be repurposed unchanged to issue a separately
 controlled ticket. No funded R0 run is authorized by this draft alone.
 
+The later [native ticket design](NATIVE-TICKET-DESIGN.md) selects a proposed
+N0 profile for that separate experiment: exact issue/consume/refund layouts,
+purpose-separated commitments and a permanent terminal-branch decision.
+Refund is restricted to never-reserved, permanently closed tickets. It never
+restores a quota charge or authorizes another release. Native code, closed
+schemas/vectors, fenced effects and dedicated observation remain gates.
+
 ## Durable states and irreversible history
 
 Chain observations and disclosure history have different rollback rules.
@@ -264,7 +271,8 @@ revocations into those synthetic recovery decisions. Its encoding is a separate
 experiment, not R0 wire adoption; delivery binding and record/chain facts remain
 fixtures. The separate [bound response lab](BOUND-RESPONSE-LAB.md) now adds
 HPKE enrollment and durable response signatures while delivery remains a
-non-secret placeholder. Next review those formats and specify native
-ticket/consume/refund bindings. Connect real keys, chain adapters and remote
-delivery only after their separate gates pass; a dated anchor observation is
+non-secret placeholder. The [native ticket proposal](NATIVE-TICKET-DESIGN.md)
+now specifies an initial transaction profile and refund boundary. Next build
+and mutation-test its native preparer offline. Connect real keys, chain adapters
+and remote delivery only after their separate gates pass; a dated anchor observation is
 not a current access grant.
