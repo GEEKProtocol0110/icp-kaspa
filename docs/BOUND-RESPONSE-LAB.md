@@ -126,7 +126,9 @@ Purposes distinguish `binding-challenge`, `binding-proof`, `binding-approval`,
 The inner permissions/retrieval requests retain the signed lab's exact format,
 now under the key-committing policy. Earlier recipient-lab binding proofs are
 not accepted. All public byte inputs inherit bounded, strict canonical JSON
-parsing (32 KiB), exact fields/types and lowercase hex checks. Times are
+parsing (32 KiB), exact fields/types and lowercase hex checks. Signed/context
+objects must match canonical bytes; boolean/float values cannot compare as
+integer epochs or limits. Times are
 logical fixture seconds, not a production wall-clock guarantee. No R0 encoding,
 production cipher suite or migration policy is adopted by this experiment.
 

@@ -12,7 +12,7 @@ engineering checkpoint first, followed by earlier milestones.
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
-| Automated coverage | 444 tests: 68 Rust + 376 Python |
+| Automated coverage | 447 tests: 68 Rust + 379 Python |
 | Next engineering work | Review binding/response formats; specify native ticket/consume/refund bindings, protected key ownership and independent enforcement |
 
 ## Delivery-key binding and signed response checkpoint
@@ -29,7 +29,7 @@ engineering checkpoint first, followed by earlier milestones.
 - A public client verifier checks the intended permission/admission, registration,
   exact dummy response and service signature. Status/binding reads expose no
   pending response or signature. All public demo objects are explicitly synthetic.
-- 42 new tests bring the suite to 444 (68 Rust + 376 Python), including an actual
+- 45 new tests bring the suite to 447 (68 Rust + 379 Python), including an actual
   child-process exit after vault commit and before checkpoint acknowledgment.
   Python passes locally; required native/build/template checks run in CI.
 - HPKE encrypts only the enrollment token. Returned bundles are unencrypted

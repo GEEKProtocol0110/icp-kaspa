@@ -20,7 +20,7 @@ service certificate saved with the used nonce in one ledger event.
 A response record shares the candidate's private vault event, copies exactly
 to the response commit and returns in a canonical bundle only through fresh
 signed retrieval. Public client verification binds the intended permission and
-original admission. Forty-two new tests bring the suite to 444 (68 Rust + 376
+original admission. Forty-five new tests bring the suite to 447 (68 Rust + 379
 Python), including actual process exit after vault save before acknowledgment.
 
 Only the enrollment token is encrypted: response bundles remain non-secret,

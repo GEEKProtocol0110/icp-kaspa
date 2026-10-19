@@ -115,7 +115,7 @@ original document is factually true.
 | Simulation or model | Invented chain observations or placeholders exercise the rules; they are not live-chain evidence |
 | Proposal or research | A direction being specified; a working, secure deployment has not been established |
 
-There are **444 automated tests** today. Passing tests helps catch mistakes; it
+There are **447 automated tests** today. Passing tests helps catch mistakes; it
 does not replace an independent security review or prove production readiness.
 The project is still an experimental Testnet-10 prototype.
 

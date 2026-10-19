@@ -18,8 +18,9 @@ fixtures and there is no transport or native ticket. Read
 
 ## Validation
 
-- 42 new Python tests; full local Python suite: 376 tests.
-- Full project suite: 444 tests including 68 Rust tests. Required CI also runs
+- 45 new Python tests: 44 bound-response cases and one shared signed-context
+  regression. Full local Python suite: 379 tests.
+- Full project suite: 447 tests including 68 Rust tests. Required CI also runs
   compiler/format/build checks, seven demos and deployment-template verification.
   Passing final-head CI is required before merge; Rust/native checks run there.
 - Public transcript: bound-response-demo.json. It includes public configuration,
@@ -38,6 +39,7 @@ fixtures and there is no transport or native ticket. Read
 | Wrong role, purpose, service/configuration or proof link | Registration/record verification fails |
 | Replay, expiry or old generation | No new binding; completed certificate remains exactly recoverable |
 | Missing registered binding | Signed grant admission is blocked before claims/charges |
+| Ambiguous numeric types | Canonical byte comparisons reject boolean/float substitutions in bundle, service-signed record and stored admission context |
 | Changed key configuration | Existing policy-pinned stores cannot reopen; no automatic counter reset/migration |
 | Candidate/commit crashes | Certificate/nonces and response/signature records remain atomic in their component events; lost acknowledgments recover exact state |
 | Response/context/record substitution | Client verification fails against the intended permission and admission |

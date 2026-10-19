@@ -224,7 +224,7 @@ class SignedCoordinator(core.Coordinator):
         request_hash = identify('admission-request', evidence['request'])
         expected = dict(service=self.policy.service, budget=self.policy.budget, **asdict(context),
                         permission_hash=permission_hash, admission_hash=request_hash)
-        require(row['context'] == expected and row['context_hash'] == core.digest(expected), 'Stored signed context mismatch')
+        require(core.canonical(row['context']) == core.canonical(expected) and row['context_hash'] == core.digest(expected), 'Stored signed context mismatch')
         require(proof['purpose'] == 'reserve' and self._matches(proof, context, permission_hash), 'Stored admission proof mismatch')
         return context, permission_hash, request_hash
 
@@ -245,7 +245,7 @@ class SignedCoordinator(core.Coordinator):
                 nonce = proof['body']['nonce']
                 require(proof['body']['authority'] == self._authority.id
                         and 0 < proof['body']['generation'] <= self.generation
-                        and ledger.get('signed_challenges', {}).get(nonce) == proof
+                        and core.canonical(ledger.get('signed_challenges', {}).get(nonce)) == core.canonical(proof)
                         and nonce in ledger.get('signed_used', []), 'Stored admission challenge claim missing')
                 if row['revoked']:
                     saved = row['signed_revocation']
@@ -268,7 +268,7 @@ class SignedCoordinator(core.Coordinator):
                         and body['admission_hash'] == admission_hash
                         and body['response_hash'] == row['response_hash'] == saved['response_hash']
                         and body['grant'] == saved['grant'] and body['request'] == saved['request']
-                        and delivery.get('signed_challenges', {}).get(nonce) == evidence['request']['challenge'],
+                        and core.canonical(delivery.get('signed_challenges', {}).get(nonce)) == core.canonical(evidence['request']['challenge']),
                         'Stored retrieval evidence mismatch')
         except (ModelError, KeyError, TypeError) as exc:
             raise core.IntegrityError('Stored signed authorization integrity failure') from exc
@@ -315,7 +315,7 @@ class SignedCoordinator(core.Coordinator):
                 and body['generation'] == self.generation, 'Wrong purpose, deployment or writer generation')
         role = 'ledger' if purpose == 'reserve' else 'delivery'
         saved = loaded[role][0].get('signed_challenges', {}).get(body['nonce'])
-        require(saved == envelope['challenge'], 'Unissued or changed challenge')
+        require(core.canonical(saved) == core.canonical(envelope['challenge']), 'Unissued or changed challenge')
         used = loaded['ledger'][0].get('signed_used', []) if purpose == 'reserve' else loaded['delivery'][0]['nonces']
         require(body['nonce'] not in used, 'Signed request already consumed')
         return body
@@ -358,7 +358,7 @@ class SignedCoordinator(core.Coordinator):
             row = self._row(loaded, body['grant'])
             require(body['permission_hash'] == row['context']['permission_hash'], 'Revocation permission mismatch')
             if row['revoked']:
-                require(row['signed_revocation']['envelope'] == envelope, 'Conflicting revocation retry')
+                require(core.canonical(row['signed_revocation']['envelope']) == core.canonical(envelope), 'Conflicting revocation retry')
                 return  # Exact saved evidence may reconcile after its signing deadline.
             require(body['issued_at'] <= lease.now < body['expires_at'], 'Revocation expired or inactive')
             require(body['sequence'] == ledger['revocations'] + 1, 'Revocation sequence must be exact next value')

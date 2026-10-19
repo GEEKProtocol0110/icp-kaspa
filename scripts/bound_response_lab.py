@@ -191,7 +191,7 @@ def verify_record(envelope, config, context, response_hash, registration, now):
     expected = record_body(config, context, response_hash, binding_hash, authority=body['authority'],
                            generation=body['prepared_generation'], prepared_at=body['prepared_at'],
                            checkpoint=body['ledger_checkpoint'])
-    require(body == expected, 'Signed response record/context mismatch')
+    require(core.canonical(body) == core.canonical(expected), 'Signed response record/context mismatch')
     verify(config.policy.service_signer, envelope['signature'], 'response-record', body)
     return identify('response-record', envelope)
 
@@ -205,7 +205,7 @@ def verify_response(config, permission_raw, admission_raw, bundle_raw, now):
     fields(bundle, ('response', 'context', 'binding', 'record'))
     expected = dict(service=config.policy.service, budget=config.policy.budget, **asdict(context),
                     permission_hash=permission_hash, admission_hash=signed.identify('admission-request', admission))
-    require(bundle['context'] == expected and context.binding == config.policy.binding_label
+    require(core.canonical(bundle['context']) == core.canonical(expected) and context.binding == config.policy.binding_label
             and context.delivery_epoch == config.delivery_epoch, 'Response approved context mismatch')
     response = bundle['response']
     fields(response, ('mode', 'operation', 'context', 'placeholder'))
@@ -240,7 +240,7 @@ class BoundCoordinator(signed.SignedCoordinator):
                 saved = ledger['binding_challenges'][body['nonce']]
                 proof = registration['approval']['proof']['body']
                 require(body['authority'] == self._authority.id and body['generation'] <= self.generation
-                        and saved['used'] and saved['challenge'] == registration['challenge']
+                        and saved['used'] and core.canonical(saved['challenge']) == core.canonical(registration['challenge'])
                         and hmac.compare_digest(saved['expected'], proof['token_hash']), 'Lost or inconsistent binding claim')
             for grant, candidate in vault['candidates'].items():
                 row = ledger['grants'][grant]
@@ -249,7 +249,8 @@ class BoundCoordinator(signed.SignedCoordinator):
                 require(record['authority'] == self._authority.id and record['prepared_generation'] <= self.generation
                         and record['ledger_checkpoint'] == candidate['ledger_checkpoint'], 'Response record authority/checkpoint mismatch')
                 if row['response'] is not None:
-                    require(row['response_record'] == candidate['response_record'], 'Committed response record differs from vault')
+                    require(core.canonical(row['response_record']) == core.canonical(candidate['response_record']),
+                            'Committed response record differs from vault')
         except (core.ModelError, KeyError, TypeError) as exc:
             raise core.IntegrityError('Binding/response record integrity failure') from exc
         return loaded

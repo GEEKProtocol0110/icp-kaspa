@@ -405,6 +405,19 @@ class BoundResponseTests(unittest.TestCase):
         self.assertIn('placeholder',signed.decode(raw)['response'])
         with self.assertRaises(ModelError):self.model.dispatch(captured)
 
+    def test_client_rejects_boolean_or_float_substitution_in_bundle_context(self):
+        self.committed();bundle=signed.decode(self.dispatch())
+        for field,value in [('policy_epoch',False),('delivery_epoch',False),('size',128.0)]:
+            changed=copy.deepcopy(bundle);changed['context'][field]=value
+            with self.subTest(field=field),self.assertRaises(ModelError):self.verify(canonical(changed))
+
+    def test_client_rejects_wrong_numeric_types_even_with_a_valid_service_signature(self):
+        self.committed();bundle=signed.decode(self.dispatch())
+        for field,value in [('policy_epoch',False),('delivery_epoch',False),('deadline',180.0)]:
+            changed=copy.deepcopy(bundle);changed['record']['body'][field]=value
+            changed['record']['signature']=lab.sign(self.keys[4],'response-record',changed['record']['body'])
+            with self.subTest(field=field),self.assertRaises(ModelError):self.verify(canonical(changed))
+
     def test_real_process_exit_recovers_exact_private_response_record(self):
         self.reserved();self.model.authorize(self.context.grant);self.model.close()
         script='''import json,os,sys
