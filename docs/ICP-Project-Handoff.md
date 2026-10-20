@@ -1,6 +1,6 @@
 # ICP continuation checkpoint
 
-**October 19, 2026: observer-bound fixture controller implemented.**
+**October 20, 2026 UTC: unsigned P0 pilot-review preparation implemented.**
 
 For a nontechnical introduction, open [ICP in plain English](PLAIN-ENGLISH.md).
 The [documentation directory](README.md) separates explanations, dated testnet
@@ -9,7 +9,27 @@ engineering and operational detail needed to continue development.
 
 ## Current state
 
-The latest milestone is [NATIVE-TICKET-BINDING.md](NATIVE-TICKET-BINDING.md).
+The latest milestone is [TICKET-PILOT-PREPARATION.md](TICKET-PILOT-PREPARATION.md).
+examples/ticket_pilot_review.rs builds unsigned P0 previews for public role keys
+and an asserted exact source. scripts/ticket_pilot_review.py saves/verifies public
+checksum receipts; it has no signing, RPC or submission command. P0 commitments
+and modes are distinct from LAB0 and proposed N0/R0. Never fund public fixtures.
+
+Inventory is 624 tests (118 Rust + 506 Python), with eight new native and 18
+Python tests. Local Python regression and cached native review tests pass; a
+fresh local Cargo checkout was blocked, so full locked native verification must
+pass in GitHub CI. The workflow and quickstart build ticket_pilot_review before
+Python tests and run its no-argument public-fixture demo. Read
+[the verification record](../evidence/ticket-pilot-review-verification.md).
+
+No operational keys or funding address/request were generated. Next implement
+and test the separate private P0 preparer/live journal and profile-aware
+observations. Back up and verify fresh test keys before any funding request;
+retain exact outboxes and source claims on unknown results. The guide defines
+two independent future runs for consumption and unused refund. No real key
+delivery or actual permission integration is supplied.
+
+The preceding milestone is [NATIVE-TICKET-BINDING.md](NATIVE-TICKET-BINDING.md).
 scripts/native_ticket_binding.py binds exact native tracker pairs to a separate
 controller policy. It rechecks unspent observations before new work, rejects
 legacy fake-map reconciliation, requires fresh scans/reconciliation after

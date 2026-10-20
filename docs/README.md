@@ -57,6 +57,7 @@ signed transaction outboxes and private backups out of the repository.
 | [Signed coordinator lab](SIGNED-COORDINATOR-LAB.md) | Signed permissions, recipient challenges and revocations integrated with synthetic recovery; dummy responses |
 | [Release-coordinator model](RELEASE-COORDINATOR-MODEL.md) | Separate fake vault/ledger/delivery recovery and independent checkpoint/fencing simulation; no real keys |
 | [Read-ticket and key-release draft](READ-TICKET-RELEASE-DRAFT.md) | Proposed release protocol and unresolved implementation gates |
+| [Pilot preparation](TICKET-PILOT-PREPARATION.md) | Unsigned P0 public-input native previews and a concrete future pilot sequence; no funding or live execution |
 | [Native ticket design](NATIVE-TICKET-DESIGN.md) | Proposed TN10 issue/consume/refund policy, permanent branch choice and recovery rules; native layouts tested separately in the lab |
 | [Native ticket lab](NATIVE-TICKET-LAB.md) | Working offline native layout/signature experiment and mutation tests; fabricated inputs, no RPC or real authorization |
 | [Native ticket observer](NATIVE-TICKET-OBSERVER.md) | Read-only native projections, exact UTXOs and reversible trusted-node history; synthetic evidence, no controller integration |

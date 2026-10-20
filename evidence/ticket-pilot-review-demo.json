@@ -1,0 +1,157 @@
+{
+  "broadcasts": 0,
+  "mode": "PUBLIC_P0_FIXTURE_NEVER_FUND_NO_LIVE_PROOF",
+  "operational_keys_created": 0,
+  "real_rpc_calls": 0,
+  "record": {
+    "plan": {
+      "evidence_digest": "7777777777777777777777777777777777777777777777777777777777777777",
+      "funding_key": "79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+      "namespace": "icp-ticket-pilot-review-p0",
+      "network": "testnet-10",
+      "purpose": "public-fixture-never-fund",
+      "return_key": "f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9",
+      "run_nonce": "4444444444444444444444444444444444444444444444444444444444444444",
+      "source": {
+        "amount": 24000000,
+        "index": 0,
+        "transaction_id": "1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      "ticket_key": "c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5"
+    },
+    "receipt_hash": "10259ea7d60b19a87347f4310f0910595a513665047879b5ee2298891007e3e1",
+    "review": {
+      "broadcasts": 0,
+      "maximum_lifecycle_fee": 4000000,
+      "mode": "UNSIGNED_P0_REVIEW_NOT_FUNDING_AUTHORIZATION",
+      "network": "testnet-10",
+      "purpose": "public-fixture-never-fund",
+      "review_id": "d049e8ca1b90d006c6cdd54717e4fc344e1e51cb9e36e61b44101ef571718032",
+      "roles": {
+        "funding": "kaspatest:qpumuen7l8wthtz45p3ftn58pvrs9xlumvkuu2xet8egzkcklqtes5z8rkmpd",
+        "return": "kaspatest:qrunpzspjfvvxyzfx38ct7ya2g5m2vwggkpklxdsscqlzyauuqm0jaux3xvse",
+        "ticket": "kaspatest:qrrqglu5g8kh6mfsg4qxa9wq0nv9cauwfwxw70984wkqnw2uwz0w2s4hfa0l0"
+      },
+      "rpc_calls": 0,
+      "signatures_created": 0,
+      "source_observed": false,
+      "transactions": [
+        {
+          "action": "issue",
+          "fee": 2000000,
+          "transaction_id": "631628ed576ae960e28a6cadf9e8ebda31fa1e32dff3636fec9b4ac940c219cb",
+          "unsigned_rpc": {
+            "gas": 0,
+            "inputs": [
+              {
+                "computeBudget": 100,
+                "previousOutpoint": {
+                  "index": 0,
+                  "transactionId": "1111111111111111111111111111111111111111111111111111111111111111"
+                },
+                "sequence": 0,
+                "sigOpCount": 0,
+                "signatureScript": "",
+                "verboseData": null
+              }
+            ],
+            "lockTime": 0,
+            "mass": 141667,
+            "outputs": [
+              {
+                "covenant": null,
+                "scriptPublicKey": "000020c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5ac",
+                "value": 12000000,
+                "verboseData": null
+              },
+              {
+                "covenant": null,
+                "scriptPublicKey": "00002079be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798ac",
+                "value": 10000000,
+                "verboseData": null
+              }
+            ],
+            "payload": "4943502d52542d49535355452d544e31302d503000d049e8ca1b90d006c6cdd54717e4fc344e1e51cb9e36e61b44101ef571718032",
+            "storageMass": 141667,
+            "subnetworkId": "0000000000000000000000000000000000000000",
+            "verboseData": null,
+            "version": 1
+          }
+        },
+        {
+          "action": "consume",
+          "fee": 2000000,
+          "transaction_id": "da65795df4b587359b6f91d39b188b029539893f1f68653817fd2c12a2e7e47a",
+          "unsigned_rpc": {
+            "gas": 0,
+            "inputs": [
+              {
+                "computeBudget": 100,
+                "previousOutpoint": {
+                  "index": 0,
+                  "transactionId": "631628ed576ae960e28a6cadf9e8ebda31fa1e32dff3636fec9b4ac940c219cb"
+                },
+                "sequence": 0,
+                "sigOpCount": 0,
+                "signatureScript": "",
+                "verboseData": null
+              }
+            ],
+            "lockTime": 0,
+            "mass": 16667,
+            "outputs": [
+              {
+                "covenant": null,
+                "scriptPublicKey": "000020f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9ac",
+                "value": 10000000,
+                "verboseData": null
+              }
+            ],
+            "payload": "4943502d52542d434f4e53554d452d544e31302d50300005c03cabce9fc86219e34de981a81341c006ba3d8877d7c19319d4189dfe0325",
+            "storageMass": 16667,
+            "subnetworkId": "0000000000000000000000000000000000000000",
+            "verboseData": null,
+            "version": 1
+          }
+        },
+        {
+          "action": "refund",
+          "fee": 2000000,
+          "transaction_id": "8187c637aca10e657f3e9a3724e1549e8d54f672bf654e1c1ea92102dac7951e",
+          "unsigned_rpc": {
+            "gas": 0,
+            "inputs": [
+              {
+                "computeBudget": 100,
+                "previousOutpoint": {
+                  "index": 0,
+                  "transactionId": "631628ed576ae960e28a6cadf9e8ebda31fa1e32dff3636fec9b4ac940c219cb"
+                },
+                "sequence": 0,
+                "sigOpCount": 0,
+                "signatureScript": "",
+                "verboseData": null
+              }
+            ],
+            "lockTime": 0,
+            "mass": 16667,
+            "outputs": [
+              {
+                "covenant": null,
+                "scriptPublicKey": "000020f9308a019258c31049344f85f89d5229b531c845836f99b08601f113bce036f9ac",
+                "value": 10000000,
+                "verboseData": null
+              }
+            ],
+            "payload": "4943502d52542d524546554e442d544e31302d5030001953359e2fed8c018ee22f5a7344df5ddf1b963f48ec4ea035e181810fb486e9",
+            "storageMass": 16667,
+            "subnetworkId": "0000000000000000000000000000000000000000",
+            "verboseData": null,
+            "version": 1
+          }
+        }
+      ],
+      "vm_verified": false
+    }
+  }
+}

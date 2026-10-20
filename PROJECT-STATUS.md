@@ -1,4 +1,4 @@
-# ICP checkpoint - October 19, 2026
+# ICP checkpoint - October 20, 2026 UTC
 
 **Experimental Kaspa Testnet-10 prototype.** Vault withdrawals and protected
 recovery have been tested with test coins. Real data-key delivery is still being
@@ -12,8 +12,29 @@ engineering checkpoint first, followed by earlier milestones.
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
-| Automated coverage | 598 tests: 110 Rust + 488 Python |
-| Next engineering work | Fresh-key TN10 ticket pilot plan and independent review of signing, wire rules, authorization and protected key ownership |
+| Automated coverage | 624 tests: 118 Rust + 506 Python |
+| Next engineering work | Private P0 fresh-key preparer/journal and profile-aware observation; verify key backup before funding |
+
+## Unsigned pilot preparation checkpoint
+
+- [P0 review](docs/TICKET-PILOT-PREPARATION.md) accepts public native role keys,
+  an exact asserted source and a non-secret evidence commitment. Native APIs
+  calculate unsigned issue/consume/refund layouts and IDs; terminal previews
+  spend the exact issue ID/index 0. No signer/RPC/effect command is exposed.
+- Operator and public-fixture modes are separate; fixture relabeling, shared
+  roles, unknown/private fields and ambiguous numeric encodings fail. A public
+  checksum receipt is exclusively saved and natively recomputed on verification.
+  It is not an approval, source claim, signed outbox or submission journal.
+- Eight new Rust and 18 Python tests bring inventory to 624 (118 Rust + 506
+  Python). All 506 Python tests and eight cached native review tests passed
+  locally. Local Cargo dependency checkout was unavailable; full locked native
+  verification is required through CI. See the
+  [verification record](evidence/ticket-pilot-review-verification.md).
+- The [pilot sequence](docs/TICKET-PILOT-PREPARATION.md) defines separate consume
+  and unused-refund runs, source/value checks, fee bounds and recovery gates.
+  No operational keys, funding request, signature, broadcast or live call was
+  made. P0 is separate from LAB0/N0/R0 and is not wired into fixture controllers.
+  Next: private fresh-key preparation/journal and explicit P0 observation support.
 
 ## Observer/controller integration checkpoint
 
