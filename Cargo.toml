@@ -49,6 +49,12 @@ path = "examples/ticket_read.rs"
 required-features = ["live"]
 test = true
 
+[[example]]
+name = "ticket_pilot_review"
+path = "examples/ticket_pilot_review.rs"
+required-features = ["live"]
+test = true
+
 [profile.dev]
 debug = 0
 

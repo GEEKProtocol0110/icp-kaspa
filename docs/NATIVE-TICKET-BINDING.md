@@ -71,7 +71,9 @@ effect. A counterexample changes the chain after the final sample and the local
 fake effect still occurs. No prior signature or disclosed bytes can be recalled.
 This experiment delivers no data key and proves no live native ticket lifecycle.
 
-Next prepare a fresh-key TN10 pilot plan and independently review the signing,
-wire and authorization boundaries before any funded ticket or real delivery.
+The separate [P0 preparation tool](TICKET-PILOT-PREPARATION.md) now builds
+unsigned public-input previews and documents that pilot plan. Next implement a
+private preparer/journal and explicit P0 observation support; fixture guards and
+independent signing/authorization review remain necessary before funded use.
 See the [public demo](../evidence/native-ticket-binding-demo.json) and
 [verification record](../evidence/native-ticket-binding-verification.md).

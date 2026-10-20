@@ -102,6 +102,12 @@ Submission effects remain strictly fake, and no real permission or data key is
 connected. The explicit post-sample counterexample still allows an effect after
 a chain change; there is no atomic chain-to-effect or independent signer claim.
 
+The separate [P0 pilot review](TICKET-PILOT-PREPARATION.md) now builds unsigned
+native layouts from public role keys and an asserted source, with a distinct
+review-only namespace. Its denylist cannot prove key freshness or possession;
+its checksummed public receipt is not authorization. No source is observed and
+no private signing/live journal or profile-aware controller integration is added.
+
 The [release-service design](RELEASE-SERVICE-DESIGN.md) proposes a private key
 vault, authoritative grant/response ledger and delivery gate, with independent
 writer fencing and recovery checkpoints. It makes encrypted candidate responses
