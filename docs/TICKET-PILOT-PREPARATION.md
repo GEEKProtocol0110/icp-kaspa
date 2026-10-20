@@ -86,10 +86,10 @@ journal, grant, source claim, signed outbox or evidence of acceptance.
 
 ## Concrete pilot sequence and remaining gates
 
-1. Implement and test a distinct private fresh-key preparer and durable live
-   journal. Keep the existing fixture worker/controller restrictions intact.
-   Cover crash recovery, exclusive source claims, permanent branch choice and
-   unknown outcomes; any ambiguous attempt must reconcile without replacement.
+1. The [private offline preparer/journal](TICKET-PILOT-PRIVATE.md) now covers
+   signing recovery, source claims and permanent branch choice with the fixture
+   restrictions intact. Implement explicit P0 observation and a separate live
+   submission journal next. Ambiguous attempts must reconcile without replacement.
 2. Generate separate fresh F/T/R roles for each run, back up their private key
    files and verify possession/restore before publishing a funding request.
    No operational keys or funding addresses were generated in this milestone.

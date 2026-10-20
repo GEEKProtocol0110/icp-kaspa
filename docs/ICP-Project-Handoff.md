@@ -1,5 +1,20 @@
 # ICP continuation checkpoint
 
+Current milestone: [private P0 preparation](TICKET-PILOT-PRIVATE.md). Native
+signing uses supplied role keys and the shared unsigned builder. Its separate
+private journal reserves before key access, claims exact sources through a
+shared trusted registry and preserves branch/outbox history across recovery.
+There is no RPC or submission path. Unknown signing outcomes stop without
+re-signing; joint trusted-store rollback remains an explicit counterexample.
+
+Inventory: 657 tests (123 Rust + 534 Python). Build ticket_pilot_private alongside
+the other native workers before Python tests. New tests use temporary ephemeral
+keys and fabricated entries; no operational wallet or P0 live run exists.
+Next implement explicit P0 observation and dual-node source/acceptance checks,
+then a separate live submission journal. Verify operational key backup/restore
+before requesting funding. [Verification](../evidence/ticket-pilot-private-verification.md).
+
+
 **October 20, 2026 UTC: unsigned P0 pilot-review preparation implemented.**
 
 For a nontechnical introduction, open [ICP in plain English](PLAIN-ENGLISH.md).
