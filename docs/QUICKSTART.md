@@ -21,7 +21,7 @@ python3 scripts/compile.py
 python3 scripts/compile_protected.py --fixtures
 cargo fmt --check
 cargo test --locked --features live
-cargo build --locked --features live --example native_ticket_worker --example ticket_read --example ticket_pilot_review
+cargo build --locked --features live --example native_ticket_worker --example ticket_read --example ticket_pilot_review --example ticket_pilot_private
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 cargo build --locked --features live
 ```

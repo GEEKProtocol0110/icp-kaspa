@@ -12,8 +12,29 @@ engineering checkpoint first, followed by earlier milestones.
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
-| Automated coverage | 624 tests: 118 Rust + 506 Python |
-| Next engineering work | Private P0 fresh-key preparer/journal and profile-aware observation; verify key backup before funding |
+| Automated coverage | 657 tests: 123 Rust + 534 Python |
+| Next engineering work | Explicit P0 observation, two-node checks and separate live submission journal; verify key backup before funding |
+
+## Private P0 preparation checkpoint
+
+- The [private preparer](docs/TICKET-PILOT-PRIVATE.md) signs the same native P0
+  layouts as the public reviewer using supplied role keys. It checks exact
+  asserted entries, minimal Schnorr signatures, native script execution, full
+  RPC semantics and complete hashes. Public fixture mode/keys remain rejected.
+- A separate private journal saves signing intent before key access, permanently
+  chooses one terminal branch and recovers exact signed outboxes. A shared
+  trusted registry prevents another local journal claiming the same source.
+  Unknown signing outcomes stop without automatic re-signing.
+- Five new Rust and 28 Python tests bring inventory to 657 (123 Rust + 534
+  Python). The changed examples' 13 cached native tests and all Python checks
+  run locally; the unavailable pinned source checkout prevents a full local
+  Cargo run. Locked clean-source CI is required before merge. See the
+  [verification record](evidence/ticket-pilot-private-verification.md).
+- This is offline, with fabricated test inputs and ephemeral keys. No operational
+  keys, funding request, live calls or broadcasts were created. Local branch
+  policy is bypassable with the key, and joint trusted-store rollback is an
+  explicit counterexample. Next: profile-aware P0 observation and separate live
+  submission/reconciliation gates before a backed-up fresh-key pilot.
 
 ## Unsigned pilot preparation checkpoint
 

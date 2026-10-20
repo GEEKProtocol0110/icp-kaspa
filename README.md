@@ -65,6 +65,7 @@ these vault rules no longer protect their later transfers.
 | Recording a data commitment on Kaspa | One testnet transaction observed through two node endpoints | [Transfer anchor run](docs/ICP-Transfer-Anchor-Live-Proof.md) |
 | A message encrypted for one recipient | Local HPKE encryption, delivery-key possession checks, sender approval and signed receipts; no network delivery | [Recipient-encryption lab](docs/RECIPIENT-ENCRYPTION-LAB.md) |
 | Delivery-key checks and signed response records | Encrypted enrollment challenge plus exact saved signatures over dummy responses; no real key delivery | [Bound response lab](docs/BOUND-RESPONSE-LAB.md) |
+| Private P0 preparation | Offline signing with supplied keys, permanent local branch/source claims and exact saved-outbox recovery; no node or submission | [Private preparation](docs/TICKET-PILOT-PRIVATE.md) |
 | Fresh-key pilot preparation | Unsigned P0 native previews from public keys and an exact asserted source; no signing or funding authorization | [Pilot preparation](docs/TICKET-PILOT-PREPARATION.md) |
 | Native ticket transactions | Offline issue/consume/refund examples signed and checked in Kaspa's script engine; fabricated inputs | [Native ticket lab](docs/NATIVE-TICKET-LAB.md) |
 | Native ticket observation | Read-only native ID/layout verification, exact UTXO matching and reversible chain history; synthetic test evidence | [Ticket observer](docs/NATIVE-TICKET-OBSERVER.md) |
@@ -74,7 +75,7 @@ these vault rules no longer protect their later transfers.
 | Coordinated release recovery | Synthetic vault/ledger/delivery failures, stale-writer fencing and backup continuity; no real keys | [Coordinator model](docs/RELEASE-COORDINATOR-MODEL.md) |
 | Encrypted messages and release accounting | Local experiments; the release model uses simulated chain data and a non-secret placeholder | [Transfer lab](docs/TRANSFER-LAB.md) · [Release model](docs/RELEASE-LEDGER-MODEL.md) |
 
-The automated suite contains **624 tests: 118 Rust + 506 Python**.
+The automated suite contains **657 tests: 123 Rust + 534 Python**.
 [GitHub Actions](.github/workflows/verify.yml) checks the build, tests and demos.
 Individual testnet runs are dated evidence, not performance or security
 guarantees; later software changes also have their own offline checks.
@@ -130,6 +131,10 @@ The connection uses synthetic scans; real authorization and key delivery remain 
 The separate [pilot-review tool](docs/TICKET-PILOT-PREPARATION.md) now previews
 native transactions using public operator inputs. Its P0 profile is unsigned:
 no keys are generated, source observed, transaction signed or funding authorized.
+The new [private preparer](docs/TICKET-PILOT-PRIVATE.md) can sign those layouts
+with supplied role keys and recover the exact saved transaction after restart.
+Interrupted signing stops for reconciliation. This remains offline: source
+observation, live submission and actual authorization are still ahead.
 
 ## Explore or build
 
