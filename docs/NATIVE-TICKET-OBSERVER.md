@@ -24,7 +24,7 @@ and [verification record](../evidence/native-ticket-observer-verification.md).
 
 | Boundary | Implemented check |
 | --- | --- |
-| Native adapter | `ticket_read` offers only `project`, `scan HASH` and `utxos PUBLIC_KEY`; no key loading or effect command |
+| Native adapter | `ticket_read` offers `project`, separate `project-p0`, `scan HASH` and `utxos PUBLIC_KEY`; no key loading or effect command |
 | Transaction identity | Convert RPC data through the pinned native Kaspa types and recompute its ID; copied verbose IDs over changed bodies fail |
 | Pinned semantics | Exact version, input outpoints/sequences, output amounts/scripts/covenants, payload, lock time, gas and subnetwork |
 | Issuance | Exact issue layout plus a positive exact ticket UTXO sample; absence of a spend alone is insufficient |
@@ -86,3 +86,7 @@ N0/R0 wire adoption, independently enforced signing or protected key delivery is
 established. The separate [integration](NATIVE-TICKET-BINDING.md) now tests an
 explicit controller boundary with synthetic records while preserving permanent
 service history through chain rollbacks.
+
+The later [P0 observer](TICKET-PILOT-OBSERVER.md) has separate native pins,
+compute/storage projection and exact source/ticket metadata. P0 and LAB0 cannot
+share observer databases or paired controller APIs.

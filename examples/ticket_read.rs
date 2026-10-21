@@ -39,10 +39,32 @@ fn project(mut value: Value) -> Result<Value> {
     )
 }
 
+// P0 pins also bind ID-excluded compute/storage fields. Signature bytes are
+// deliberately not compared with the unsigned review: chain acceptance remains
+// a trusted-node assertion, independently of private outbox verification.
+fn project_p0(value: Value) -> Result<Value> {
+    let mut body = value.clone();
+    body["verboseData"] = Value::Null;
+    let rpc: RpcTransaction = serde_json::from_value(body)?;
+    let tx = Transaction::try_from(rpc)?;
+    let normalized = serde_json::to_value(RpcTransaction::from(&tx))?;
+    let mut projection = project(value)?;
+    for (index, input) in projection["inputs"]
+        .as_array_mut()
+        .ok_or("Missing inputs")?
+        .iter_mut()
+        .enumerate()
+    {
+        input["compute_budget"] = normalized["inputs"][index]["computeBudget"].clone();
+    }
+    projection["storage_mass"] = normalized["storageMass"].clone();
+    Ok(projection)
+}
+
 #[tokio::main]
 async fn main() -> Result<()> {
     let args: Vec<String> = std::env::args().collect();
-    if args.len() == 2 && args[1] == "project" {
+    if args.len() == 2 && ["project", "project-p0"].contains(&args[1].as_str()) {
         let mut raw = Vec::new();
         io::stdin().take(262_145).read_to_end(&mut raw)?;
         if raw.len() > 262_144 {
@@ -50,12 +72,18 @@ async fn main() -> Result<()> {
         }
         println!(
             "{}",
-            serde_json::to_string(&project(serde_json::from_slice(&raw)?)?)?
+            serde_json::to_string(&if args[1] == "project-p0" {
+                project_p0(serde_json::from_slice(&raw)?)?
+            } else {
+                project(serde_json::from_slice(&raw)?)?
+            })?
         );
         return Ok(());
     }
     if args.len() != 3 || !["scan", "utxos"].contains(&args[1].as_str()) {
-        return Err("Usage: ticket_read project (stdin) | scan HASH | utxos PUBLIC_KEY".into());
+        return Err(
+            "Usage: ticket_read project|project-p0 (stdin) | scan HASH | utxos PUBLIC_KEY".into(),
+        );
     }
     // Validate arguments before opening a connection.
     let start = if args[1] == "scan" {
@@ -201,5 +229,42 @@ mod tests {
         let mut v = fixture();
         v["inputs"][0]["sigOpCount"] = json!(1);
         assert!(project(v).is_err());
+    }
+    #[test]
+    fn p0_projection_binds_compute_and_storage_excluded_by_legacy_projection() {
+        let v = fixture();
+        let expected = project_p0(v.clone()).unwrap();
+        assert_eq!(expected["inputs"][0]["compute_budget"], 100);
+        for field in ["compute", "storage"] {
+            let mut changed = v.clone();
+            if field == "compute" {
+                changed["inputs"][0]["computeBudget"] = json!(101);
+            } else {
+                changed["storageMass"] = json!(99);
+                changed["mass"] = json!(99);
+            }
+            assert_eq!(
+                project(changed.clone()).unwrap(),
+                project(v.clone()).unwrap()
+            );
+            assert_ne!(project_p0(changed).unwrap(), expected);
+        }
+    }
+    #[test]
+    fn p0_projection_allows_signed_body_but_does_not_attest_signature_validity() {
+        let v = fixture();
+        let expected = project_p0(v.clone()).unwrap();
+        let mut changed = v;
+        changed["inputs"][0]["signatureScript"] = json!("abcd");
+        assert_eq!(project_p0(changed).unwrap(), expected);
+    }
+    #[test]
+    fn p0_recomputes_id_and_rejects_wrong_compute_variant() {
+        let mut v = fixture();
+        v["payload"] = json!("00");
+        assert!(project_p0(v).is_err());
+        let mut v = fixture();
+        v["inputs"][0]["sigOpCount"] = json!(1);
+        assert!(project_p0(v).is_err());
     }
 }

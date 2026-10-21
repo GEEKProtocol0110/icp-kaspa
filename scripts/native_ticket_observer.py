@@ -84,6 +84,11 @@ class Reader:
         if len(raw) > 262_144: raise ObservationError('Relevant native transaction too large')
         return self._run(['project'], raw)
 
+    def project_p0(self, transaction):
+        raw = canonical(transaction)
+        if len(raw) > 262_144: raise ObservationError('Relevant P0 transaction too large')
+        return self._run(['project-p0'], raw)
+
     def scan(self, cursor):
         return self._run(['scan', txid(cursor)], network=True)
 
@@ -106,6 +111,8 @@ def expected(summary):
 
 
 class TicketTracker:
+    observation_mode = MODE
+
     def __init__(self, path, summaries, endpoint, bootstrap, *, reader=None, min_successors=10, max_age=30):
         self.path = Path(path).resolve()
         self.endpoint, self.host = endpoint, endpoint_host(endpoint)
@@ -115,12 +122,7 @@ class TicketTracker:
         if not 1 <= self.depth <= 100000 or not 1 <= self.max_age <= 300:
             raise ObservationError('Invalid ticket observation policy')
         self.summaries = deepcopy(summaries)
-        if set(summaries) != {'issue', 'consume', 'refund'}:
-            raise ObservationError('Exactly three native fixture pins required')
-        self.pins = {a: expected(s) for a, s in self.summaries.items()}
-        if any(s['action'] != a or s['plan']['action'] != a for a, s in self.summaries.items()) or len({p['transaction_id'] for p in self.pins.values()}) != 3:
-            raise ObservationError('Distinct correctly labeled transaction pins required')
-        self.ticket_key = txid(summaries['issue']['plan']['ticket_key'])
+        self.pins, self.ticket_key = self._prepare_pins(self.summaries)
         if self.pins['issue']['outputs'][0]['script'] != '20' + self.ticket_key + 'ac':
             raise ObservationError('Ticket query key differs from pinned output script')
         self.issue_id = self.pins['issue']['transaction_id']
@@ -130,8 +132,8 @@ class TicketTracker:
             raise ObservationError('Wrong fixture output layout')
         if any((self.pins[a]['inputs'][0]['transaction_id'], self.pins[a]['inputs'][0]['index']) != self.ticket for a in ('consume', 'refund')):
             raise ObservationError('Terminal pins do not spend exact ticket')
-        self.pin_id = hashlib.sha256(canonical(dict(pins=self.pins, depth=self.depth, age=self.max_age))).hexdigest()
-        config = canonical(dict(mode=MODE, pin=self.pin_id, endpoint=endpoint, bootstrap=bootstrap,
+        self.pin_id = hashlib.sha256(canonical(self._pin_identity())).hexdigest()
+        config = canonical(dict(mode=self.observation_mode, pin=self.pin_id, endpoint=endpoint, bootstrap=bootstrap,
                                 reader=self.reader.fingerprint)).decode()
         self.ready, self.utxo_sample = False, None
         self.db = sqlite3.connect(self.path, timeout=10, isolation_level=None)
@@ -147,6 +149,20 @@ class TicketTracker:
             self.db.execute('COMMIT')
         except BaseException:
             self.db.execute('ROLLBACK'); self.db.close(); raise
+
+    def _prepare_pins(self, summaries):
+        if set(summaries) != {'issue', 'consume', 'refund'}:
+            raise ObservationError('Exactly three native fixture pins required')
+        pins = {a: expected(s) for a, s in summaries.items()}
+        if any(s['action'] != a or s['plan']['action'] != a for a, s in summaries.items()) or len({p['transaction_id'] for p in pins.values()}) != 3:
+            raise ObservationError('Distinct correctly labeled transaction pins required')
+        return pins, txid(summaries['issue']['plan']['ticket_key'])
+
+    def _pin_identity(self):
+        return dict(pins=self.pins, depth=self.depth, age=self.max_age)
+
+    def _project(self, transaction):
+        return self.reader.project(transaction)
 
     def _get(self, key):
         r = self.db.execute('SELECT v FROM ticket_meta WHERE k=?', (key,)).fetchone()
@@ -227,7 +243,7 @@ class TicketTracker:
                     if not hits and not funding_hit and not ticket_hit: continue
                     relevant += 1
                     if relevant > 32: raise ObservationError('Too many relevant spends in one page')
-                    projection = self.reader.project(tx)
+                    projection = self._project(tx)
                     if hits:
                         action = hits[0]
                         if canonical(projection) != canonical(self.pins[action]): raise ObservationError('Pinned native transaction body mismatch')
@@ -310,7 +326,7 @@ class TicketTracker:
             elif not u['found']: label = 'TICKET_NOT_UNSPENT'
             elif issue['position'] > positions[0]: label = 'UTXO_SAMPLE_PREDATES_ISSUE'
             else: label = 'ISSUED_UNSPENT_OBSERVED'
-        return dict(mode=MODE, state=label, endpoint=self.endpoint, pin_id=self.pin_id, tip=self.tip,
+        return dict(mode=self.observation_mode, state=label, endpoint=self.endpoint, pin_id=self.pin_id, tip=self.tip,
                     sampled_target=self._get('target'), observed_at=int(at) if at else None,
                     issue=issue, spend=spend, issue_successors=depth, terminal_successors=terminal_depth,
                     required_successors=self.depth, utxo_sample=deepcopy(u))
@@ -333,6 +349,8 @@ class TicketTracker:
 
 
 def combined(first, second, now):
+    if any(type(t) is not TicketTracker for t in (first, second)):
+        raise ObservationError('LAB0 combination requires exact fixture trackers')
     if first.path == second.path or first.host == second.host or first.pin_id != second.pin_id:
         raise ObservationError('Two distinct pinned node hosts/databases with matching policy required')
     a, b = first.status(now), second.status(now)
