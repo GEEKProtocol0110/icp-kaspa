@@ -22,7 +22,7 @@ stale, inconsistent or different, the paired observation stays blocked.
 | Metadata | Integer creation DAA score must not be ahead of the sampled node; positive entries must agree between nodes |
 | Acceptance | Reversible accepted-chain history, complete ordered pages, exact layouts and separate successor depth for issue and terminal |
 | Freshness | Request-start timestamps, configured maximum age, branch-bracketed UTXO samples and new scans after reopen/failure |
-| Pair | Exact same public review and policy, distinct hostnames and separate observer database paths |
+| Pair | Exact same public review, policy and native build identity, distinct hostnames and separate observer database paths |
 | Isolation | P0 has a distinct mode/configuration; LAB0 pair/controller APIs reject it, and cross-profile database reuse fails |
 
 `examples/ticket_read.rs` now exposes `project-p0` alongside its existing

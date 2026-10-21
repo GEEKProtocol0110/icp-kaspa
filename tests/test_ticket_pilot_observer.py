@@ -247,6 +247,11 @@ class PilotObserverTests(unittest.TestCase):
         plan=deepcopy(self.plan);plan['run_nonce']='66'*32
         different=self.open('changed',self.reviewer.make(plan))
         with self.assertRaises(p.Error):p.combined(self.t,different,100)
+        # An executable with identical observed semantics still has another pinned build identity.
+        binary=self.root/'different-native-build'
+        binary.write_bytes(self.t.reader.binary.read_bytes()+b'different-build');binary.chmod(0o755)
+        different=self.open('native-build',reader=o.Reader(self.t.endpoint,binary))
+        with self.assertRaises(p.Error):p.combined(self.t,different,100)
 
     def test_p0_and_lab0_profiles_cannot_share_database_or_combine(self):
         with self.assertRaises(p.Error):o.combined(self.t,self.u,100)

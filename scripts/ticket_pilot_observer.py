@@ -59,7 +59,7 @@ class Tracker(base.TicketTracker):
 
     def _pin_identity(self):
         return dict(mode=MODE, pins=self.pins, depth=self.depth, age=self.max_age,
-                    review=self.summaries, reviewer=self.reviewer.fingerprint)
+                    review=self.summaries, reviewer=self.reviewer.fingerprint, reader=self.reader.fingerprint)
 
     def _descriptor(self):
         return dict(identity=self._pin_identity(), path=str(self.path), endpoint=self.endpoint,
