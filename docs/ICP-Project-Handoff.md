@@ -1,5 +1,19 @@
 # ICP continuation checkpoint
 
+Current milestone: [P0 observation](TICKET-PILOT-OBSERVER.md). The separate tracker
+pins a natively reverified operator review, full P0 semantic/compute/storage
+projections and exact positive source/ticket entries. Two distinct node views
+must agree under the same freshness/depth policy; reorgs revoke observations.
+The `observe` CLI has no signing/submission path. LAB0 behavior remains separate.
+
+Coverage is 694 tests (126 Rust + 568 Python); full locked Rust and Python suites
+run locally. New P0 evidence is synthetic; no live P0 call or funded lifecycle
+was made. Node acceptance, local storage/clock and node-operator independence
+remain trust assumptions. Next bind this pair to new private preparation under
+the journal lease, then add durable live submission/reconciliation. Back up and
+verify operational role keys before funding. [Verification](../evidence/ticket-pilot-observer-verification.md).
+
+
 Current milestone: [private P0 preparation](TICKET-PILOT-PRIVATE.md). Native
 signing uses supplied role keys and the shared unsigned builder. Its separate
 private journal reserves before key access, claims exact sources through a

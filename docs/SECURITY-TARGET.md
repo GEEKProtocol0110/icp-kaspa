@@ -102,6 +102,13 @@ Submission effects remain strictly fake, and no real permission or data key is
 connected. The explicit post-sample counterexample still allows an effect after
 a chain change; there is no atomic chain-to-effect or independent signer claim.
 
+The separate [P0 observer](TICKET-PILOT-OBSERVER.md) now verifies native public
+review pins, compute/storage fields, exact funding/ticket UTXO metadata and
+fresh reversible accepted-chain views from two hosts. Tests are synthetic, and
+an explicit malformed-signature example shows acceptance is still trusted.
+The read-only observer is not connected to private signing or submission; it
+adds no authorization, operator-independence or atomic chain-to-effect claim.
+
 The [private P0 preparation experiment](TICKET-PILOT-PRIVATE.md) now signs the
 reviewed native layouts with supplied role keys and journals exact outboxes,
 source claims and permanent local branch choice. Inputs remain asserted and
@@ -112,8 +119,9 @@ operational key generation is included.
 The separate [P0 pilot review](TICKET-PILOT-PREPARATION.md) now builds unsigned
 native layouts from public role keys and an asserted source, with a distinct
 review-only namespace. Its denylist cannot prove key freshness or possession;
-its checksummed public receipt is not authorization. No source is observed and
-no private signing/live journal or profile-aware controller integration is added.
+its checksummed public receipt is not authorization. The public reviewer itself
+observes no source and exposes no signing or live journal. Later private preparation and P0 observation are separate components;
+their enforcing connection remains ahead.
 
 The [release-service design](RELEASE-SERVICE-DESIGN.md) proposes a private key
 vault, authoritative grant/response ledger and delivery gate, with independent

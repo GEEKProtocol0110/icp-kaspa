@@ -115,8 +115,9 @@ Do not delete any store to clear a halt or claim.
 - Test keys do not establish operational key freshness, custody, backup or
   restore. No funding address is approved by this work.
 
-Next: build explicit P0 native observation/projection support, add two-node
-source and acceptance checks, and review their connection to signing and a
-separate live submission journal. Verify operational key backup/possession
+The separate [P0 observer](TICKET-PILOT-OBSERVER.md) now checks exact source and
+acceptance views with synthetic tests. Next connect current policy-pinned
+observations to new preparation under this journal lease, then add a separate
+live submission journal. Verify operational key backup/possession
 before any funding request. See the [pilot sequence](TICKET-PILOT-PREPARATION.md)
 and [verification record](../evidence/ticket-pilot-private-verification.md).

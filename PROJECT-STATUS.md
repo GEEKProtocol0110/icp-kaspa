@@ -1,4 +1,4 @@
-# ICP checkpoint - October 20, 2026 UTC
+# ICP checkpoint - October 21, 2026
 
 **Experimental Kaspa Testnet-10 prototype.** Vault withdrawals and protected
 recovery have been tested with test coins. Real data-key delivery is still being
@@ -12,8 +12,28 @@ engineering checkpoint first, followed by earlier milestones.
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
-| Automated coverage | 657 tests: 123 Rust + 534 Python |
-| Next engineering work | Explicit P0 observation, two-node checks and separate live submission journal; verify key backup before funding |
+| Automated coverage | 694 tests: 126 Rust + 568 Python |
+| Next engineering work | Bind P0 observations to private preparation, then separate live submission/reconciliation; verify key backup before funding |
+
+## P0 observation checkpoint
+
+- A separate [P0 observer](docs/TICKET-PILOT-OBSERVER.md) natively rechecks the
+  operator public review and exact transaction projections, including compute
+  budgets and storage mass. It checks positive funding-source/ticket UTXOs,
+  complete metadata and fresh accepted-chain/depth observations from two hosts.
+- Reorgs revoke observations; different entries, stale views, backlog, unknown
+  spends or changed policy/binaries block the paired report. P0/LAB0 database
+  reuse fails; the fixture controller cannot accept the new tracker type.
+  A public `observe` CLI is read-only and closes both handles after polling.
+- Three new Rust and 34 Python tests bring coverage to 694 (126 Rust + 568
+  Python). Full local locked Rust/Python suites, compilers, formatting and public
+  fixture checks pass; final-head CI is required before merge. See the
+  [verification record](evidence/ticket-pilot-observer-verification.md).
+- This milestone uses synthetic pages and makes no live P0 calls or broadcasts.
+  A malformed-signature counterexample demonstrates reliance on node acceptance.
+  Distinct hosts do not prove operator independence; reads are not atomic.
+  Next bind the current pair to new private preparation under its journal lease,
+  then implement separate live submission/reconciliation before a backed-up pilot.
 
 ## Private P0 preparation checkpoint
 

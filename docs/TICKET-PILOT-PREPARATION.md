@@ -88,8 +88,10 @@ journal, grant, source claim, signed outbox or evidence of acceptance.
 
 1. The [private offline preparer/journal](TICKET-PILOT-PRIVATE.md) now covers
    signing recovery, source claims and permanent branch choice with the fixture
-   restrictions intact. Implement explicit P0 observation and a separate live
-   submission journal next. Ambiguous attempts must reconcile without replacement.
+   restrictions intact. The separate [P0 observer](TICKET-PILOT-OBSERVER.md) now
+   checks node views with synthetic test evidence. Bind it to private preparation
+   and implement a separate live submission journal next. Ambiguous attempts
+   must reconcile without replacement.
 2. Generate separate fresh F/T/R roles for each run, back up their private key
    files and verify possession/restore before publishing a funding request.
    No operational keys or funding addresses were generated in this milestone.
@@ -107,9 +109,10 @@ journal, grant, source claim, signed outbox or evidence of acceptance.
    Preserve private journals, keys, outboxes and backups outside Git. Synthetic
    reorgs remain synthetic tests; no manufactured fixture is live evidence.
 
-Current observers/controllers remain tied to LAB0 fixtures; wiring P0 live
-transactions into them needs explicit profile-aware work and tests. Do not feed
-new P0 previews into an existing fixture database or silently change its policy.
+The existing fixture observer/controller remains tied to LAB0. P0 has its own
+[read-only observer](TICKET-PILOT-OBSERVER.md), tested with synthetic data, and no
+enforcing private-controller connection yet. Do not feed P0 previews into a
+fixture database or silently change its policy.
 No real authorization, data-key delivery, independent signer enforcement,
 production finality or quantum-safety result is claimed. See the
 [verification record](../evidence/ticket-pilot-review-verification.md).
