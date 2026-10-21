@@ -102,12 +102,21 @@ Submission effects remain strictly fake, and no real permission or data key is
 connected. The explicit post-sample counterexample still allows an effect after
 a chain change; there is no atomic chain-to-effect or independent signer claim.
 
+The [P0 observation/private binding](TICKET-PILOT-BINDING.md) now gates new
+private preparation/branch choice on current matching P0 tracker facts and
+complete input-entry metadata under a distinct journal policy. Recovery retains
+permanent outboxes and choices while invalidating observer eligibility. Time is
+resampled after slow operations. Tests are synthetic; a change after the final
+sample can still precede signing. Direct key/worker use bypasses the local gate.
+There is no submission, real authorization or independent signer isolation.
+
 The separate [P0 observer](TICKET-PILOT-OBSERVER.md) now verifies native public
 review pins, compute/storage fields, exact funding/ticket UTXO metadata and
 fresh reversible accepted-chain views from two hosts. Tests are synthetic, and
 an explicit malformed-signature example shows acceptance is still trusted.
-The read-only observer is not connected to private signing or submission; it
-adds no authorization, operator-independence or atomic chain-to-effect claim.
+The later bound variant connects those observations to new private preparation,
+with synthetic evidence. Submission remains separate. No authorization,
+operator-independence or atomic chain-to-effect claim is added.
 
 The [private P0 preparation experiment](TICKET-PILOT-PRIVATE.md) now signs the
 reviewed native layouts with supplied role keys and journals exact outboxes,
@@ -121,7 +130,7 @@ native layouts from public role keys and an asserted source, with a distinct
 review-only namespace. Its denylist cannot prove key freshness or possession;
 its checksummed public receipt is not authorization. The public reviewer itself
 observes no source and exposes no signing or live journal. Later private preparation and P0 observation are separate components;
-their enforcing connection remains ahead.
+their later enforcing connection is the separate bound variant above.
 
 The [release-service design](RELEASE-SERVICE-DESIGN.md) proposes a private key
 vault, authoritative grant/response ledger and delivery gate, with independent

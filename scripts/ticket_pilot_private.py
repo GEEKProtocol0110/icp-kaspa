@@ -98,9 +98,13 @@ class Policy:
     reviewer_hash: str
     worker_hash: str
     claims_path: str
+    observation_pin: str | None = None
 
     @property
-    def id(self): return sha(canonical(dict(mode=MODE, **self.__dict__)))
+    def id(self):
+        value = dict(mode=MODE, **self.__dict__)
+        if self.observation_pin is None: value.pop('observation_pin')
+        return sha(canonical(value))
 
 
 def initial():
@@ -128,8 +132,7 @@ class Controller:
         if any(self.root.resolve() == p.resolve() or self.root.resolve() in p.resolve().parents
                for p in (authority_path, claims_path)):
             raise Error('Authority and registry must be outside component backup directory')
-        self.policy = Policy(canonical(self.review).decode(), self.reviewer.fingerprint,
-                             self.worker.fingerprint, str(claims_path.resolve()))
+        self.policy = self._make_policy(claims_path)
         self._authority = self._journal = self._claims = None
         if create and any(p.exists() for p in (authority_path, paths[2])):
             raise Error('Refuse existing authority or journal')
@@ -150,6 +153,16 @@ class Controller:
             self.generation = self._authority.acquire()
         except BaseException:
             self.close(); raise
+
+    def _make_policy(self, claims_path):
+        return Policy(canonical(self.review).decode(), self.reviewer.fingerprint,
+                      self.worker.fingerprint, str(claims_path.resolve()))
+
+    def _before_choice(self, lease, state):
+        pass
+
+    def _before_signing(self, lease, state, phase, entry):
+        pass
 
     @staticmethod
     def create_claims(path):
@@ -251,6 +264,7 @@ class Controller:
             if state['issue_record'] is None: raise Error('Save issuance before branch choice')
             if state['branch'] not in (None, branch): raise Error('Terminal branch is permanent')
             if state['branch'] is None:
+                self._before_choice(lease, state)
                 state['branch'] = branch
                 self._journal.save(lease, state, 'choose', previous, self.hook)
         return self.status()
@@ -262,6 +276,7 @@ class Controller:
             if state[phase+'_record'] is not None: return self._summary(state)
             if state[phase+'_started']: raise RecoveryRequired('Signing outcome unknown; reconcile saved state only')
             if phase == 'terminal' and state['branch'] is None: raise Error('Choose terminal branch first')
+            self._before_signing(lease, state, phase, entry)
             self._claim(create=True)
             state[phase+'_started'] = True; state[phase+'_entry'] = decode(canonical(entry))
             self._journal.save(lease, state, phase+'-signing-intent', previous, self.hook)
@@ -270,7 +285,10 @@ class Controller:
         with self._step() as (lease, state, previous):
             if state[phase+'_record'] is not None: return self._summary(state)
             action = 'issue' if phase == 'issue' else state['branch']
-            record = self.worker.prepare(self.plan, action, state[phase+'_entry'], load_key(key_path))
+            self._before_signing(lease, state, phase, state[phase+'_entry'])
+            secret = load_key(key_path)
+            self._before_signing(lease, state, phase, state[phase+'_entry'])
+            record = self.worker.prepare(self.plan, action, state[phase+'_entry'], secret)
             self.worker.verify(record)
             if record['plan'] != self.plan or record['action'] != action or record['entry'] != state[phase+'_entry']:
                 raise IntegrityError('Signer reply differs from durable reservation')
