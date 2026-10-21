@@ -109,13 +109,14 @@ sample. Copied status dictionaries are not durable authorization.
 
 The observer does not access private keys, change the private preparer's
 journal, authorize a branch, reserve budget, submit a transaction or release a
-data key. It has not yet been connected as an enforcing gate to P0 signing.
+data key. A later [bound variant](TICKET-PILOT-BINDING.md) enforces its current observations
+before new private preparation, with synthetic test evidence.
 There is no external observation anti-rollback authority or mainnet switch.
 Native RPC decoding and subprocess capture happen before local output-size
 checks; this is not an upstream memory-isolation boundary.
 
-Next connect a freshly polled, policy-pinned P0 pair to new private preparation
-under the journal's lease. Then add a separate live submission-intent and
-reconciliation journal. Verify fresh operational role-key backup and possession
+The bound variant now checks a current policy-pinned P0 pair under the private
+journal lease. Next add a separate live submission-intent and reconciliation
+journal. Verify fresh operational role-key backup and possession
 before a funding request; execute independent consume and unused-refund pilots
 only after those gates. See [the verification record](../evidence/ticket-pilot-observer-verification.md).

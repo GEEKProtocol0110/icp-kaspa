@@ -115,9 +115,9 @@ Do not delete any store to clear a halt or claim.
 - Test keys do not establish operational key freshness, custody, backup or
   restore. No funding address is approved by this work.
 
-The separate [P0 observer](TICKET-PILOT-OBSERVER.md) now checks exact source and
-acceptance views with synthetic tests. Next connect current policy-pinned
-observations to new preparation under this journal lease, then add a separate
-live submission journal. Verify operational key backup/possession
+The separate [bound variant](TICKET-PILOT-BINDING.md) now requires fresh
+[P0 observations](TICKET-PILOT-OBSERVER.md) before new preparation, with synthetic
+test evidence and a distinct policy identity. This standalone offline API
+retains its original behavior. Next add a separate live submission journal. Verify operational key backup/possession
 before any funding request. See the [pilot sequence](TICKET-PILOT-PREPARATION.md)
 and [verification record](../evidence/ticket-pilot-private-verification.md).

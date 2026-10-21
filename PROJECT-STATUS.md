@@ -12,8 +12,27 @@ engineering checkpoint first, followed by earlier milestones.
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
-| Automated coverage | 694 tests: 126 Rust + 568 Python |
-| Next engineering work | Bind P0 observations to private preparation, then separate live submission/reconciliation; verify key backup before funding |
+| Automated coverage | 726 tests: 126 Rust + 600 Python |
+| Next engineering work | Separate live submission intent/reconciliation; verify operational key backup before funded P0 pilots |
+
+## P0 observation/private-preparation binding checkpoint
+
+- A distinct [bound P0 controller](docs/TICKET-PILOT-BINDING.md) now requires
+  current matching two-node source/ticket observations for new preparation and
+  branch choice. Exact entry metadata, observer identity and stricter five-second
+  default freshness are checked under the private journal's lease.
+- The gate resamples time after verification, observation and key reads. It
+  checks before durable reservation, before key access and before native signing.
+  Expired or reorganized views block new signatures; existing outboxes and
+  permanent choices remain recoverable without treating them as new eligibility.
+- Recovery invalidates observer readiness and requires fresh scans/reconciliation.
+  A separate policy prevents opening the bound journal through the offline API.
+  Thirty-two new Python tests bring inventory to 726 (126 Rust + 600 Python).
+  See the [verification record](evidence/ticket-pilot-binding-verification.md).
+- New node evidence is synthetic and keys are temporary/unfunded. No live call,
+  funding request or submission was made. A post-sample change can still precede
+  a signature; direct worker use and joint trusted-store rollback remain limits.
+  Next: separate live submission intent/reconciliation, then backed-up pilots.
 
 ## P0 observation checkpoint
 

@@ -1,5 +1,22 @@
 # ICP continuation checkpoint
 
+Current milestone: [P0 observation/private binding](TICKET-PILOT-BINDING.md).
+The new pair/controller variant pins two exact P0 trackers and requires current
+unspent source/ticket observations and matching entry metadata before new
+signing or branch choice. It rechecks age after slow verification/status/key
+reads. Recovery preserves outboxes/choices and invalidates observer eligibility.
+Offline and bound journals have distinct policy identities; they cannot be
+silently interchanged. The shared source registry retains permanent claims.
+
+Coverage is 726 tests (126 Rust + 600 Python), including 32 new binding tests.
+New evidence is synthetic with temporary unfunded role keys; no P0 submission
+or funding was performed. A post-sample counterexample still permits signing
+after a view change. Direct worker/key use and joint trusted-store rollback
+remain limits. Next add separate durable live submission intent/reconciliation,
+then verify operational key backup/possession before the two funded pilots.
+[Verification](../evidence/ticket-pilot-binding-verification.md).
+
+
 Current milestone: [P0 observation](TICKET-PILOT-OBSERVER.md). The separate tracker
 pins a natively reverified operator review, full P0 semantic/compute/storage
 projections and exact positive source/ticket entries. Two distinct node views
