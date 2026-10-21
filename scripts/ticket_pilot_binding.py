@@ -57,8 +57,8 @@ class Pair:
         except observer.Error as exc:
             raise private.Error('Current P0 observation unavailable') from exc
         # Status/verification may take time. Never decide with the lease-entry clock.
-        now = finish()
         if self.sessions() != sessions: raise private.Error('P0 handles changed during observation')
+        now = finish()
         allowed = ('SOURCE_UNSPENT','ISSUED_UNSPENT','CONSUMPTION','REFUND')
         wanted = 'SOURCE_UNSPENT' if phase == 'issue' else 'ISSUED_UNSPENT' if phase in ('terminal','choice') else None
         if report['state'] not in tuple('TWO_NODE_'+s+'_OBSERVED' for s in allowed):

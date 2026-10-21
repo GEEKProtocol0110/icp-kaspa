@@ -211,6 +211,17 @@ class PilotBindingTests(unittest.TestCase):
             with self.assertRaises(private.Error):self.prepare_issue()
             key.assert_not_called()
         self.assertFalse(self.state()['issue_started'])
+        # Final handle/configuration reads can also take time before reservation.
+        for t in self.pair.trackers:
+            t.apply(native.fixture_scan(3),106);t.apply_source_utxos(self.utxos(t),106)
+        self.c.reconcile_observations();sessions=self.pair.sessions;calls=[0]
+        def slow_sessions():
+            result=sessions();calls[0]+=1
+            if calls[0]==3:self.clock[0]=112
+            return result
+        with patch.object(self.pair,'sessions',side_effect=slow_sessions):
+            with self.assertRaises(private.Error):self.prepare_issue()
+        self.assertFalse(self.state()['issue_started'])
 
     def test_positive_utxo_age_has_stricter_bound_than_tracker_policy(self):
         self.preflight();old=[deepcopy(t.source_sample) for t in self.pair.trackers];self.clock[0]=106
