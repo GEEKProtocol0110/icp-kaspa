@@ -105,4 +105,8 @@ Verify operational role-key backup and possession before requesting funds for
 independent consumption and unused-refund pilots. No operational key generation,
 funding request or P0 broadcast was performed here.
 
+The later [native adapter](TICKET-PILOT-LIVE.md) implements that TN10 network
+capability under a distinct live policy, with offline test evidence. This
+simulation variant and its existing journal identities retain their behavior.
+
 [Verification record](../evidence/ticket-pilot-submission-verification.md)

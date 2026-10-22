@@ -119,6 +119,16 @@ changes and joint trusted-store restore have explicit counterexamples; no
 global exactly-once effect, authorization or production anti-rollback claim is
 made. No P0 network submission or real data key is connected.
 
+The later [P0 native submission adapter](TICKET-PILOT-LIVE.md) connects those
+durable attempts to a TN10-only sender under a distinct policy. It reuses full
+native record verification, checks the connected node and exact positive input,
+and carries observation deadlines through connection and submission. Its tests
+use offline native verification, fabricated node facts and local process I/O;
+no successful P0 RPC handshake/submission or funded lifecycle is claimed. The
+raw sender remains callable outside the journal, node/code/clock/store trust
+continues, and a post-sample change can precede a network effect. No stronger
+authorization, atomicity, independent isolation or data-key release is supplied.
+
 The separate [P0 observer](TICKET-PILOT-OBSERVER.md) now verifies native public
 review pins, compute/storage fields, exact funding/ticket UTXO metadata and
 fresh reversible accepted-chain views from two hosts. Tests are synthetic, and
