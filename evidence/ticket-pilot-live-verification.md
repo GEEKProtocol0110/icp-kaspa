@@ -8,7 +8,8 @@ The sender reuses the existing native private-record verifier, rejects public
 fixtures and altered signature/layout/full-hash data, pins its configured TLS
 endpoint, checks the connected node and exact current input metadata, and carries
 the original paired-observation expiry through connection and submission. There
-is one application submit call with replacement disabled and no retry command.
+is one ordinary submit call with orphan admission disabled, no replacement API
+and no retry command.
 
 Eight new Rust tests cover endpoint/relay restrictions, clock windows and all
 input metadata fields. Twenty-seven new Python tests cover actual offline native

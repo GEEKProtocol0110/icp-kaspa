@@ -196,7 +196,8 @@ async fn send(r: Request) -> Result<serde_json::Value> {
             return Err("Native clock moved backwards".into());
         }
         window(r.not_before, r.not_after, final_time)?;
-        // One API call with replacement disabled. Every error/timeout is uncertain.
+        // One ordinary submit call with orphan admission disabled; no replacement API.
+        // Every error/timeout is uncertain.
         let id = client
             .submit_transaction(r.record.signed_rpc.clone(), false)
             .await

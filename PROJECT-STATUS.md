@@ -24,7 +24,8 @@ engineering checkpoint first, followed by earlier milestones.
   checks its pinned endpoint, connected node network/health/activation and exact
   current input metadata. Original paired-observation expiry bounds connection
   and submission; a slow connection cannot silently refresh that deadline.
-- There is one application submit call, replacement disabled and no retry command.
+- There is one ordinary submit call with orphan admission disabled; the separate
+  replacement API is never called, and there is no retry command.
   The bounded Python transport excludes inherited keys/RPC overrides and kills
   its relay/native process group on failure. Replies remain historical claims;
   only read-only paired observations supply revocable chain status.

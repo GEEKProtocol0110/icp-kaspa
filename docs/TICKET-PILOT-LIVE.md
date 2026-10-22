@@ -17,7 +17,7 @@ No successful P0 RPC submission or funded P0 lifecycle is claimed.
 | `ticket_pilot_submission` | Checkpoint permanent attempts/replies and reconcile observations; its default transport stays simulated |
 | `ticket_pilot_live.Controller` | Distinct live policy, explicit `submit(phase)`, same durable attempt/recovery rules |
 | `ticket_pilot_live.Transport` | Pin the first observer endpoint, sender/relay paths and binary/source fingerprints; enforce bounded process I/O and termination |
-| Native `ticket_pilot_submit` | Reverify the complete saved record, check network/input/deadline, call the submit API once with replacement disabled |
+| Native `ticket_pilot_submit` | Reverify the complete saved record, check network/input/deadline, call the ordinary submit API once with orphan admission disabled; no replacement API |
 
 The new sender and existing private worker use one shared verifier in
 `examples/support/ticket_pilot_verify.rs`. This preserves the existing private
@@ -59,7 +59,9 @@ The native sender:
    amount/script/creation-DAA/coinbase/covenant metadata. Missing, duplicate,
    changed or future-dated entries fail.
 6. Rechecks node health/network and UTC deadline before one
-   `submit_transaction(saved_rpc, false)` call. A backwards native clock fails.
+   `submit_transaction(saved_rpc, false)` call. The boolean disables orphan
+   admission; the separate replacement API is never called. A backwards native
+   clock fails.
 7. Accepts only the expected transaction ID as a reported acceptance. Any error,
    timeout or mismatched response is uncertain. Cleanup is bounded and never
    retries a submission.
