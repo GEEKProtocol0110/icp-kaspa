@@ -1,5 +1,10 @@
 # P0 observation through two node views
 
+The later [live read-path repair](TICKET-PILOT-READ-PATH.md) bundles role UTXOs
+and accepted history on one bounded connection and provides a bootstrap helper.
+Its distinct read profile changes policy identities. It has live read-only
+funding-source evidence; the original synthetic milestone below remains dated.
+
 [Project home](../README.md) · [Public review](TICKET-PILOT-PREPARATION.md) · [Private preparation](TICKET-PILOT-PRIVATE.md)
 
 The P0 observer checks whether two configured Testnet-10 node views report the

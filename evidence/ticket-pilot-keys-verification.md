@@ -1,5 +1,10 @@
 # P0 test-key setup verification — October 22, 2026 UTC
 
+Later checkpoint: both requested funding outputs arrived and were verified.
+The [repaired live read-only preflight](ticket-pilot-read-path-live.json)
+passed two-node exact source eligibility. The original setup/funding request
+below is retained as history; no additional funding is requested.
+
 The offline setup generated two new Testnet-10 sessions, one for consume and
 one for unused refund. All six independent funding/ticket/return keys passed
 curve/public-key checks, saved possession verification, exact-byte archive

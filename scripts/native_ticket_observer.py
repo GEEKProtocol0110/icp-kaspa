@@ -96,6 +96,41 @@ class Reader:
         txid(public_key)
         return self._run(['utxos', public_key], network=True)
 
+    def snapshot_p0(self, cursor, funding_key, ticket_key):
+        request = dict(cursor=txid(cursor), funding_key=txid(funding_key), ticket_key=txid(ticket_key))
+        if funding_key == ticket_key: raise ObservationError('Distinct snapshot roles required')
+        value = self._run(['observe-p0'], canonical(request), network=True)
+        try:
+            if (type(value) is not dict or set(value) != {'mode','source','ticket','scan'}
+                or value['mode'] != 'TN10_P0_READ_SNAPSHOT_V1'):
+                raise ObservationError('Wrong P0 snapshot profile')
+            source,ticket,scan = (value[k] for k in ('source','ticket','scan'))
+            if (source['publicKey'] != funding_key or ticket['publicKey'] != ticket_key
+                or scan['from'] != cursor or scan['target'] != source['target']
+                or source['from'] != ticket['from'] or source['target'] != ticket['target']
+                or source['node'] != ticket['node'] or source['node'] != scan['node']):
+                raise ObservationError('Snapshot roles, brackets or node samples differ')
+            guard(scan['node'])
+        except (KeyError,TypeError,WatchError) as exc:
+            raise ObservationError('Malformed P0 snapshot') from exc
+        return value
+
+    def bootstrap_p0(self):
+        value = self._run(['bootstrap-p0'], network=True)
+        try:
+            if (type(value) is not dict
+                or set(value) != {'mode','node','bootstrap','sampled_sink','parent_steps','scope'}
+                or value['mode'] != 'TN10_P0_BOOTSTRAP_CANDIDATE_V1'
+                or type(value['parent_steps']) is not int or value['parent_steps'] != 20
+                or value['scope'] != 'TRUSTED_NODE_CANDIDATE_NOT_FINALITY'):
+                raise ObservationError('Wrong P0 bootstrap profile')
+            guard(value['node']); txid(value['bootstrap']); txid(value['sampled_sink'])
+            if value['bootstrap'] == value['sampled_sink']:
+                raise ObservationError('Bootstrap must precede sampled sink')
+        except (KeyError,TypeError,WatchError) as exc:
+            raise ObservationError('Malformed P0 bootstrap candidate') from exc
+        return value
+
 
 def expected(summary):
     """Trusted fixture pins, not authorization. Project RPC candidates independently."""

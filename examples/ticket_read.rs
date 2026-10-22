@@ -8,6 +8,7 @@ use kaspa_wrpc_client::{
     prelude::{NetworkId, NetworkType},
 };
 use secp256k1::XOnlyPublicKey;
+use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use silverscript_abi::encode_hex;
 use std::{
@@ -16,6 +17,118 @@ use std::{
     time::Duration,
 };
 type Result<T> = std::result::Result<T, Box<dyn Error + Send + Sync>>;
+
+#[derive(Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+struct SnapshotRequest {
+    cursor: String,
+    funding_key: String,
+    ticket_key: String,
+}
+
+fn parse_snapshot(raw: &[u8]) -> Result<SnapshotRequest> {
+    if raw.len() > 1024 || !raw.is_ascii() {
+        return Err("Bounded public snapshot request required".into());
+    }
+    let request: SnapshotRequest = serde_json::from_slice(raw)?;
+    if icp_testnet::native_ticket_lab::canonical(&request)? != raw {
+        return Err("Canonical closed snapshot request required".into());
+    }
+    let _: kaspa_rpc_core::RpcHash = request.cursor.parse()?;
+    for key in [&request.funding_key, &request.ticket_key] {
+        let parsed: XOnlyPublicKey = key.parse()?;
+        if parsed.to_string() != *key {
+            return Err("Canonical public key required".into());
+        }
+    }
+    if request.funding_key == request.ticket_key {
+        return Err("Distinct public roles required".into());
+    }
+    Ok(request)
+}
+
+fn split_utxos(rows: Vec<Value>, funding: &str, ticket: &str) -> Result<(Vec<Value>, Vec<Value>)> {
+    if rows.len() > 100_000 {
+        return Err("Snapshot UTXO count exceeded".into());
+    }
+    let (mut f, mut t) = (Vec::new(), Vec::new());
+    for row in rows {
+        match row["address"].as_str() {
+            Some(address) if address == funding => f.push(row),
+            Some(address) if address == ticket => t.push(row),
+            _ => return Err("Unexpected address in snapshot reply".into()),
+        }
+    }
+    Ok((f, t))
+}
+
+async fn p0_read(request: Option<SnapshotRequest>) -> Result<Value> {
+    let url = std::env::var("ICP_RPC_URL")?;
+    let client = KaspaRpcClient::new(
+        WrpcEncoding::Borsh,
+        Some(&url),
+        None,
+        Some(NetworkId::with_suffix(NetworkType::Testnet, 10)),
+        None,
+    )?;
+    // One absolute budget includes connection, all reads and encoding preparation.
+    let result = tokio::time::timeout(Duration::from_secs(25), async {
+        client.connect(Some(ConnectOptions {
+            block_async_connect: true, connect_timeout: Some(Duration::from_secs(10)),
+            strategy: ConnectStrategy::Fallback, ..Default::default()
+        })).await?;
+        let node = client.get_server_info().await?;
+        icp_testnet::check_network(&node.network_id.to_string(), node.is_synced,
+            node.has_utxo_index, node.virtual_daa_score)?;
+        let before = client.get_block_dag_info().await?.sink;
+        if let Some(req) = request {
+            let from: kaspa_rpc_core::RpcHash = req.cursor.parse()?;
+            let funding = Address::new(Prefix::Testnet, Version::PubKey,
+                &req.funding_key.parse::<XOnlyPublicKey>()?.serialize());
+            let ticket = Address::new(Prefix::Testnet, Version::PubKey,
+                &req.ticket_key.parse::<XOnlyPublicKey>()?.serialize());
+            // Both roles share one UTXO call and the same actual node-tip brackets.
+            let rows = client.get_utxos_by_addresses(vec![funding.clone(), ticket.clone()]).await?;
+            let after = client.get_block_dag_info().await?.sink;
+            let changes = client.get_virtual_chain_from_block_v2(from,
+                Some(kaspa_rpc_core::RpcDataVerbosityLevel::Full), Some(0)).await?;
+            let end_node = client.get_server_info().await?;
+            icp_testnet::check_network(&end_node.network_id.to_string(), end_node.is_synced,
+                end_node.has_utxo_index, end_node.virtual_daa_score)?;
+            let rows: Vec<Value> = rows.into_iter().map(serde_json::to_value)
+                .collect::<std::result::Result<_, _>>()?;
+            let (f, t) = split_utxos(rows, &funding.to_string(), &ticket.to_string())?;
+            // Do not call the last returned block the target: server pages can be partial.
+            Ok(json!({"mode":"TN10_P0_READ_SNAPSHOT_V1",
+                "source":{"node":end_node,"publicKey":req.funding_key,"address":funding.to_string(),
+                    "from":before.to_string(),"target":after.to_string(),"utxos":f},
+                "ticket":{"node":end_node,"publicKey":req.ticket_key,"address":ticket.to_string(),
+                    "from":before.to_string(),"target":after.to_string(),"utxos":t},
+                "scan":{"node":end_node,"from":from.to_string(),"target":after.to_string(),"changes":changes}}))
+        } else {
+            // Pick a selected-parent ancestor before creating any observer policy.
+            let mut cursor = before;
+            let mut seen = std::collections::HashSet::new();
+            for _ in 0..20 {
+                if !seen.insert(cursor) { return Err("Repeated bootstrap parent".into()); }
+                let block = client.get_block(cursor, false).await?;
+                let verbose = block.verbose_data.ok_or("Bootstrap verbosity required")?;
+                if verbose.hash != cursor { return Err("Bootstrap hash mismatch".into()); }
+                cursor = verbose.selected_parent_hash;
+            }
+            let block = client.get_block(cursor, false).await?;
+            let verbose = block.verbose_data.ok_or("Bootstrap verbosity required")?;
+            if verbose.hash != cursor || !verbose.is_chain_block || seen.contains(&cursor) {
+                return Err("Selected-chain bootstrap required".into());
+            }
+            Ok(json!({"mode":"TN10_P0_BOOTSTRAP_CANDIDATE_V1","node":node,
+                "bootstrap":cursor.to_string(),"sampled_sink":before.to_string(),"parent_steps":20,
+                "scope":"TRUSTED_NODE_CANDIDATE_NOT_FINALITY"}))
+        }
+    }).await;
+    let _ = tokio::time::timeout(Duration::from_secs(2), client.disconnect()).await;
+    result?
+}
 
 fn project(mut value: Value) -> Result<Value> {
     let claimed = value["verboseData"]["transactionId"]
@@ -64,6 +177,21 @@ fn project_p0(value: Value) -> Result<Value> {
 #[tokio::main]
 async fn main() -> Result<()> {
     let args: Vec<String> = std::env::args().collect();
+    if args.len() == 2 && ["observe-p0", "bootstrap-p0"].contains(&args[1].as_str()) {
+        let request = if args[1] == "observe-p0" {
+            let mut raw = Vec::new();
+            io::stdin().take(1025).read_to_end(&mut raw)?;
+            Some(parse_snapshot(&raw)?)
+        } else {
+            None
+        };
+        let encoded = serde_json::to_vec(&p0_read(request).await?)?;
+        if encoded.len() > 32_000_000 {
+            return Err("Snapshot output exceeded".into());
+        }
+        println!("{}", String::from_utf8(encoded)?);
+        return Ok(());
+    }
     if args.len() == 2 && ["project", "project-p0"].contains(&args[1].as_str()) {
         let mut raw = Vec::new();
         io::stdin().take(262_145).read_to_end(&mut raw)?;
@@ -146,6 +274,61 @@ mod tests {
     use kaspa_consensus_core::tx::{
         ScriptPublicKey, TransactionInput, TransactionOutpoint, TransactionOutput,
     };
+    fn snapshot_request() -> SnapshotRequest {
+        SnapshotRequest {
+            cursor: "11".repeat(32),
+            funding_key: "79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798".into(),
+            ticket_key: "c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5".into(),
+        }
+    }
+    #[test]
+    fn bounded_public_snapshot_roundtrips_without_private_material() {
+        let r = snapshot_request();
+        let raw = icp_testnet::native_ticket_lab::canonical(&r).unwrap();
+        let parsed = parse_snapshot(&raw).unwrap();
+        assert_eq!(parsed.cursor, r.cursor);
+        assert_eq!(parsed.funding_key, r.funding_key);
+    }
+    #[test]
+    fn snapshot_rejects_ambiguous_encoding_aliases_and_invalid_keys() {
+        let r = snapshot_request();
+        let raw = icp_testnet::native_ticket_lab::canonical(&r).unwrap();
+        assert!(parse_snapshot(&[b" ".as_slice(), &raw].concat()).is_err());
+        assert!(parse_snapshot(&vec![b'x'; 1025]).is_err());
+        let mut v = serde_json::to_value(r).unwrap();
+        v["secret_key"] = json!("not accepted");
+        assert!(parse_snapshot(&icp_testnet::native_ticket_lab::canonical(&v).unwrap()).is_err());
+        v.as_object_mut().unwrap().remove("secret_key");
+        v["ticket_key"] = v["funding_key"].clone();
+        assert!(parse_snapshot(&icp_testnet::native_ticket_lab::canonical(&v).unwrap()).is_err());
+        v["ticket_key"] = json!("00".repeat(32));
+        assert!(parse_snapshot(&icp_testnet::native_ticket_lab::canonical(&v).unwrap()).is_err());
+    }
+    #[test]
+    fn two_address_snapshot_splits_only_explicitly_tagged_rows() {
+        let (f, t) = split_utxos(
+            vec![
+                json!({"address":"T","utxoEntry":{"amount":2}}),
+                json!({"address":"F","utxoEntry":{"amount":1}}),
+            ],
+            "F",
+            "T",
+        )
+        .unwrap();
+        assert_eq!(f[0]["utxoEntry"]["amount"], 1);
+        assert_eq!(t[0]["utxoEntry"]["amount"], 2);
+    }
+    #[test]
+    fn unknown_missing_or_excessive_address_rows_fail() {
+        for row in [
+            json!({}),
+            json!({"address":null}),
+            json!({"address":"other"}),
+        ] {
+            assert!(split_utxos(vec![row], "F", "T").is_err());
+        }
+        assert!(split_utxos(vec![json!({"address":"F"}); 100_001], "F", "T").is_err());
+    }
     fn fixture() -> Value {
         let tx = Transaction::new(
             1,

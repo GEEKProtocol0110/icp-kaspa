@@ -1,0 +1,165 @@
+{
+  "binding_freshness_policy_for_later_pilot": 30,
+  "bootstrap_candidates": [
+    {
+      "bootstrap": "0f2f77ae53c53da98d600798e28192df50c264ae5ddfebb6bb91f845100131c1",
+      "mode": "TN10_P0_BOOTSTRAP_CANDIDATE_V1",
+      "node": {
+        "hasUtxoIndex": true,
+        "isSynced": true,
+        "networkId": "testnet-10",
+        "rpcApiRevision": 0,
+        "rpcApiVersion": 1,
+        "serverVersion": "2.1.0",
+        "virtualDaaScore": 603347823
+      },
+      "parent_steps": 20,
+      "sampled_sink": "0b9228c431c3f22b428e882b93931ea2bb633fc5747e5dae1f5537f56601da02",
+      "scope": "TRUSTED_NODE_CANDIDATE_NOT_FINALITY"
+    },
+    {
+      "bootstrap": "85f7571060a42f25ab35491879aa0d9f1cdfbe69da4f60fcc39bd716c86a41ca",
+      "mode": "TN10_P0_BOOTSTRAP_CANDIDATE_V1",
+      "node": {
+        "hasUtxoIndex": true,
+        "isSynced": true,
+        "networkId": "testnet-10",
+        "rpcApiRevision": 0,
+        "rpcApiVersion": 1,
+        "serverVersion": "2.1.0",
+        "virtualDaaScore": 603347936
+      },
+      "parent_steps": 20,
+      "sampled_sink": "e3a3a4a79c698347c7c0bdb8b0e08735bceb288e8aebeb5a15a9da025db08b44",
+      "scope": "TRUSTED_NODE_CANDIDATE_NOT_FINALITY"
+    }
+  ],
+  "mode": "TN10_P0_LIVE_READ_ONLY_PREFLIGHT_NO_SIGNATURE_OR_SUBMISSION",
+  "nodes": [
+    {
+      "bootstrap": "0f2f77ae53c53da98d600798e28192df50c264ae5ddfebb6bb91f845100131c1",
+      "endpoint": "wss://vector-10.kaspa.green/kaspa/testnet-10/wrpc/borsh",
+      "reader_sha256": "53752349933eac6897165b7107190e4eef5a36e01b8d737416d959f81879dc83",
+      "reviewer_sha256": "1b733930f6f4ecc8da58c378a21c9ae971445aa5005b8a9d2cd0718a5a56e8a2"
+    },
+    {
+      "bootstrap": "85f7571060a42f25ab35491879aa0d9f1cdfbe69da4f60fcc39bd716c86a41ca",
+      "endpoint": "wss://muon-10.kaspa.blue/kaspa/testnet-10/wrpc/borsh",
+      "reader_sha256": "53752349933eac6897165b7107190e4eef5a36e01b8d737416d959f81879dc83",
+      "reviewer_sha256": "1b733930f6f4ecc8da58c378a21c9ae971445aa5005b8a9d2cd0718a5a56e8a2"
+    }
+  ],
+  "observation": {
+    "attempt": 1,
+    "elapsed": 13.989,
+    "report": {
+      "mode": "TRUSTED_NODE_P0_OBSERVATION_ONLY",
+      "observations": [
+        {
+          "endpoint": "wss://vector-10.kaspa.green/kaspa/testnet-10/wrpc/borsh",
+          "issue": null,
+          "issue_successors": 0,
+          "mode": "TRUSTED_NODE_P0_OBSERVATION_ONLY",
+          "observed_at": 1792669293,
+          "pin_id": "affe96df43667b54d38090b6f89f574925edd3061e29ad8f169e98416c2817d0",
+          "required_successors": 10,
+          "review_id": "6b6b8d385856473dd8432029f864de82001b4f9726430efe0bbf1aa0c2384103",
+          "sampled_target": "b171160fd10bf4550c64969a44ba8b0dd10c95c4d86a981e1f9582ac2bce8158",
+          "source_outpoint": {
+            "index": 0,
+            "transaction_id": "5f2964dbdeb08f2222785f7a38b4204bc7bfe3cb6c03b429f001bbc5d911e46b"
+          },
+          "source_sample": {
+            "after": "b171160fd10bf4550c64969a44ba8b0dd10c95c4d86a981e1f9582ac2bce8158",
+            "at": 1792669293,
+            "before": "cef3d970338fa0f76fa8c5633b049264b12f4a71f7efd14538d5743153f6970f",
+            "entry": {
+              "amount": 24000000,
+              "blockDaaScore": 603321510,
+              "covenantId": null,
+              "isCoinbase": false,
+              "scriptPublicKey": "000020279fca1a932e871bee97753243ea8f8cfeebd4be8344fd2fff1f15caf6027097ac"
+            },
+            "found": true
+          },
+          "spend": null,
+          "state": "SOURCE_UNSPENT_OBSERVED",
+          "terminal_successors": 0,
+          "tip": "b171160fd10bf4550c64969a44ba8b0dd10c95c4d86a981e1f9582ac2bce8158",
+          "utxo_sample": {
+            "after": "b171160fd10bf4550c64969a44ba8b0dd10c95c4d86a981e1f9582ac2bce8158",
+            "at": 1792669293,
+            "before": "cef3d970338fa0f76fa8c5633b049264b12f4a71f7efd14538d5743153f6970f",
+            "entry": null,
+            "found": false
+          }
+        },
+        {
+          "endpoint": "wss://muon-10.kaspa.blue/kaspa/testnet-10/wrpc/borsh",
+          "issue": null,
+          "issue_successors": 0,
+          "mode": "TRUSTED_NODE_P0_OBSERVATION_ONLY",
+          "observed_at": 1792669300,
+          "pin_id": "affe96df43667b54d38090b6f89f574925edd3061e29ad8f169e98416c2817d0",
+          "required_successors": 10,
+          "review_id": "6b6b8d385856473dd8432029f864de82001b4f9726430efe0bbf1aa0c2384103",
+          "sampled_target": "de9a76bece03221a260d63fa3d95096a260b013f07b607013f560b52e80199a1",
+          "source_outpoint": {
+            "index": 0,
+            "transaction_id": "5f2964dbdeb08f2222785f7a38b4204bc7bfe3cb6c03b429f001bbc5d911e46b"
+          },
+          "source_sample": {
+            "after": "de9a76bece03221a260d63fa3d95096a260b013f07b607013f560b52e80199a1",
+            "at": 1792669300,
+            "before": "de9a76bece03221a260d63fa3d95096a260b013f07b607013f560b52e80199a1",
+            "entry": {
+              "amount": 24000000,
+              "blockDaaScore": 603321510,
+              "covenantId": null,
+              "isCoinbase": false,
+              "scriptPublicKey": "000020279fca1a932e871bee97753243ea8f8cfeebd4be8344fd2fff1f15caf6027097ac"
+            },
+            "found": true
+          },
+          "spend": null,
+          "state": "SOURCE_UNSPENT_OBSERVED",
+          "terminal_successors": 0,
+          "tip": "de9a76bece03221a260d63fa3d95096a260b013f07b607013f560b52e80199a1",
+          "utxo_sample": {
+            "after": "de9a76bece03221a260d63fa3d95096a260b013f07b607013f560b52e80199a1",
+            "at": 1792669300,
+            "before": "de9a76bece03221a260d63fa3d95096a260b013f07b607013f560b52e80199a1",
+            "entry": null,
+            "found": false
+          }
+        }
+      ],
+      "review_id": "6b6b8d385856473dd8432029f864de82001b4f9726430efe0bbf1aa0c2384103",
+      "state": "TWO_NODE_SOURCE_UNSPENT_OBSERVED"
+    },
+    "source_positions": [
+      {
+        "after": 130,
+        "before": 126
+      },
+      {
+        "after": 99,
+        "before": 99
+      }
+    ],
+    "started_at": 1792669293
+  },
+  "observer_max_age": 30,
+  "profile": "TN10_P0_READ_SNAPSHOT_V1",
+  "required_successors": 10,
+  "scope": "Trusted-node funding-source observation, not ticket lifecycle or data authorization",
+  "signatures_created": 0,
+  "source_claims_created": 0,
+  "source_digests": {
+    "examples/ticket_read.rs": "58a250e3620570902148148dbf8d0d65db2d4b9505a4e9d0adc142da006d973d",
+    "scripts/native_ticket_observer.py": "ab46f60cb58c0305c53bfccde34e9540feb277a9f0223dd223c90c27ec5e03a4",
+    "scripts/ticket_pilot_observer.py": "64482c207b6cf95e9ed5595b12ac4ef9135afba07701560a6bfddfb27997774c",
+    "scripts/with_proxy.py": "c4760bb4882161f82bc97a580e07ad698e602da4d4efd44b8a78335c626a8b16"
+  },
+  "submission_attempts": 0
+}
