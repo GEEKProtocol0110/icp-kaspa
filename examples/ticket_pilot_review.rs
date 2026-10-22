@@ -2,19 +2,60 @@
 #[path = "support/ticket_pilot.rs"]
 mod pilot;
 use pilot::*;
+use serde::Deserialize;
 use std::io::{self, Read};
+#[derive(Deserialize, serde::Serialize)]
+#[serde(deny_unknown_fields)]
+struct RoleKeys {
+    funding_key: String,
+    ticket_key: String,
+    return_key: String,
+}
+fn addresses(raw: &[u8]) -> Result<serde_json::Value> {
+    let keys: RoleKeys = serde_json::from_slice(raw).map_err(|_| "Invalid role keys")?;
+    if canonical(&keys)? != raw {
+        return Err("Canonical closed role keys required".into());
+    }
+    let values = [&keys.funding_key, &keys.ticket_key, &keys.return_key];
+    if values[0] == values[1] || values[0] == values[2] || values[1] == values[2] {
+        return Err("Distinct native roles required".into());
+    }
+    for key in values {
+        if LAB_KEYS.contains(&key.as_str()) || key == COLD_FIXTURE_KEY {
+            return Err("Known public fixture key rejected".into());
+        }
+    }
+    Ok(serde_json::json!({
+        "mode": "TN10_P0_PUBLIC_ADDRESSES_NO_SOURCE_OR_AUTHORIZATION",
+        "network": "testnet-10",
+        "roles": {
+            "funding": address(&keys.funding_key)?.to_string(),
+            "ticket": address(&keys.ticket_key)?.to_string(),
+            "return": address(&keys.return_key)?.to_string()
+        }
+    }))
+}
 fn main() -> Result<()> {
-    if std::env::args().len() != 1 {
-        return Err("Usage: ticket_pilot_review < canonical-public-plan.json".into());
+    let args: Vec<_> = std::env::args().skip(1).collect();
+    if !args.is_empty() && args != ["addresses"] {
+        return Err("Usage: ticket_pilot_review [addresses] < canonical-public-input.json".into());
     }
     let mut raw = Vec::new();
     io::stdin()
         .take(16385)
         .read_to_end(&mut raw)
         .map_err(|e| e.to_string())?;
+    if raw.len() > 16384 || !raw.is_ascii() {
+        return Err("Bounded ASCII input required".into());
+    }
+    let result = if args.is_empty() {
+        review(&Plan::parse(&raw)?)?
+    } else {
+        addresses(&raw)?
+    };
     println!(
         "{}",
-        serde_json::to_string(&review(&Plan::parse(&raw)?)?).map_err(|e| e.to_string())?
+        serde_json::to_string(&result).map_err(|e| e.to_string())?
     );
     Ok(())
 }
@@ -60,6 +101,40 @@ mod tests {
         p.run_nonce = "55".repeat(32);
         p.source.transaction_id = "22".repeat(32);
         p
+    }
+    #[test]
+    fn public_addresses_match_native_review_without_fabricating_a_source() {
+        let p = operator();
+        let keys = RoleKeys {
+            funding_key: p.funding_key.clone(),
+            ticket_key: p.ticket_key.clone(),
+            return_key: p.return_key.clone(),
+        };
+        let result = addresses(&canonical(&keys).unwrap()).unwrap();
+        assert_eq!(result["roles"], review(&p).unwrap()["roles"]);
+        assert!(result.get("source").is_none());
+        assert!(result.get("transactions").is_none());
+    }
+    #[test]
+    fn address_mode_rejects_alias_fixture_secret_extra_and_noncanonical_input() {
+        let p = operator();
+        let keys = RoleKeys {
+            funding_key: p.funding_key,
+            ticket_key: p.ticket_key,
+            return_key: p.return_key,
+        };
+        let mut v = serde_json::to_value(keys).unwrap();
+        let raw = canonical(&v).unwrap();
+        assert!(addresses(&[b" ".as_slice(), &raw].concat()).is_err());
+        v["private_key"] = serde_json::json!("never accepted");
+        assert!(addresses(&canonical(&v).unwrap()).is_err());
+        v.as_object_mut().unwrap().remove("private_key");
+        v["ticket_key"] = v["funding_key"].clone();
+        assert!(addresses(&canonical(&v).unwrap()).is_err());
+        v["ticket_key"] = serde_json::json!(LAB_KEYS[0]);
+        assert!(addresses(&canonical(&v).unwrap()).is_err());
+        v["ticket_key"] = serde_json::json!("00".repeat(32));
+        assert!(addresses(&canonical(&v).unwrap()).is_err());
     }
     #[test]
     fn unsigned_layouts_link_exact_outpoints_and_never_contain_signatures() {

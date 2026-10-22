@@ -1,4 +1,4 @@
-# ICP checkpoint - October 21, 2026
+# ICP checkpoint - October 22, 2026 UTC
 
 **Experimental Kaspa Testnet-10 prototype.** Vault withdrawals and protected
 recovery have been tested with test coins. Real data-key delivery is still being
@@ -12,8 +12,26 @@ engineering checkpoint first, followed by earlier milestones.
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
-| Automated coverage | 799 tests: 134 Rust + 665 Python |
-| Next engineering work | Verify fresh operational role-key backups/possession and run independent funded consume/refund P0 acceptance pilots |
+| Automated coverage | 813 tests: 136 Rust + 677 Python |
+| Next engineering work | Fund the two backed-up TN10 P0 sessions, inspect exact sources through both nodes and complete independent consume/refund acceptance pilots |
+
+## P0 test-key setup checkpoint
+
+- The [offline setup helper](docs/TICKET-PILOT-KEYS.md) creates separate consume
+  and refund sessions with six independent secp256k1 keys. The native reviewer
+  derives public addresses without inventing a funding source or transaction.
+- Each key passes a domain-separated possession proof, exact private archive
+  restoration and a fresh restored-key challenge. New tests cover wrong keys,
+  role/nonce/network/address changes, unsafe files, corrupted archives and
+  partial backup failure. Inventory adds two Rust and twelve Python tests.
+- Fresh test-only sessions were generated; all six keys passed restore checks
+  and the verified private backup was durably saved before the public funding
+  details were written. Only the public receipt is in Git. See the
+  [verification and funding record](evidence/ticket-pilot-keys-verification.md).
+- No transaction was signed, funding source observed or P0 network call made
+  during setup. Independent-host custody, live acceptance and actual data-key
+  delivery remain pending. The unencrypted archive holds all six test keys;
+  conventional possession proofs add no quantum-security claim.
 
 ## P0 native submission adapter checkpoint
 

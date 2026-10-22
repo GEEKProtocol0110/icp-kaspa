@@ -1,5 +1,11 @@
 # Security target and paper alignment
 
+The later [P0 test-key setup](TICKET-PILOT-KEYS.md) generates separate conventional
+secp256k1 roles and verifies exact private backup restoration before funding.
+Its ECDSA possession challenges are not Kaspa transaction signatures or actual
+authorization. All roles share a trusted host and an unencrypted test-only
+archive; neither independent custody nor post-quantum protection is supplied.
+
 This document distinguishes the implemented protected-v1 policy from the
 broader ICP v2.0 paper and proposed next-generation requirements. It is a
 traceability checkpoint, not an independent audit or an approved replacement

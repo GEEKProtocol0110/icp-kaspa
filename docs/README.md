@@ -54,6 +54,7 @@ Tests are offline/simulated; funded P0 acceptance remains pending. The preceding
 
 | Document | Stage |
 | --- | --- |
+| [P0 test-key setup](TICKET-PILOT-KEYS.md) | Offline fresh roles, domain-separated possession checks and exact private archive restoration before funding |
 | [Encrypted transfer lab](TRANSFER-LAB.md) | Local encrypted-message and receipt experiment; keys supplied separately |
 | [Recipient-encryption lab](RECIPIENT-ENCRYPTION-LAB.md) | Local real encryption to a pinned delivery key with possession checks and signed receipts; no remote service |
 | [Transfer anchor observer](TRANSFER-ANCHOR.md) | Trusted-node observation code, a synthetic demo and links to the later testnet run |

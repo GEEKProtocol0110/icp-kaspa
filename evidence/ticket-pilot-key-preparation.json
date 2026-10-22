@@ -1,0 +1,25 @@
+{
+  "durable_private_backup_saved": true,
+  "mode": "TN10_P0_KEY_PREPARATION_BACKUP_VERIFIED_NO_LIVE_ACCEPTANCE",
+  "recorded_date_utc": "2026-10-22",
+  "setup_receipt": {
+    "backup_retention": "LOCAL_ONLY_MUST_PERSIST_BEFORE_FUNDING_REQUEST",
+    "backup_sha256": "655c9e6442520bc855470e8b78451f3a64a326a08a07fe73acb9a75628c83817",
+    "broadcasts": 0,
+    "distinct_keys": 6,
+    "funding_addresses": {
+      "consume": "kaspatest:qqneljs6jvhgwxlwja6nysl237x0a675h6p5flf0lu03tjhkqfcfw8te2h3hk",
+      "refund": "kaspatest:qqqew97ku8t28r3d73nfqt72t7x4weptgsuz78ucz47u05rwapz57m99asxns"
+    },
+    "manifest_sha256": "f083d44e567bb5b38a22d4dac7d579c9c198c97f9c7c9f9292fc919d0797862f",
+    "mode": "TN10_P0_TEST_KEYS_NO_FUNDING_OR_AUTHORIZATION",
+    "native_binary_sha256": "1bc42bb266b0796a9a88c33290789dd60aee094105c2f1fbebc57939a7ee4393",
+    "network": "testnet-10",
+    "proof_suite": "secp256k1 ECDSA/SHA256, possession only; not transaction signatures",
+    "restored_keys_verified": 6,
+    "rpc_calls": 0,
+    "session_id": "a036ede24a02e8b1a32d5daab296cb420ea6cf39a39f565e59525ff4d5dad4f5",
+    "source_observed": false,
+    "transactions_signed": 0
+  }
+}
