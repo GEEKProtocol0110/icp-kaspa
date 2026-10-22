@@ -66,6 +66,7 @@ these vault rules no longer protect their later transfers.
 | A message encrypted for one recipient | Local HPKE encryption, delivery-key possession checks, sender approval and signed receipts; no network delivery | [Recipient-encryption lab](docs/RECIPIENT-ENCRYPTION-LAB.md) |
 | Delivery-key checks and signed response records | Encrypted enrollment challenge plus exact saved signatures over dummy responses; no real key delivery | [Bound response lab](docs/BOUND-RESPONSE-LAB.md) |
 | P0 native submission adapter | TN10-only sender checks exact saved records, node/input metadata and deadlines; tested offline, funded P0 acceptance pending | [Live adapter](docs/TICKET-PILOT-LIVE.md) |
+| Funded P0 preparation | Two signed issuances saved privately; no submissions or terminal signatures; 0.48 test KAS still unspent at recheck | [Funded preparation](docs/TICKET-PILOT-FUNDED.md) |
 | P0 live read path | One native connection reads both roles and history; two live nodes passed exact funding-source eligibility | [Read path](docs/TICKET-PILOT-READ-PATH.md) |
 | P0 test-key setup | Six independent keys, possession checks and exact backup restoration for separate consume/refund runs | [Key setup](docs/TICKET-PILOT-KEYS.md) |
 | P0 submission recovery | Durable attempts before simulated sends; timeouts/crashes reconcile without retry, with revocable two-node observations | [Submission journal](docs/TICKET-PILOT-SUBMISSION.md) |
@@ -151,8 +152,9 @@ Its tests are offline; funded P0 acceptance and actual authorization remain ahea
 The [test-key setup helper](docs/TICKET-PILOT-KEYS.md) now prepares independent
 consume/refund roles and verifies backup restoration before funding. Two fresh
 test-only sessions have passed those checks, with their backup saved privately.
-The [public funding record](evidence/ticket-pilot-keys-verification.md) gives
-the exact next step; no P0 transaction has been submitted.
+The [funded preparation record](docs/TICKET-PILOT-FUNDED.md) now records two
+signed issuances and current funding checks. Network submission awaits explicit
+operator approval; no P0 transaction has been submitted.
 
 ## Explore or build
 
