@@ -11,9 +11,33 @@ engineering checkpoint first, followed by earlier milestones.
 | At a glance | Current position |
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
-| Data access | Separate conventional and experimental PQ recipient profiles; local file/loopback exchange, remote transport/release remains ahead |
-| Automated coverage | 930 tests: 142 Rust + 788 Python |
-| Next engineering work | Review authenticated transport/device key storage for the recipient adapter; resume saved funded pilots only under their existing pinned journals and recorded scope |
+| Data access | Conventional/PQ recipient profiles and optional encrypted software keys; local file/loopback exchange, remote transport/release remains ahead |
+| Automated coverage | 969 tests: 142 Rust + 827 Python |
+| Next engineering work | Review authenticated remote transport/identity and hardware keystore integration; resume saved funded pilots only under their existing pinned journals and recorded scope |
+
+## Encrypted PQ software keystore checkpoint
+
+- A separate [locked adapter](docs/PQ-ENCRYPTED-KEYSTORE.md) encrypts fresh
+  ML-DSA/hybrid-delivery seeds before file publication. It uses library Argon2id
+  (64 MiB, three passes, four lanes) and AES-256-GCM, with strict metadata/KDF
+  validation and no plaintext temporary key file, migration or fallback.
+- Hidden terminal input or bounded owner-only FD input unlocks each private
+  operation. Passwords are absent from command arguments, environment lookups
+  and outputs. Public record recovery and checked encrypted key backups do not
+  regenerate keys or reset databases.
+- Durable per-policy presence markers make missing, empty or incomplete
+  initialized state fail closed. Recovery of a checked encrypted key file in
+  the original intact endpoint preserves receipts and replay rejection. This
+  does not detect rollback/copying of the complete store or provide global
+  uniqueness, hardware isolation, password recovery or memory zeroization.
+- Thirty-nine new tests, 50 PQ regression tests and 71 conventional recipient
+  tests pass locally. The fictional encrypted-key example passes through
+  17 endpoint processes and one loopback relay. Full native/Rust/Python CI
+  remains required; this host has no cargo. See the
+  [verification record](evidence/pq-keystore-verification.md).
+- No native Kaspa signature, custody rule, funded journal or pinned worker was
+  changed. This remains an experimental fictional-data message layer, without
+  quantum-safety, FIPS certification or independent-audit completion claims.
 
 ## Experimental PQ recipient checkpoint
 

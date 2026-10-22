@@ -4,6 +4,9 @@
 *.key
 # Recipient adapter private test-key bundles, regardless of chosen endpoint path.
 keys.json
+keys.enc.json
+*.icp-key-backup
+*.icp-state-guard
 *.env
 /runtime/
 

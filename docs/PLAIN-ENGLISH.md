@@ -144,7 +144,7 @@ original document is factually true.
 | Simulation or model | Invented chain observations or placeholders exercise the rules; they are not live-chain evidence |
 | Proposal or research | A direction being specified; a working, secure deployment has not been established |
 
-There are **930 automated tests** in the current inventory. Passing tests helps catch mistakes; it
+There are **969 automated tests** in the current inventory. Passing tests helps catch mistakes; it
 does not replace an independent security review or prove production readiness.
 The project is still an experimental Testnet-10 prototype.
 
@@ -171,8 +171,10 @@ rules no longer constrain later transfers.
 Overall quantum safety has not been demonstrated. A separate
 [message experiment](POST-QUANTUM-RECIPIENT-PROFILE.md) now uses hybrid
 post-quantum encryption and post-quantum signatures. The vault and Kaspa's
-native transaction keys retain their existing cryptography. Ordinary test-key
-files, compromised devices and copied replay stores remain important limits;
+native transaction keys retain their existing cryptography. An optional
+[software keystore](PQ-ENCRYPTED-KEYSTORE.md) now encrypts new message keys
+behind a passphrase. Compromised devices, weak passwords and copied replay
+stores remain important limits;
 the experiment does not promise protection if every accepted secret is stolen.
 
 ## A few terms you may see

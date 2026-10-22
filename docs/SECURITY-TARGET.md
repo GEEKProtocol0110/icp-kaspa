@@ -1,5 +1,17 @@
 # Security target and paper alignment
 
+The [encrypted PQ software keystore](PQ-ENCRYPTED-KEYSTORE.md) now stores fresh
+endpoint seeds using fixed-parameter Argon2id and authenticated AES-256-GCM.
+Private operations unlock through a hidden terminal prompt or bounded owner-only
+file/pipe descriptor; passwords have no argument/environment option. Encrypted
+key backups require a separately trusted public fingerprint. Per-policy presence
+markers reject missing or incomplete initialized databases; keys-only recovery
+does not reset acceptance history. Thirty-nine new tests and a separate-process
+fictional demo cover these boundaries. This is trusted-host software storage,
+not hardware isolation, memory erasure, global anti-rollback, full-state recovery,
+an independently reviewed suite or overall quantum safety. Complete snapshot
+rollback and a compromised unlocked host remain outside its guarantees.
+
 The separate [experimental PQ recipient profile](POST-QUANTUM-RECIPIENT-PROFILE.md)
 uses library hybrid ML-KEM-768/X25519 HPKE and ML-DSA-65 role signatures.
 SHA-384 policy/record commitments and purpose-specific full-message signatures
@@ -8,7 +20,8 @@ records, envelopes, database policy bindings and fallback. Fifty new tests cover
 the PQ integration and adversarial boundaries. This is fictional-data software
 testing, not a quantum-hardware test, security proof, independent audit or
 reviewed R0 suite. It does not change Kaspa's native signatures or custody.
-Unencrypted TEST keys, host/policy/clock/store trust, static-key history exposure,
+The original PQ adapter still uses unencrypted TEST keys; the optional encrypted
+adapter above changes storage only. Host/policy/clock/store trust, static-key history exposure,
 copied-store replay and non-atomic acceptance/export remain. Authenticated
 remote transport, device keystores, rotation/recovery and chain-gated release
 are still future work. The conventional recipient profile below is unchanged.

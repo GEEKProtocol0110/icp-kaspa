@@ -7,6 +7,11 @@ It changes no Kaspa consensus rule, wallet transaction signature, custody
 contract, funded pilot or reviewed R0 delivery suite. It is not a claim that
 Kaspa, ICP or connected applications are quantum-proof or independently audited.
 
+The optional [encrypted software keystore](PQ-ENCRYPTED-KEYSTORE.md) now
+protects fresh endpoint keys at rest and verifies encrypted key backups without
+changing this wire profile. The original adapter retains its ordinary TEST
+key files. Neither option supplies hardware isolation or global anti-rollback.
+
 ## Fixed profile and trust boundary
 
 | Component | Exact choice |
@@ -78,7 +83,7 @@ This example does not test remote delivery, TLS or independent-device isolation.
 | Downgrade | Separate namespace, key formats and policy pin; no conventional fallback |
 | Local replay | SQLite receipt commits before returning plaintext; one claim against an intact store |
 | Filesystem | Owner-only test endpoints/keys/state, bounded regular-file reads, symlink rejection and atomic no-clobber output |
-| Private key protection | Unencrypted TEST key files and normal process memory; reviewed device keystore and recovery remain ahead |
+| Private key protection | Original adapter uses unencrypted TEST files; optional encrypted software adapter available; normal process memory and reviewed device integration remain limits |
 | Forward secrecy | Not supplied; compromise of the full static delivery key exposes recorded historical ciphertext |
 | Replay after rollback | Copied/restored state can accept again; no global uniqueness guarantee |
 | Metadata | Roles, public keys, sizes and timing remain visible; no anonymity claim |

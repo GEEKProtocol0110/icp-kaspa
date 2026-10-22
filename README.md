@@ -66,6 +66,7 @@ these vault rules no longer protect their later transfers.
 | A message encrypted for one recipient | Local HPKE encryption, delivery-key possession checks, sender approval and signed receipts; no network delivery | [Recipient-encryption lab](docs/RECIPIENT-ENCRYPTION-LAB.md) |
 | Reusable encrypted file/bytes interface | Separate role endpoints and CLI processes exchange a binary envelope through a ciphertext-only loopback HTTP relay; one host, no private-key exchange | [Recipient file adapter](docs/RECIPIENT-FILE-ADAPTER.md) |
 | Experimental post-quantum message profile | Hybrid ML-KEM-768/X25519 encryption and ML-DSA-65 role signatures; separate pinned profile, fictional data only | [PQ recipient profile](docs/POST-QUANTUM-RECIPIENT-PROFILE.md) |
+| Encrypted PQ software keystore | Argon2id/AES-256-GCM storage, hidden/FD unlock, checked encrypted key backups and missing-state rejection; trusted host only | [Encrypted software keys](docs/PQ-ENCRYPTED-KEYSTORE.md) |
 | Delivery-key checks and signed response records | Encrypted enrollment challenge plus exact saved signatures over dummy responses; no real key delivery | [Bound response lab](docs/BOUND-RESPONSE-LAB.md) |
 | P0 native submission adapter | TN10-only sender checks exact saved records, node/input metadata and deadlines; tested offline, funded P0 acceptance pending | [Live adapter](docs/TICKET-PILOT-LIVE.md) |
 | Funded P0 preparation | Two signed issuances saved privately; no submissions or terminal signatures; 0.48 test KAS still unspent at recheck | [Funded preparation](docs/TICKET-PILOT-FUNDED.md) |
@@ -84,7 +85,7 @@ these vault rules no longer protect their later transfers.
 | Coordinated release recovery | Synthetic vault/ledger/delivery failures, stale-writer fencing and backup continuity; no real keys | [Coordinator model](docs/RELEASE-COORDINATOR-MODEL.md) |
 | Encrypted messages and release accounting | Local experiments; the release model uses simulated chain data and a non-secret placeholder | [Transfer lab](docs/TRANSFER-LAB.md) · [Release model](docs/RELEASE-LEDGER-MODEL.md) |
 
-The automated suite contains **930 tests: 142 Rust + 788 Python**.
+The automated suite contains **969 tests: 142 Rust + 827 Python**.
 [GitHub Actions](.github/workflows/verify.yml) checks the build, tests and demos.
 Individual testnet runs are dated evidence, not performance or security
 guarantees; later software changes also have their own offline checks.
@@ -114,7 +115,10 @@ now exercises hybrid ML-KEM-768/X25519 encryption and ML-DSA-65 signatures
 through the same bounded file/bytes flow. It has explicit keys, namespace and
 policy pins, with no classical fallback. This experimental message-layer work
 does not upgrade Kaspa's native transaction signatures or establish overall
-quantum safety. Device key storage, authenticated remote transport and
+quantum safety. The [encrypted software adapter](docs/PQ-ENCRYPTED-KEYSTORE.md)
+now protects fresh endpoint keys at rest and checks encrypted backups. It
+preserves local replay state across unlocks and rejects missing initialized
+databases. Hardware key isolation, authenticated remote transport and
 independent protocol review remain ahead.
 
 The local release model already tests duplicate requests, release limits,

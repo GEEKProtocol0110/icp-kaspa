@@ -1,5 +1,24 @@
 # ICP continuation checkpoint
 
+Current milestone: [encrypted PQ software keys](PQ-ENCRYPTED-KEYSTORE.md).
+`pq_locked_adapter.py` uses Argon2id/AES-256-GCM to protect fresh endpoint
+seeds before writing files. Hidden/FD unlock preserves the PQ wire profile;
+there is no password argument, environment lookup or plaintext-key migration.
+Encrypted key backup verification pins an independently authenticated public
+fingerprint. Backups contain keys only; no endpoint-state restore is supplied.
+Retain policy DBs and `.icp-state-guard` markers. Missing/incomplete initialized
+state blocks use. A crash during initial setup can leave a blocking marker;
+do not erase it to retry. Whole-store rollback/copying still defeats local
+history; no hardware or global anti-rollback claim exists.
+Thirty-nine new tests plus all 121 earlier recipient tests pass locally; the
+17-process encrypted-key demo passes. Inventory: 969 tests (142 Rust + 827
+Python). Native/full checks require CI because cargo is unavailable locally.
+Next work: authenticated remote transport/identity, reviewed hardware-backed
+key integration, rotation/recovery and independent protocol review. Existing
+funded sessions and pinned workers were not opened or changed.
+
+Earlier milestone checkpoints follow.
+
 Current milestone: [experimental PQ recipient profile](POST-QUANTUM-RECIPIENT-PROFILE.md).
 The separate `pq_recipient_lab.py` and `pq_recipient_adapter.py` use library
 ML-KEM-768/X25519 HPKE and ML-DSA-65 signatures with SHA-384 commitments.
