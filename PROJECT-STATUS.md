@@ -11,9 +11,29 @@ engineering checkpoint first, followed by earlier milestones.
 | At a glance | Current position |
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
-| Data access | Recipient-owned test keys, separate-process binary file exchange and local receipts; remote transport/release remains ahead |
-| Automated coverage | 880 tests: 142 Rust + 738 Python |
+| Data access | Separate conventional and experimental PQ recipient profiles; local file/loopback exchange, remote transport/release remains ahead |
+| Automated coverage | 930 tests: 142 Rust + 788 Python |
 | Next engineering work | Review authenticated transport/device key storage for the recipient adapter; resume saved funded pilots only under their existing pinned journals and recorded scope |
+
+## Experimental PQ recipient checkpoint
+
+- A separate [PQ recipient profile](docs/POST-QUANTUM-RECIPIENT-PROFILE.md)
+  uses library hybrid ML-KEM-768/X25519 HPKE, ML-DSA-65 role signatures and
+  SHA-384 commitments. Approvals, sender manifests, binding proofs/certificates
+  and recipient receipts use full canonical messages with purpose contexts.
+- Endpoint keys, wire namespace, suite and 96-character policy pin are explicit.
+  Conventional endpoint/envelope/database reuse and classical fallback fail
+  closed. The conventional adapter is unchanged. The new profile retains the
+  64 KiB plaintext cap, bounded private files and durable local replay claim.
+- Fifty new tests and all 71 existing recipient tests pass locally. The PQ
+  separate-process fictional binary demo passes through its opaque loopback
+  relay. Full Rust/native/Python verification remains required in CI; this
+  host has no cargo. See [verification](evidence/pq-recipient-verification.md).
+- This strengthens an experimental message layer, not native Kaspa signatures,
+  consensus, the funded pilots or custody contracts. No overall quantum-safety,
+  FIPS certification or audit completion is claimed. Test keys are unencrypted;
+  device keystores, authenticated remote transport, rotation/recovery and
+  independent review remain ahead. Saved funded sessions were not accessed.
 
 ## Recipient file/bytes adapter checkpoint
 

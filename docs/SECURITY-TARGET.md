@@ -1,5 +1,18 @@
 # Security target and paper alignment
 
+The separate [experimental PQ recipient profile](POST-QUANTUM-RECIPIENT-PROFILE.md)
+uses library hybrid ML-KEM-768/X25519 HPKE and ML-DSA-65 role signatures.
+SHA-384 policy/record commitments and purpose-specific full-message signatures
+bind its explicit namespace and fixed suite. It rejects conventional endpoint
+records, envelopes, database policy bindings and fallback. Fifty new tests cover
+the PQ integration and adversarial boundaries. This is fictional-data software
+testing, not a quantum-hardware test, security proof, independent audit or
+reviewed R0 suite. It does not change Kaspa's native signatures or custody.
+Unencrypted TEST keys, host/policy/clock/store trust, static-key history exposure,
+copied-store replay and non-atomic acceptance/export remain. Authenticated
+remote transport, device keystores, rotation/recovery and chain-gated release
+are still future work. The conventional recipient profile below is unchanged.
+
 The [recipient file/bytes adapter](RECIPIENT-FILE-ADAPTER.md) now makes the
 existing HPKE experiment callable from separate role processes. Only public
 records and encrypted envelopes cross the file boundary; the recipient endpoint
@@ -86,7 +99,8 @@ possession challenge and attests the pinned identity/key binding. No raw
 symmetric key is handed to the recipient caller. This does not establish a
 reviewed R0 delivery suite, secure hardware, real-world identity, network
 delivery or chain-gated release. Later delivery-key compromise exposes earlier
-messages; the design has no demonstrated post-quantum protection.
+messages; this conventional profile has no demonstrated post-quantum protection.
+The new PQ experiment above has a separate namespace and keys.
 
 The [R0 read-ticket/release proposal](READ-TICKET-RELEASE-DRAFT.md) defines a
 candidate service-enforced model, separate native ticket authority, stable
