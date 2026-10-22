@@ -12,8 +12,24 @@ engineering checkpoint first, followed by earlier milestones.
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
-| Automated coverage | 835 tests: 140 Rust + 695 Python |
+| Automated coverage | 846 tests: 142 Rust + 704 Python |
 | Next engineering work | Obtain explicit submission approval, then recover the two saved issuances and run the separate consume/refund acceptance pilots |
+
+## Historical catch-up checkpoint
+
+- After the approved pause, the original history response exceeded the relay's
+  8 MiB frame limit. Submission stayed blocked; no new signature or submission
+  intent was created. Existing signed issuances and private policies remain.
+- A separate [read-only history helper](docs/TICKET-HISTORY-CATCHUP.md) requests
+  smaller complete pages using a blue-score hint. Existing history/reorg/native
+  validation applies, and each import clears eligibility. No bootstrap, UTXO
+  sample, freshness setting, source claim or outbox is reset or relabeled.
+- Four copied observer databases advanced in the [live page probe](evidence/ticket-history-catchup-live.json).
+  The original pinned reader must still obtain a fresh complete two-node
+  snapshot before any authorized transaction. Large single blocks, pruned
+  history, timeouts and bootstrap-crossing reorgs can still stop progress.
+- Two Rust and nine Python additions bring inventory to 846 tests. The helper
+  has no key, signing or submission command. Private journals remain outside Git.
 
 ## Funded P0 preparation checkpoint
 

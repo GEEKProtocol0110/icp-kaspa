@@ -54,6 +54,7 @@ Tests are offline/simulated; funded P0 acceptance remains pending. The preceding
 
 | Document | Stage |
 | --- | --- |
+| [Bounded history catch-up](TICKET-HISTORY-CATCHUP.md) | Separate full-history pages advance an existing observer; eligibility remains false until a fresh original snapshot |
 | [Funded P0 preparation](TICKET-PILOT-FUNDED.md) | Two saved signed issuances, zero submissions and the exact four-transaction testnet plan |
 | [P0 live read path](TICKET-PILOT-READ-PATH.md) | One bounded native snapshot, selected-parent bootstrap and live two-node funding-source preflight; no signature/submission |
 | [P0 test-key setup](TICKET-PILOT-KEYS.md) | Offline fresh roles, domain-separated possession checks and exact private archive restoration before funding |
