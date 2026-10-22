@@ -58,7 +58,9 @@ Endpoint directories must be owner-only (`0700` or stricter); key and state file
 must be owner-only (`0600` or stricter). Final-path symlinks, special input files,
 overlarge reads and duplicate JSON keys are rejected. Keys are **unencrypted
 test-only files in ordinary process memory**, not a protected device keystore.
-Use fictional data. Do not distribute endpoint directories, `keys.json`, SQLite
+Use fictional data and keep persistent endpoints beneath `.secrets/recipient-adapter/`.
+Generated `keys.json` bundles and SQLite files are also ignored by Git.
+Do not distribute endpoint directories, `keys.json`, SQLite
 files or their backups. Each intended deployment needs reviewed device-local
 key storage, backup/recovery and host protection first.
 

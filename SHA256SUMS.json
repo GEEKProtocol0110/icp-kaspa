@@ -1,6 +1,6 @@
 {
   ".github/workflows/verify.yml": "8937aa14a21d4fa65c8fd6dee1849dae396486a5048d9fc5ee36fde7b8cc34c2",
-  ".gitignore": "a947ddbc1cb4ebe324e22bac520c11d948392bcac39cba09ff8c5920fe4028d9",
+  ".gitignore": "9149b532baacb9c7dbbf100ce28aefec81ddfc254c7cc1c5ccb36b02c015ed76",
   "AGENTS.md": "03da54dc8ae847a27f32f3a4a98c6959446a0755cb0c34f2ef4e50c5de623815",
   "Cargo.lock": "c7fe3df433ac31f1644ad0ab5b91b5f2fc47e7318546a1a274b9c2e637d06ae7",
   "Cargo.toml": "47491396143848b84fca3836eb5842ef8ec11ee7e78ee4fce793c5bc1f733eab",
@@ -68,7 +68,7 @@
   "docs/READ-TICKET-RELEASE-DRAFT.md": "8f09f3aa5f6b57bf9ae45bc4e1b9e76dfae8bd6990c01f68a457f5a640e296e2",
   "docs/README.md": "3d334b63dd16571da1a391b5cb28e8c1c014a73f16bcf55ba43616623c370cc0",
   "docs/RECIPIENT-ENCRYPTION-LAB.md": "e93d181b43cd785ceea19bac2b9ace2dc8bdf80c02c494ea7fcd734750b88d2d",
-  "docs/RECIPIENT-FILE-ADAPTER.md": "66950be3083accca09b6d6d4cd471f6f4ce7a8ca9a6a9c49ca9280e34f4b5706",
+  "docs/RECIPIENT-FILE-ADAPTER.md": "002579bb596d1dbe8d04aff8451dc6c6e9a20ff35220435ebcee81a425a496ce",
   "docs/RELEASE-COORDINATOR-MODEL.md": "474005f0fb88fda7d0bdd76c9cc8425d0e41adac265e3196772e7bc8f1ff7e2b",
   "docs/RELEASE-LEDGER-MODEL.md": "20c0b150c1a5eefce7b07b57f19fc91b338acd5b9f69357b77443995a1b99c3b",
   "docs/RELEASE-SERVICE-DESIGN.md": "f38d7851b2a8a5f3d1de1ea5c1230cd9e24e9526c4fe88f618742368bcbc2f89",
