@@ -1,5 +1,23 @@
 # ICP continuation checkpoint
 
+Current milestone: [P0 native submission adapter](TICKET-PILOT-LIVE.md). A
+distinct live policy connects durable attempts to the TN10 sender. Its endpoint
+must match the first observer. Native verification, connected-node gates, exact
+positive input metadata and original observation deadlines apply before one
+submit API call. Bounded transport I/O and process-group termination preserve
+uncertain outcomes for read-only reconciliation; replies are not confirmation.
+
+Inventory is 799 tests (134 Rust + 665 Python), including eight native and 27
+Python additions. Build `ticket_pilot_submit` alongside all earlier workers
+before Python tests. The private record verifier moved into shared support;
+wire semantics are unchanged but compiled build hashes change. Never rebuild
+pinned workers while journals/tests are using them or silently migrate policies.
+
+New evidence is offline/simulated; no successful P0 RPC handshake/submission or
+funded lifecycle was performed. Next verify fresh operational role-key backup
+and possession, then separate funded consume/refund pilots. No keys or funding
+request were generated here. [Verification](../evidence/ticket-pilot-live-verification.md).
+
 Current milestone: [P0 submission journal](TICKET-PILOT-SUBMISSION.md). The
 distinct controller journals one intent before a simulated send and refuses
 every repeat submission call. It rechecks native outboxes, fresh paired input

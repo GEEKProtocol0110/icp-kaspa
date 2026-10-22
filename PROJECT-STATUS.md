@@ -12,8 +12,30 @@ engineering checkpoint first, followed by earlier milestones.
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
-| Automated coverage | 764 tests: 126 Rust + 638 Python |
-| Next engineering work | TN10-only bounded live transport in a separate policy namespace; verify operational key backup before funded P0 pilots |
+| Automated coverage | 799 tests: 134 Rust + 665 Python |
+| Next engineering work | Verify fresh operational role-key backups/possession and run independent funded consume/refund P0 acceptance pilots |
+
+## P0 native submission adapter checkpoint
+
+- The distinct [live policy](docs/TICKET-PILOT-LIVE.md) now connects permanent
+  submission intents to a TN10-only native sender. Existing simulation journals
+  retain their original policy identity and cannot be reopened as live ones.
+- Sender and private preparer share one complete native verifier. The sender
+  checks its pinned endpoint, connected node network/health/activation and exact
+  current input metadata. Original paired-observation expiry bounds connection
+  and submission; a slow connection cannot silently refresh that deadline.
+- There is one ordinary submit call with orphan admission disabled; the separate
+  replacement API is never called, and there is no retry command.
+  The bounded Python transport excludes inherited keys/RPC overrides and kills
+  its relay/native process group on failure. Replies remain historical claims;
+  only read-only paired observations supply revocable chain status.
+- Eight new Rust and 27 Python tests bring inventory to 799 (134 Rust + 665
+  Python). Tests are offline/simulated; no successful P0 RPC handshake/submission,
+  funded P0 run, operational keys or funding request was created. See the
+  [verification record](evidence/ticket-pilot-live-verification.md).
+- Host/code/clock/node/store trust, post-sample changes, direct-sender bypass and
+  joint trusted-store restore remain limits. Verify operational backups and run
+  separate consumption and unused-refund pilots before claiming live acceptance.
 
 ## P0 submission journal checkpoint
 

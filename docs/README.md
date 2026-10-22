@@ -47,9 +47,10 @@ signed transaction outboxes and private backups out of the repository.
 
 ## Explore the data-access work
 
-The newest experiment is the [P0 submission journal](TICKET-PILOT-SUBMISSION.md):
-record one attempt before a simulated send, then reconcile uncertain outcomes
-without retrying. It adds no live broadcast adapter.
+The newest experiment is the [P0 native submission adapter](TICKET-PILOT-LIVE.md):
+a distinct TN10 policy connects permanent attempts to one bounded network send.
+Tests are offline/simulated; funded P0 acceptance remains pending. The preceding
+[submission journal](TICKET-PILOT-SUBMISSION.md) retains its simulated transport.
 
 | Document | Stage |
 | --- | --- |

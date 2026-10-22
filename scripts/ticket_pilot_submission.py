@@ -49,8 +49,13 @@ def initial():
 
 class Controller(binding.Controller):
     """One durable attempt per saved outbox; every uncertain outcome is read-only."""
+    mode = MODE
+    transport_type = SimulatedTransport
+    policy_type = Policy
+    submission_role = 'p0-submission'
+
     def __init__(self, root, authority_path, claims_path, review, clock, *, transport, create=False, **kwargs):
-        if type(transport) is not SimulatedTransport:
+        if type(transport) is not self.transport_type:
             raise private.Error('Exact simulated transport required; live submission unavailable')
         transport.check()
         self.transport = transport
@@ -63,8 +68,8 @@ class Controller(binding.Controller):
         try:
             super().__init__(root,authority_path,claims_path,review,clock,create=create,**kwargs)
             private.private_file(path,create)
-            self._submission = private.core.Journal(path,'p0-submission',self.policy,
-                                                     self._authority.id,initial(),create)
+            self._submission = private.core.Journal(path,self.submission_role,self.policy,
+                                                     self._authority.id,self._initial(),create)
             if create:
                 with self._authority.serial(self.generation,recovery=True) as lease:
                     seq,h = self._submission.db.execute('SELECT seq,hash FROM events').fetchone()
@@ -78,21 +83,25 @@ class Controller(binding.Controller):
         if hasattr(self,'_authority'): super().close()
 
     def _make_policy(self, claims_path):
-        return Policy(private.canonical(self.review).decode(),self.reviewer.fingerprint,
+        return self.policy_type(private.canonical(self.review).decode(),self.reviewer.fingerprint,
                       self.worker.fingerprint,str(claims_path.resolve()),self.observation_pin,
                       self.transport_pin)
 
     def _summary(self, state):
         result = super()._summary(state)
-        result['mode'] = MODE
+        result['mode'] = self.mode
         return result
 
     def _check_transport(self):
-        if (type(self.transport) is not SimulatedTransport
+        if (type(self.transport) is not self.transport_type
             or private.sha(private.canonical(self.transport.descriptor())) != self.transport_pin
             or self.policy.transport_pin != self.transport_pin):
             raise private.IntegrityError('Submission transport policy changed')
         self.transport.check()
+
+    def _initial(self):
+        result = initial(); result['mode'] = self.mode
+        return result
 
     @staticmethod
     def _intent(record):
@@ -110,7 +119,7 @@ class Controller(binding.Controller):
         old = None
         for raw, in self._submission.db.execute('SELECT body FROM events ORDER BY seq'):
             body = json.loads(raw); row = body['state']
-            if set(row) != set(initial()) or row['mode'] != MODE:
+            if set(row) != set(self._initial()) or row['mode'] != self.mode:
                 raise private.IntegrityError('Wrong submission state shape')
             for phase in ('issue','terminal'):
                 part = row[phase]
@@ -126,7 +135,7 @@ class Controller(binding.Controller):
                     if phase == 'terminal' and row['issue']['intent'] is None:
                         raise private.IntegrityError('Terminal attempt without issuance attempt')
             if old is None:
-                if row != initial() or body['kind'] != 'genesis':
+                if row != self._initial() or body['kind'] != 'genesis':
                     raise private.IntegrityError('Wrong submission genesis')
             else:
                 valid = False
@@ -145,6 +154,15 @@ class Controller(binding.Controller):
         if phase not in ('issue','terminal'): raise private.Error('Invalid submission phase')
 
     def submit_simulated(self, phase):
+        return self._submit(phase)
+
+    def _payload(self, record):
+        return (record['transaction_id'],deepcopy(record['signed_rpc']))
+
+    def _send(self, payload, lease, report):
+        return self.transport.send(*payload)
+
+    def _submit(self, phase):
         self._phase(phase)
         # The intent commits before transport access. Even a crash before send is uncertain.
         with self._step() as (lease, state, _):
@@ -163,11 +181,11 @@ class Controller(binding.Controller):
         with self._step() as (lease, state, _):
             attempts,previous = self._load_submission(lease,state)
             record = state[phase+'_record']
-            rpc = deepcopy(record['signed_rpc']); txid = record['transaction_id']
+            payload = self._payload(record); txid = record['transaction_id']
             self._check_transport()
-            self._require_current(lease,phase=phase,entry=record['entry'])
+            report = self._require_current(lease,phase=phase,entry=record['entry'])
             try:
-                reply = self.transport.send(txid,rpc)
+                reply = self._send(payload,lease,report)
                 result = 'UNKNOWN'
                 if (type(reply) is dict and set(reply) == {'transaction_id','accepted'}
                     and reply['transaction_id'] == txid and type(reply['accepted']) is bool):
@@ -194,7 +212,7 @@ class Controller(binding.Controller):
                 exact = report['state'] in ('TWO_NODE_ISSUED_UNSPENT_OBSERVED',*terminal.values())
             else:
                 exact = report['state'] == terminal[action]
-            return dict(mode=MODE,phase=phase,transaction_id=attempts[phase]['intent']['transaction_id'],
+            return dict(mode=self.mode,phase=phase,transaction_id=attempts[phase]['intent']['transaction_id'],
                         current_exact_observed=exact,observation_state=report['state'],
                         checked_at=lease.now,scope='REVOCABLE_TRUSTED_NODE_OBSERVATION',
                         retry_allowed=False)
@@ -204,7 +222,10 @@ class Controller(binding.Controller):
             attempts,_ = self._load_submission(lease,state)
             result = self._summary(state)
             result.pop('broadcasts')
-            result.update(mode=MODE,transport_policy=self.transport_pin,live_broadcasts=0,
+            result.update(mode=self.mode,transport_policy=self.transport_pin,**self._transport_status(),
                           submissions={p:dict(intent=attempts[p]['intent'],reply=attempts[p]['reply'],
                                                retry_allowed=False) for p in ('issue','terminal')})
             return result
+
+    def _transport_status(self):
+        return dict(live_broadcasts=0)

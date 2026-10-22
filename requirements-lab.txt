@@ -1,4 +1,5 @@
-# Local transfer/recipient experiments; also required by CI tests.
+# Experiment and TN10 adapter dependencies; also required by CI tests.
 cryptography==50.0.2
 cffi==2.1.1
 pycparser==3.11
+websockets==16.0

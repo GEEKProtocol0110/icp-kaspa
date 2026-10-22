@@ -61,6 +61,12 @@ path = "examples/ticket_pilot_private.rs"
 required-features = ["live"]
 test = true
 
+[[example]]
+name = "ticket_pilot_submit"
+path = "examples/ticket_pilot_submit.rs"
+required-features = ["live"]
+test = true
+
 [profile.dev]
 debug = 0
 
