@@ -15,6 +15,7 @@ import select
 import sqlite3
 import stat
 import sys
+import threading
 import time
 import warnings
 
@@ -33,6 +34,7 @@ MAX_PASSWORD = 1024
 GUARD_FORMAT = 'icp-pq-locked-state-presence-v0'
 KDF = dict(name='Argon2id', version=19, memory_kib=65536, iterations=3, lanes=4, length=32)
 DOMAIN = b'icp/pq-recipient/encrypted-software-keystore/v0\0'
+_KDF_LOCK = threading.Lock()
 
 
 def password_bytes(value):
@@ -43,8 +45,13 @@ def password_bytes(value):
 
 
 def derive(password, salt):
-    return Argon2id(salt=salt, length=32, iterations=3, lanes=4,
-                    memory_cost=65536).derive(password_bytes(password))
+    password = password_bytes(password)
+    # Bound expensive derivation to one active call per Python process. The
+    # CLI uses separate processes; applications should use exec rather than
+    # forking a multithreaded process that may hold this lock.
+    with _KDF_LOCK:
+        return Argon2id(salt=salt, length=32, iterations=3, lanes=4,
+                        memory_cost=65536).derive(password)
 
 
 def decode_keys(body):

@@ -74,8 +74,11 @@ uses inherited anonymous pipes; it writes no password file.
 Python applications can call `LockedEndpoint.create(path, role, password_bytes)`
 and reopen with `LockedEndpoint(path, password_bytes)`. The inherited
 `challenge`, `answer`, `bind`, `seal`, `approve`, `send`, `receive` and `receipt`
-methods retain the existing PQ policy/role checks. Applications are responsible
-for their password source, object lifetime and trusted process boundary.
+methods retain the existing PQ policy/role checks. Password derivation is
+serialized within each Python process to bound memory/backend contention. Use
+separate exec processes rather than forking a multithreaded process during
+derivation. Applications are responsible for their password source, object
+lifetime and trusted process boundary.
 
 ## Backup and recovery boundaries
 

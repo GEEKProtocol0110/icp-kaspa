@@ -25,6 +25,9 @@ engineering checkpoint first, followed by earlier milestones.
   operation. Passwords are absent from command arguments, environment lookups
   and outputs. Public record recovery and checked encrypted key backups do not
   regenerate keys or reset databases.
+  Password derivation is serialized per Python process. The concurrent-unlock
+  acceptance test runs in an isolated subprocess with a hard timeout after the
+  initial CI attempts stalled in that case; current-head CI must pass.
 - Durable per-policy presence markers make missing, empty or incomplete
   initialized state fail closed. Recovery of a checked encrypted key file in
   the original intact endpoint preserves receipts and replay rejection. This

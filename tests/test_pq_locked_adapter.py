@@ -1,6 +1,5 @@
 """Encrypted experimental software key storage; temporary keys and fictional data."""
 import importlib.util
-import concurrent.futures
 import json
 import os
 from pathlib import Path
@@ -247,14 +246,34 @@ class LockedEndpointTests(unittest.TestCase):
 
     def test_concurrent_first_acceptance_has_one_claim(self):
         policy, raw = self.prepared_transfer()
-        def receive(_):
-            try:
-                app.LockedEndpoint(self.endpoint.path, PASSWORD).receive(policy, raw, 106)
-                return True
-            except (ValueError, OSError, sqlite3.Error):
-                return False
-        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
-            self.assertEqual(list(pool.map(receive, range(2))).count(True), 1)
+        policy_file, envelope_file = self.root / 'parallel-policy.json', self.root / 'parallel-envelope.json'
+        app.base.write_json(policy_file, policy.body())
+        app.base.write_new(envelope_file, raw)
+        probe = '''import concurrent.futures, faulthandler, json, sqlite3, sys
+sys.path.insert(0, sys.argv[1])
+import pq_locked_adapter as app
+faulthandler.dump_traceback_later(5)
+password = sys.stdin.buffer.read(1025)  # Fictional test-only IPC, never an argument.
+policy = app.base.load_policy(sys.argv[3], sys.argv[4])
+raw = app.base.read_bytes(sys.argv[5], app.lab.MAX_WIRE)
+def receive(_):
+    try:
+        app.LockedEndpoint(sys.argv[2], password).receive(policy, raw, 106)
+        return True
+    except (ValueError, OSError, sqlite3.Error):
+        return False
+with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+    count = list(pool.map(receive, range(2))).count(True)
+faulthandler.cancel_dump_traceback_later()
+print(json.dumps({'claims': count}))
+'''
+        try:
+            result = subprocess.run([sys.executable, '-c', probe, str(ROOT / 'scripts'),
+                str(self.endpoint.path), str(policy_file), policy.id, str(envelope_file)],
+                input=PASSWORD, capture_output=True, timeout=20, check=True)
+        except subprocess.TimeoutExpired as exc:
+            self.fail('Concurrent unlock timed out; diagnostic stack: ' + (exc.stderr or b'').decode(errors='replace'))
+        self.assertEqual(json.loads(result.stdout)['claims'], 1)
 
     def test_sqlite_crash_journal_recovers_without_losing_committed_receipt(self):
         policy, raw = self.prepared_transfer()

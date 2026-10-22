@@ -29,6 +29,13 @@ formatting, locked Rust tests, the full Python suite and all demos. Its exact-he
 result must pass before merge. Consult the milestone PR/workflow for the final
 CI result; the local full-suite attempt is not represented as a passing suite.
 
+The initial CI revisions stalled at the concurrent-unlock test and reached the
+30-minute job timeout. The current revision serializes Argon2id derivation within
+each Python process and runs the concurrency probe in an isolated subprocess
+with a 20-second hard timeout and diagnostic stack output. The same one-claim
+acceptance assertion remains. Current-head CI must verify the corrected run;
+the timed-out attempts are not successful validation.
+
 ## Security boundaries checked
 
 - Fresh encrypted keys for all three roles, same public identity after unlock,
