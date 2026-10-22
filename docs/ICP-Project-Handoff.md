@@ -10,8 +10,8 @@ Retain policy DBs and `.icp-state-guard` markers. Missing/incomplete initialized
 state blocks use. A crash during initial setup can leave a blocking marker;
 do not erase it to retry. Whole-store rollback/copying still defeats local
 history; no hardware or global anti-rollback claim exists.
-Thirty-nine new tests plus all 121 earlier recipient tests pass locally; the
-17-process encrypted-key demo passes. Inventory: 969 tests (142 Rust + 827
+Forty new tests plus all 121 earlier recipient tests pass locally; the
+17-process encrypted-key demo passes. Inventory: 970 tests (142 Rust + 828
 Python). Native/full checks require CI because cargo is unavailable locally.
 Next work: authenticated remote transport/identity, reviewed hardware-backed
 key integration, rotation/recovery and independent protocol review. Existing

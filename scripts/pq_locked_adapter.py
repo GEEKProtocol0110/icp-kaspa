@@ -162,7 +162,10 @@ class LockedEndpoint(base.Endpoint):
                             and meta.st_mode & 0o077 == 0 and meta.st_size > 0, 'Locked state unavailable')
             finally:
                 os.close(fd)
-            with closing(sqlite3.connect(path.absolute().as_uri() + '?mode=ro', uri=True)) as db:
+            # mode=rw refuses absent files while allowing SQLite to roll back a
+            # hot journal after an interrupted transaction. mode=ro can block
+            # that recovery and strand an otherwise intact replay history.
+            with closing(sqlite3.connect(path.absolute().as_uri() + '?mode=rw', uri=True, timeout=10)) as db:
                 expected_role = 'recipient' if kind == 'received' else 'binding-registry'
                 lab.require(db.execute('SELECT policy,kind FROM recipient_lab_policy WHERE id=1').fetchone()
                             == (policy.id, expected_role), 'Locked state policy mismatch')

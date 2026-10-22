@@ -14,16 +14,16 @@ This is not an independent audit, hardware keystore or quantum-safety claim.
 
 | Check | Result |
 | --- | --- |
-| New locked software endpoint suite | 39 tests passed |
+| New locked software endpoint suite | 40 tests passed |
 | Existing PQ recipient suite | 50 tests passed |
 | Conventional recipient suites | 71 tests passed |
 | Separate-process encrypted-key exchange | Passed; 17 endpoint CLI processes, one loopback relay |
-| Full Python suite attempt | 827 discovered: 506 passed, 321 errors from missing native Rust workers |
+| Full Python suite attempt | 828 discovered: 507 passed, 321 errors from missing native Rust workers |
 | `cargo fmt --check` | Could not execute: cargo is absent on this host |
 | `cargo test --locked --features live` | Could not execute: cargo is absent on this host |
 | `git diff --check` | Passed |
 
-Inventory is 969 tests (142 Rust + 827 Python). The required
+Inventory is 970 tests (142 Rust + 828 Python). The required
 [workflow](../.github/workflows/verify.yml) builds native workers and runs Rust
 formatting, locked Rust tests, the full Python suite and all demos. Its exact-head
 result must pass before merge. Consult the milestone PR/workflow for the final
@@ -51,6 +51,9 @@ CI result; the local full-suite attempt is not represented as a passing suite.
   incomplete DB, altered marker, unsafe permissions and symlink markers reject
   without silently recreating acceptance state. Concurrent first acceptance
   produces one successful local claim.
+- Process death with an actual SQLite hot journal: existing-file-only reopening
+  recovers the database, discards 500 uncommitted fictional rows, preserves the
+  earlier committed receipt and still rejects its replay.
 - Actual fictional binary exchange through separate role CLI processes and an
   opaque loopback relay; wrong unlock followed by successful receive, signature
   verification, replay rejection after unlock and byte-identical saved receipt.

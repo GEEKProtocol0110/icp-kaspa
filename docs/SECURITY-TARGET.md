@@ -6,7 +6,7 @@ Private operations unlock through a hidden terminal prompt or bounded owner-only
 file/pipe descriptor; passwords have no argument/environment option. Encrypted
 key backups require a separately trusted public fingerprint. Per-policy presence
 markers reject missing or incomplete initialized databases; keys-only recovery
-does not reset acceptance history. Thirty-nine new tests and a separate-process
+does not reset acceptance history. Forty new tests and a separate-process
 fictional demo cover these boundaries. This is trusted-host software storage,
 not hardware isolation, memory erasure, global anti-rollback, full-state recovery,
 an independently reviewed suite or overall quantum safety. Complete snapshot

@@ -102,6 +102,9 @@ incomplete state is rejected instead of silently initializing it. A database
 without its marker is not adopted. A crash during first initialization may
 leave a marker without complete state and block further use; there is no reset
 shortcut. Preserve the files for review rather than deleting them to retry.
+The existing-file-only database probe permits SQLite's own hot-journal rollback
+after an interrupted transaction. A subprocess-crash test verifies that committed
+receipts survive while uncommitted writes disappear and replay remains rejected.
 
 After loss of the key file only, stop endpoint processes, validate the encrypted
 backup against the independently trusted fingerprint, and restore that key file

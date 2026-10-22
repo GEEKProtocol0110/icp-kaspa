@@ -256,6 +256,26 @@ class LockedEndpointTests(unittest.TestCase):
         with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
             self.assertEqual(list(pool.map(receive, range(2))).count(True), 1)
 
+    def test_sqlite_crash_journal_recovers_without_losing_committed_receipt(self):
+        policy, raw = self.prepared_transfer()
+        _, receipt = self.endpoint.receive(policy, raw, 106)
+        path = next(self.endpoint.path.glob('received-*.sqlite'))
+        writer = '''import os, sqlite3, sys
+db = sqlite3.connect(sys.argv[1])
+db.execute('PRAGMA cache_size=1')
+db.execute('BEGIN IMMEDIATE')
+for i in range(500):
+    db.execute('INSERT INTO recipient_receipts VALUES(?,?)', ('uncommitted-'+str(i), 'fictional'*512))
+os._exit(0)
+'''
+        subprocess.run([sys.executable, '-c', writer, str(path)], check=True, timeout=15)
+        self.assertTrue(Path(str(path) + '-journal').exists())
+        reopened = app.LockedEndpoint(self.endpoint.path, PASSWORD)
+        self.assertEqual(reopened.receipt(policy, receipt['body']['transfer_id']), receipt)
+        with sqlite3.connect(path) as db:
+            self.assertEqual(db.execute('SELECT COUNT(*) FROM recipient_receipts').fetchone()[0], 1)
+        with self.assertRaises(ValueError): reopened.receive(policy, raw, 107)
+
     def test_public_record_export_recovers_without_rekey_or_state_reset(self):
         output = self.root / 'recovered-public.json'
         args = app.parser().parse_args(['public', '--endpoint', str(self.endpoint.path), '--output', str(output)])

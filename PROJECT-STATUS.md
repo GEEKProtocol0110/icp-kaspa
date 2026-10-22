@@ -12,7 +12,7 @@ engineering checkpoint first, followed by earlier milestones.
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Conventional/PQ recipient profiles and optional encrypted software keys; local file/loopback exchange, remote transport/release remains ahead |
-| Automated coverage | 969 tests: 142 Rust + 827 Python |
+| Automated coverage | 970 tests: 142 Rust + 828 Python |
 | Next engineering work | Review authenticated remote transport/identity and hardware keystore integration; resume saved funded pilots only under their existing pinned journals and recorded scope |
 
 ## Encrypted PQ software keystore checkpoint
@@ -30,7 +30,7 @@ engineering checkpoint first, followed by earlier milestones.
   the original intact endpoint preserves receipts and replay rejection. This
   does not detect rollback/copying of the complete store or provide global
   uniqueness, hardware isolation, password recovery or memory zeroization.
-- Thirty-nine new tests, 50 PQ regression tests and 71 conventional recipient
+- Forty new tests, 50 PQ regression tests and 71 conventional recipient
   tests pass locally. The fictional encrypted-key example passes through
   17 endpoint processes and one loopback relay. Full native/Rust/Python CI
   remains required; this host has no cargo. See the
