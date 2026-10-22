@@ -1,5 +1,12 @@
 # Security target and paper alignment
 
+The later [P0 read-path repair](TICKET-PILOT-READ-PATH.md) has live two-node
+funding-source observations. Bundled reads reduce connection overhead while
+retaining real node brackets, partial-history blocking and request-start age.
+Bootstrap selection and bounded relay cleanup add no consensus proof, atomic
+chain-to-effect behavior, signer isolation or actual authorization. Earlier
+preflight profiles halted before signing; funded ticket acceptance remains ahead.
+
 The later [P0 test-key setup](TICKET-PILOT-KEYS.md) generates separate conventional
 secp256k1 roles and verifies exact private backup restoration before funding.
 Its ECDSA possession challenges are not Kaspa transaction signatures or actual

@@ -289,28 +289,82 @@ class PilotObserverTests(unittest.TestCase):
         with self.assertRaises(p.Error):self.t.status(100)
         self.assertEqual(newer.status(100)['state'],'SCAN_REQUIRED')
 
-    def test_poll_uses_both_role_queries_then_fresh_scan_and_current_clock(self):
-        calls=[]
-        def query(key):
-            calls.append(key);return self.utxos(self.t,source=key==self.t.funding_key,before=0,after=3,found=key==self.t.funding_key)
-        with patch.object(self.t.reader,'utxos',side_effect=query),patch.object(self.t.reader,'scan',return_value=o.fixture_scan(0,[1,2,3])):
+    def snapshot(self,t=None,target=3):
+        t=t or self.t
+        return dict(mode=p.READ_PROFILE,
+            source=self.utxos(t,source=True,before=0,after=target),
+            ticket=self.utxos(t,found=False,before=0,after=target),
+            scan=o.fixture_scan(0,[1,2,3],target=target))
+
+    def test_poll_uses_one_bundle_and_request_start_clock(self):
+        with patch.object(self.t.reader,'snapshot_p0',return_value=self.snapshot()) as call:
             self.assertEqual(self.t.poll(self.t.reader,lambda:100)['state'],'SOURCE_UNSPENT_OBSERVED')
-        self.assertEqual(calls,[self.t.funding_key,self.t.ticket_key])
+        call.assert_called_once_with(o.fake_id(0),self.t.funding_key,self.t.ticket_key)
+        self.assertEqual(self.t.source_sample['at'],100)
+        self.assertEqual(self.t.utxo_sample['at'],100)
+        self.assertEqual(self.t.status(100)['observed_at'],100)
 
     def test_slow_poll_ages_samples_from_read_start_and_network_failure_invalidates(self):
-        times=iter([100,111,112,112])
-        with patch.object(self.t.reader,'utxos',side_effect=[self.utxos(self.t,source=True,before=0),self.utxos(self.t,found=False,before=0)]),patch.object(self.t.reader,'scan',return_value=o.fixture_scan(0,[1,2,3])):
-            self.assertEqual(self.t.poll(self.t.reader,lambda:next(times))['state'],'SOURCE_SAMPLE_REQUIRED')
-        with patch.object(self.t.reader,'utxos',side_effect=p.Error('offline')):
+        times=iter([100,111])
+        with patch.object(self.t.reader,'snapshot_p0',return_value=self.snapshot()):
+            self.assertEqual(self.t.poll(self.t.reader,lambda:next(times))['state'],'STALE')
+        self.assertEqual(self.t.source_sample['at'],100)
+        with patch.object(self.t.reader,'snapshot_p0',side_effect=p.Error('offline')):
             with self.assertRaises(p.Error):self.t.poll(self.t.reader,lambda:112)
         self.assertEqual(self.state(now=112),'SCAN_REQUIRED')
 
+    def test_bundled_partial_page_does_not_relabel_its_last_block_as_target(self):
+        with patch.object(self.t.reader,'snapshot_p0',return_value=self.snapshot(target=9)):
+            self.assertEqual(self.t.poll(self.t.reader,lambda:100)['state'],'CHAIN_BACKLOG')
+        self.assertEqual(self.t.tip,o.fake_id(3))
+
+    def test_bundled_removed_sample_anchor_remains_ineligible(self):
+        v=self.snapshot();v['source']['target']=o.fake_id(9)
+        with patch.object(self.t.reader,'snapshot_p0',return_value=v):
+            self.assertEqual(self.t.poll(self.t.reader,lambda:100)['state'],'SOURCE_SAMPLE_REQUIRED')
+
+    def test_read_profile_is_part_of_the_sealed_policy(self):
+        with patch.object(p,'READ_PROFILE','unreviewed-profile'):
+            with self.assertRaises(p.Error):self.t.status(100)
+
+    def test_bundled_failure_does_not_preserve_previous_positive_samples(self):
+        self.preflight()
+        with patch.object(self.t.reader,'snapshot_p0',side_effect=TimeoutError):
+            with self.assertRaises(TimeoutError):self.t.poll(self.t.reader,lambda:101)
+        self.assertIsNone(self.t.source_sample);self.assertIsNone(self.t.utxo_sample)
+        self.assertEqual(self.state(now=101),'SCAN_REQUIRED')
+
+    def test_bootstrap_cli_does_not_create_observer_or_private_stores(self):
+        result={'mode':'TN10_P0_BOOTSTRAP_CANDIDATE_V1'}
+        with patch.object(o.Reader,'bootstrap_p0',return_value=result) as call,patch.object(p,'Tracker') as tracker,contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(p.main(['bootstrap',self.t.endpoint]),result)
+        call.assert_called_once_with();tracker.assert_not_called()
+
     def test_pair_poll_failure_invalidates_both_and_wrong_adapter_is_blocked(self):
         self.preflight(self.t);self.preflight(self.u)
-        with patch.object(self.t,'poll'),patch.object(self.u,'poll',side_effect=p.Error('second failed')):
+        with patch.object(self.t.reader,'snapshot_p0',return_value=self.snapshot(self.t)),patch.object(self.u.reader,'snapshot_p0',side_effect=p.Error('second failed')):
             with self.assertRaises(p.Error):p.poll_pair(self.t,self.u,lambda:100)
         self.assertEqual(self.state(),'SCAN_REQUIRED');self.assertEqual(self.state(self.u),'SCAN_REQUIRED')
         with self.assertRaises(p.Error):self.t.poll(self.u.reader,lambda:100)
+
+    def test_pair_fetches_concurrently_without_moving_sqlite_to_worker_threads(self):
+        import threading
+        barrier=threading.Barrier(2)
+        def fetch(t):
+            barrier.wait(timeout=2)
+            return self.snapshot(t)
+        with patch.object(self.t.reader,'snapshot_p0',side_effect=lambda *args:fetch(self.t)),patch.object(self.u.reader,'snapshot_p0',side_effect=lambda *args:fetch(self.u)):
+            report=p.poll_pair(self.t,self.u,lambda:100)
+        self.assertEqual(report['state'],'TWO_NODE_SOURCE_UNSPENT_OBSERVED')
+        self.assertEqual(self.t.tip,o.fake_id(3));self.assertEqual(self.u.tip,o.fake_id(3))
+
+    def test_pair_uses_common_request_start_not_each_reply_time(self):
+        times=iter([100,111])
+        with patch.object(self.t.reader,'snapshot_p0',return_value=self.snapshot(self.t)),patch.object(self.u.reader,'snapshot_p0',return_value=self.snapshot(self.u)):
+            report=p.poll_pair(self.t,self.u,lambda:next(times))
+        self.assertEqual(report['state'],'TWO_NODE_GATE_BLOCKED')
+        self.assertEqual([v['state'] for v in report['observations']],['STALE','STALE'])
+        self.assertEqual([v['source_sample']['at'] for v in report['observations']],[100,100])
 
     def test_read_only_cli_rejects_effect_commands_and_closes_on_node_failure(self):
         for command in ('sign','prepare','submit','broadcast','keygen'):

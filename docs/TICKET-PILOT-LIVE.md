@@ -1,5 +1,9 @@
 # P0 Testnet-10 submission adapter
 
+The later [read-path repair](TICKET-PILOT-READ-PATH.md) passed a live two-node
+funding-source preflight with no signatures or submissions. Use a new policy
+with its pinned read profile/build; do not migrate the old halted preflights.
+
 [Project home](../README.md) · [Submission journal](TICKET-PILOT-SUBMISSION.md) · [P0 observations](TICKET-PILOT-OBSERVER.md)
 
 The private P0 controller can now call a native Testnet-10 sender. It saves one

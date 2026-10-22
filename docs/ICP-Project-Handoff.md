@@ -1,5 +1,28 @@
 # ICP continuation checkpoint
 
+Current milestone: [P0 live read-path repair](TICKET-PILOT-READ-PATH.md). Both
+funding sources arrived and were verified at 24,000,000 sompi each. Three earlier
+preflight profiles were retained/halted with zero claims, signing intents,
+outboxes and submissions. The new native snapshot reads both roles and history
+on one bounded connection while preserving the existing eligibility checks.
+The live two-node source probe passed; it did not sign or submit anything.
+
+Inventory is 835 tests (140 Rust + 695 Python). Native request/row routing,
+snapshot identities, request-start age, partial history, branch brackets and
+relay failure/cleanup have regression coverage. The new read profile and binary
+hashes change policy identities; never relabel old journals or rebuild their
+pinned workers while active. Both old and new forensic build records must stay
+private, alongside the separately verified test-key archive.
+
+Next: use a new reviewed profile with fresh paired observations to run the
+funded consume and unused-refund pilots separately. Keep ten successors and the
+preselected thirty-second binding policy; do not silently widen a running one.
+Preserve exact outboxes and durable attempts; reconcile any attempted/unknown
+send without retry. Bounded history/frame limits can still halt the reader.
+[Live read-only evidence](../evidence/ticket-pilot-read-path-live.json).
+
+Earlier milestone checkpoints follow.
+
 Current milestone: [P0 test-key setup](TICKET-PILOT-KEYS.md). Two new consume and
 refund sessions have six distinct test-only keys. Exact backup restoration,
 domain-separated possession proofs and fresh restored-key challenges passed.

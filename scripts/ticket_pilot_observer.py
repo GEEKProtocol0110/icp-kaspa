@@ -10,6 +10,7 @@ import native_ticket_observer as base
 from ticket_pilot_review import Reviewer
 
 MODE = 'TRUSTED_NODE_P0_OBSERVATION_ONLY'
+READ_PROFILE = 'TN10_P0_READ_SNAPSHOT_V1'
 Error = base.ObservationError
 canonical = base.canonical
 
@@ -58,7 +59,7 @@ class Tracker(base.TicketTracker):
         return pins, review['plan']['ticket_key']
 
     def _pin_identity(self):
-        return dict(mode=MODE, pins=self.pins, depth=self.depth, age=self.max_age,
+        return dict(mode=MODE, read_profile=READ_PROFILE, pins=self.pins, depth=self.depth, age=self.max_age,
                     review=self.summaries, reviewer=self.reviewer.fingerprint, reader=self.reader.fingerprint)
 
     def _descriptor(self):
@@ -156,16 +157,22 @@ class Tracker(base.TicketTracker):
         if type(native) is not base.Reader or native.endpoint != self.endpoint or native.fingerprint != self.reader.fingerprint:
             raise Error('Wrong P0 read-only endpoint/adapter')
         try:
-            source_at = base.integer(clock()); source = native.utxos(self.funding_key)
-            ticket_at = base.integer(clock()); ticket = native.utxos(self.ticket_key)
-            scan_at = base.integer(clock()); scan = native.scan(self.tip)
-            self.apply_source_utxos(source, source_at); source_sample = self.source_sample
-            self.apply_utxos(ticket, ticket_at); ticket_sample = self.utxo_sample
-            self.apply(scan, scan_at)
-            self.source_sample, self.utxo_sample = source_sample, ticket_sample
+            # One bounded connection, one two-address UTXO call, then a history page.
+            # Use the caller's request-start clock for every part, never receipt time.
+            started = base.integer(clock())
+            value = native.snapshot_p0(self.tip, self.funding_key, self.ticket_key)
+            self._accept_snapshot(value, started)
             return self.status(clock())
         except BaseException:
             self.unavailable(); raise
+
+    def _accept_snapshot(self, value, started):
+        # Run only on the caller's SQLite-owning thread, after native validation.
+        self._check()
+        self.apply_source_utxos(value['source'], started); source_sample = self.source_sample
+        self.apply_utxos(value['ticket'], started); ticket_sample = self.utxo_sample
+        self.apply(value['scan'], started)
+        self.source_sample, self.utxo_sample = source_sample, ticket_sample
 
 
 def combined(first, second, now):
@@ -186,13 +193,28 @@ def combined(first, second, now):
 
 
 def poll_pair(first, second, clock):
-    """Sequential bounded reads; any failed node invalidates both cached views."""
+    """Concurrent bounded network reads; apply SQLite changes on the caller thread."""
+    from concurrent.futures import ThreadPoolExecutor
     if any(type(t) is not Tracker for t in (first,second)): raise Error('Exact P0 trackers required')
     try:
         # Validate pair identity before any network call.
         if first.path == second.path or first.host == second.host or first.pin_id != second.pin_id:
             raise Error('Distinct matching P0 node pair required')
-        for tracker in (first,second): tracker.poll(tracker.reader,clock)
+        requests=[]
+        for tracker in (first,second):
+            tracker.unavailable();tracker._check()
+            if (type(tracker.reader) is not base.Reader or tracker.reader.endpoint != tracker.endpoint
+                or tracker.reader.fingerprint != tracker._descriptor()['reader']):
+                raise Error('Wrong P0 read-only endpoint/adapter')
+            # Capture every DB-derived value before handing work to the threads.
+            requests.append((tracker.reader,tracker.tip,tracker.funding_key,tracker.ticket_key))
+        started=base.integer(clock())
+        def fetch(request):
+            reader,cursor,funding,ticket=request
+            return reader.snapshot_p0(cursor,funding,ticket)
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            values=list(pool.map(fetch,requests))
+        for tracker,value in zip((first,second),values):tracker._accept_snapshot(value,started)
         return combined(first,second,clock())
     except BaseException:
         for tracker in (first,second): tracker.unavailable()
@@ -206,10 +228,16 @@ def main(argv=None):
     from ticket_pilot_review import load
     parser = argparse.ArgumentParser(description='Read-only TN10 P0 observations; no signing or submission')
     commands = parser.add_subparsers(dest='command',required=True)
+    bootstrap = commands.add_parser('bootstrap')
+    bootstrap.add_argument('endpoint')
     observe = commands.add_parser('observe')
     for name in ('review','first_db','first_endpoint','first_bootstrap',
                  'second_db','second_endpoint','second_bootstrap'): observe.add_argument(name)
     args = parser.parse_args(argv)
+    if args.command == 'bootstrap':
+        result = base.Reader(args.endpoint).bootstrap_p0()
+        print(json.dumps(result,indent=2,sort_keys=True))
+        return result
     review = load(args.review)
     trackers = []
     try:

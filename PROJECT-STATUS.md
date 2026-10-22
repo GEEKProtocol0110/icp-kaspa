@@ -12,8 +12,27 @@ engineering checkpoint first, followed by earlier milestones.
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
-| Automated coverage | 813 tests: 136 Rust + 677 Python |
-| Next engineering work | Fund the two backed-up TN10 P0 sessions, inspect exact sources through both nodes and complete independent consume/refund acceptance pilots |
+| Automated coverage | 835 tests: 140 Rust + 695 Python |
+| Next engineering work | Complete independent funded consume/refund P0 acceptance pilots after the repaired reader passed live funding-source checks |
+
+## P0 live read-path checkpoint
+
+- Both requested 0.24 test KAS sources were funded and verified through two
+  synced/indexed TN10 nodes. Earlier live preflights stopped before any source
+  claim, signing intent, outbox or submission; their three profiles were retained
+  and halted. No pilot fee was spent.
+- The [new read profile](docs/TICKET-PILOT-READ-PATH.md) uses one bounded native
+  connection and one two-address UTXO query before the history page. Both samples
+  keep their real node brackets and caller request-start time. Partial pages,
+  removed brackets, freshness and exact metadata remain enforced.
+- A selected-parent bootstrap helper avoids choosing the unconfirmed sink as a
+  starting point. The relay retrieves failures, cancels the other direction and
+  bounds peer closure. New profile/build identities require new observer and
+  private policies; no old journal was silently migrated or widened.
+- The [live read-only probe](evidence/ticket-pilot-read-path-live.json) passed
+  `TWO_NODE_SOURCE_UNSPENT_OBSERVED` in about seven seconds, with no signature
+  or submission. Four Rust and eighteen Python additions bring coverage to 833.
+  Ticket acceptance, real authorization and data-key delivery remain ahead.
 
 ## P0 test-key setup checkpoint
 
