@@ -32,7 +32,7 @@ fn parse(raw: &[u8]) -> Result<Request> {
             .cursor
             .bytes()
             .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
-        || !matches!(r.window, 16 | 64 | 256 | 1024)
+        || !matches!(r.window, 16 | 64 | 256 | 512 | 1024)
     {
         return Err("Canonical cursor and supported history window required".into());
     }
@@ -132,6 +132,10 @@ mod tests {
     fn closed_canonical_bounded_request() {
         let raw = format!("{{\"cursor\":\"{}\",\"window\":256}}", "ab".repeat(32));
         assert_eq!(parse(raw.as_bytes()).unwrap().window, 256);
+        assert_eq!(
+            parse(raw.replace("256", "512").as_bytes()).unwrap().window,
+            512
+        );
         for bad in [
             format!(" {raw}"),
             raw.replace("256", "true"),

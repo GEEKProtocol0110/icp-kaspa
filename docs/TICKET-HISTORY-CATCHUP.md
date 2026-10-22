@@ -12,7 +12,7 @@ checks their hashes, and calculates
 `min_confirmation_count = max(0, sink_blue_score - start_blue_score - window)`.
 The pinned node implementation strips the recent end of its bounded chain path
 using that hint before loading the full accepted transactions. Supported windows
-are 16, 64, 256 and 1024; smaller windows can help when a page is too large.
+are 16, 64, 256, 512 and 1024; smaller windows can help when a page is too large.
 The hint is not a finality or exact block-count claim.
 
 The sampled sink stays the real target. The last returned block never replaces

@@ -69,6 +69,8 @@
     "frame_bytes": 19644270,
     "frame_limit_bytes": 8388608
   },
+  "probe_build_note": "Initial four-window helper; subsequent supported 512 window does not alter these historical observations",
+  "probe_source_commit": "4df7c0ad650c92dd123a5c438fb7ac4ad005a512",
   "profile": "TN10_P0_HISTORY_CATCHUP_V1",
   "scope": "Historical page progress only; every returned report remains ineligible and requires a fresh original pinned snapshot before effects",
   "source_claims_changed": false,

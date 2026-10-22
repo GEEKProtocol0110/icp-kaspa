@@ -13,7 +13,7 @@ import native_ticket_observer as base
 import ticket_pilot_observer as observer
 
 MODE = 'TN10_P0_HISTORY_CATCHUP_V1'
-WINDOWS = (16, 64, 256, 1024)
+WINDOWS = (16, 64, 256, 512, 1024)
 
 
 class HistoryReader:
