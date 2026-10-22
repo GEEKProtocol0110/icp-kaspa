@@ -47,6 +47,10 @@ signed transaction outboxes and private backups out of the repository.
 
 ## Explore the data-access work
 
+The newest experiment is the [P0 submission journal](TICKET-PILOT-SUBMISSION.md):
+record one attempt before a simulated send, then reconcile uncertain outcomes
+without retrying. It adds no live broadcast adapter.
+
 | Document | Stage |
 | --- | --- |
 | [Encrypted transfer lab](TRANSFER-LAB.md) | Local encrypted-message and receipt experiment; keys supplied separately |

@@ -12,8 +12,27 @@ engineering checkpoint first, followed by earlier milestones.
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
-| Automated coverage | 726 tests: 126 Rust + 600 Python |
-| Next engineering work | Separate live submission intent/reconciliation; verify operational key backup before funded P0 pilots |
+| Automated coverage | 764 tests: 126 Rust + 638 Python |
+| Next engineering work | TN10-only bounded live transport in a separate policy namespace; verify operational key backup before funded P0 pilots |
+
+## P0 submission journal checkpoint
+
+- A distinct [submission controller](docs/TICKET-PILOT-SUBMISSION.md) checkpoints
+  one immutable intent per saved transaction before one simulated transport call.
+  Native outboxes, source/ticket metadata, freshness and writer generation are
+  checked before the effect. A reply is historical transport information only.
+- Timeouts, rejected replies and crashes never permit a blind retry or replacement.
+  Read-only reconciliation uses the current pinned two-node observers; reorgs
+  revoke its result while preserving permanent attempts, choices and outboxes.
+  Restoring one component behind the authority halts; missing stores stay missing.
+- Thirty-eight new Python tests include actual process deaths before and after
+  simulated effects, lost checkpoints, stale writers, restored stores, unknown
+  replies and both terminal branches. Coverage is 764 tests (126 Rust + 638 Python).
+  See the [verification record](evidence/ticket-pilot-submission-verification.md).
+- Transport and node evidence are simulated; keys are temporary and unfunded.
+  No live P0 adapter, funding request, submission or data-key release was added.
+  Post-sample reorgs and joint trusted-store restoration remain explicit
+  counterexamples. Next: bounded TN10 transport and operational key checks.
 
 ## P0 observation/private-preparation binding checkpoint
 
