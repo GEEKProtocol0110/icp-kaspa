@@ -1,5 +1,25 @@
 # ICP continuation checkpoint
 
+Current milestone: [funded P0 preparation](TICKET-PILOT-FUNDED.md). Two issuance
+outboxes are signed and natively verified, with two permanent source claims.
+Both signing intents were checkpointed before key access and the final private
+checkpoint retains both outboxes. Both operators are stopped pending explicit
+submission approval. All submission intents/replies are absent; no terminal
+branch was chosen or signed. A subsequent read from both nodes still reported
+the full 48,000,000 sompi unspent.
+
+Resume the existing journals and exact signed records after approval and code
+gate review; do not reinitialize claims or re-sign either issuance. Refresh the
+pinned observers before any effect. A stale cursor or bootstrap-crossing reorg
+may block recovery; never silently reset it. Any future submission intent, even
+a rejected or unknown one, permits read-only reconciliation only. The planned
+fee ceiling is 8,000,000 sompi for four TN10 transactions across two lifecycles.
+No ticket acceptance, actual authorization or data-key delivery is established.
+Inventory remains 835 tests; local suites and both exact-head CI runs passed
+for the merged reader repair.
+
+Earlier milestone checkpoints follow.
+
 Current milestone: [P0 live read-path repair](TICKET-PILOT-READ-PATH.md). Both
 funding sources arrived and were verified at 24,000,000 sompi each. Three earlier
 preflight profiles were retained/halted with zero claims, signing intents,
@@ -14,7 +34,7 @@ hashes change policy identities; never relabel old journals or rebuild their
 pinned workers while active. Both old and new forensic build records must stay
 private, alongside the separately verified test-key archive.
 
-Next: use a new reviewed profile with fresh paired observations to run the
+At the read-path milestone, the next step was a new reviewed profile to run the
 funded consume and unused-refund pilots separately. Keep ten successors and the
 preselected thirty-second binding policy; do not silently widen a running one.
 Preserve exact outboxes and durable attempts; reconcile any attempted/unknown

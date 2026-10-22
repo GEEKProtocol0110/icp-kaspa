@@ -13,7 +13,25 @@ engineering checkpoint first, followed by earlier milestones.
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
 | Automated coverage | 835 tests: 140 Rust + 695 Python |
-| Next engineering work | Complete independent funded consume/refund P0 acceptance pilots after the repaired reader passed live funding-source checks |
+| Next engineering work | Obtain explicit submission approval, then recover the two saved issuances and run the separate consume/refund acceptance pilots |
+
+## Funded P0 preparation checkpoint
+
+- Both exact funding sources passed current paired eligibility under the new
+  read profile. Two issuance records were signed, natively reverified and saved
+  with permanent source claims. Each signing intent was preserved privately
+  before key access; the final checkpoint also contains both signed outboxes.
+- Operators are stopped pending explicit approval for network submission.
+  There are zero submission intents, terminal choices or terminal signatures.
+  A later read from both nodes still showed both 24,000,000-sompi sources
+  unspent. No P0 pilot fee was spent.
+- Recover the existing journals and exact saved issuances; do not create a new
+  claim or re-sign these sources. Preserve current independent checkpoints,
+  obtain fresh paired observations, and never repeat any submission intent.
+  See the [funded preparation record](docs/TICKET-PILOT-FUNDED.md).
+- Local verification and both final-head CI runs passed all 835 tests
+  (140 Rust + 695 Python). Funded ticket acceptance, actual authorization
+  and data-key delivery remain ahead.
 
 ## P0 live read-path checkpoint
 
@@ -31,7 +49,7 @@ engineering checkpoint first, followed by earlier milestones.
   private policies; no old journal was silently migrated or widened.
 - The [live read-only probe](evidence/ticket-pilot-read-path-live.json) passed
   `TWO_NODE_SOURCE_UNSPENT_OBSERVED` in about seven seconds, with no signature
-  or submission. Four Rust and eighteen Python additions bring coverage to 833.
+  or submission. Four Rust and twenty Python additions bring coverage to 835.
   Ticket acceptance, real authorization and data-key delivery remain ahead.
 
 ## P0 test-key setup checkpoint

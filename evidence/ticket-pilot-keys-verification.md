@@ -3,7 +3,9 @@
 Later checkpoint: both requested funding outputs arrived and were verified.
 The [repaired live read-only preflight](ticket-pilot-read-path-live.json)
 passed two-node exact source eligibility. The original setup/funding request
-below is retained as history; no additional funding is requested.
+below is retained as history; no additional funding is requested. The later
+[funded preparation](../docs/TICKET-PILOT-FUNDED.md) saved two signed issuance
+records and stopped before submission, pending explicit approval.
 
 The offline setup generated two new Testnet-10 sessions, one for consume and
 one for unused refund. All six independent funding/ticket/return keys passed

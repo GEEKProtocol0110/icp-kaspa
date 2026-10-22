@@ -1,5 +1,10 @@
 # Security target and paper alignment
 
+The later [funded P0 preparation](TICKET-PILOT-FUNDED.md) saved two signed
+issuances after live paired funding checks. Both operators stopped before
+submission; no terminal branch or signature exists. Native VM verification is
+a local check, not node acceptance, permission or data-key delivery.
+
 The later [P0 read-path repair](TICKET-PILOT-READ-PATH.md) has live two-node
 funding-source observations. Bundled reads reduce connection overhead while
 retaining real node brackets, partial-history blocking and request-start age.

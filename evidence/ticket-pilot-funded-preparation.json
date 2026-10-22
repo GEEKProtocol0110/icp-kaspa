@@ -1,0 +1,192 @@
+{
+  "active_operators": 0,
+  "binding_freshness_seconds": 30,
+  "date": "2026-10-22",
+  "funding_rechecked_at": 1792671471,
+  "mode": "TN10_P0_FUNDED_PREPARATION_NOT_ACCEPTANCE_V1",
+  "network": "testnet-10",
+  "pilot_fee_spent_sompi": 0,
+  "private_checkpoint_saved": true,
+  "required_successors": 10,
+  "runs": {
+    "consume": {
+      "issue_fee_sompi": 2000000,
+      "issue_outbox_sha256": "2698d97c5fbb72ce063ffcebe9222a2ea31b93ddd4cdba7ae652b1c1de663c12",
+      "issue_signing_intent_checkpoint_sha256": "aab9be9bfb32c9ec459bad9a6a02196a5b4fc91f4978208b0e4968b846b63ca7",
+      "issue_transaction_id": "d0d73290d5a14233c8d6d7bf0cc94ccefc86c41209ab312a939411aa00f9516b",
+      "issue_vm_verified": true,
+      "review_id": "6b6b8d385856473dd8432029f864de82001b4f9726430efe0bbf1aa0c2384103",
+      "roles": {
+        "funding": "kaspatest:qqneljs6jvhgwxlwja6nysl237x0a675h6p5flf0lu03tjhkqfcfw8te2h3hk",
+        "return": "kaspatest:qr4ltzqak7jvgpyln3dw5g3mzg58wkwfkmy0ndfhlzauf498jn567lhswsyjr",
+        "ticket": "kaspatest:qq4c2x35qlcm48juzxuwa6pzrarzpmmfyls5gnv2l3klzp0kxqk8zrxnluuqq"
+      },
+      "selected_terminal_preview": {
+        "action": "consume",
+        "fee_sompi": 2000000,
+        "transaction_id": "1178cd032bc9c6481532cc92134fd853df610aa98110571a9395c7a55843d1e9"
+      },
+      "source": {
+        "amount": 24000000,
+        "index": 0,
+        "transaction_id": "5f2964dbdeb08f2222785f7a38b4204bc7bfe3cb6c03b429f001bbc5d911e46b"
+      },
+      "source_recheck": [
+        {
+          "endpoint": "wss://vector-10.kaspa.green/kaspa/testnet-10/wrpc/borsh",
+          "from": "b34177aaeb7c53553718007ee972b8c57c5cf46d8eafe5485a9e3853a4e4a0ce",
+          "node": {
+            "hasUtxoIndex": true,
+            "isSynced": true,
+            "networkId": "testnet-10",
+            "rpcApiRevision": 0,
+            "rpcApiVersion": 1,
+            "serverVersion": "2.1.0",
+            "virtualDaaScore": 603369355
+          },
+          "source": {
+            "address": "kaspatest:qqneljs6jvhgwxlwja6nysl237x0a675h6p5flf0lu03tjhkqfcfw8te2h3hk",
+            "outpoint": {
+              "index": 0,
+              "transactionId": "5f2964dbdeb08f2222785f7a38b4204bc7bfe3cb6c03b429f001bbc5d911e46b"
+            },
+            "utxoEntry": {
+              "amount": 24000000,
+              "blockDaaScore": 603321510,
+              "covenantId": null,
+              "isCoinbase": false,
+              "scriptPublicKey": "000020279fca1a932e871bee97753243ea8f8cfeebd4be8344fd2fff1f15caf6027097ac"
+            }
+          },
+          "target": "a80558dd5eb0f9acaab043acca25709b330d8c1227661389090fdda5647b91f1"
+        },
+        {
+          "endpoint": "wss://muon-10.kaspa.blue/kaspa/testnet-10/wrpc/borsh",
+          "from": "4a471b434ef1d5fe83ea3a8f401b72fbf4b9b2e41beab827397c82127ce0f6f4",
+          "node": {
+            "hasUtxoIndex": true,
+            "isSynced": true,
+            "networkId": "testnet-10",
+            "rpcApiRevision": 0,
+            "rpcApiVersion": 1,
+            "serverVersion": "2.1.0",
+            "virtualDaaScore": 603369337
+          },
+          "source": {
+            "address": "kaspatest:qqneljs6jvhgwxlwja6nysl237x0a675h6p5flf0lu03tjhkqfcfw8te2h3hk",
+            "outpoint": {
+              "index": 0,
+              "transactionId": "5f2964dbdeb08f2222785f7a38b4204bc7bfe3cb6c03b429f001bbc5d911e46b"
+            },
+            "utxoEntry": {
+              "amount": 24000000,
+              "blockDaaScore": 603321510,
+              "covenantId": null,
+              "isCoinbase": false,
+              "scriptPublicKey": "000020279fca1a932e871bee97753243ea8f8cfeebd4be8344fd2fff1f15caf6027097ac"
+            }
+          },
+          "target": "754b857b8d765cc73a766190a6d9227567a81dd291fb9b253d3cad5a092182ed"
+        }
+      ],
+      "terminal_branch_chosen": false
+    },
+    "refund": {
+      "issue_fee_sompi": 2000000,
+      "issue_outbox_sha256": "04ccab47b16cde4274d8ab5f271eef3c39ef4da808dc9c5924d38bd59f4f7bb0",
+      "issue_signing_intent_checkpoint_sha256": "b8a99f62df1d40f1a11150dfc2955820b8ce30dc126bb2f369039b57c5f7cb5c",
+      "issue_transaction_id": "4c0b75cc9a2219e725ec08da684abee7a6255e942820a2da2f4adfd8a33efa4a",
+      "issue_vm_verified": true,
+      "review_id": "f34fd1a9bf6d29f2e28158de399e1ea986185bd1c130f00c4b4088b73e81abb1",
+      "roles": {
+        "funding": "kaspatest:qqqew97ku8t28r3d73nfqt72t7x4weptgsuz78ucz47u05rwapz57m99asxns",
+        "return": "kaspatest:qpkzzp8xusfh06lt3uevhv99zlhwz38f7mfwwxtldu2znndt4fy0w8c2aptn5",
+        "ticket": "kaspatest:qzrxquhc56tayacmjqds58lu4f2nwrcxqt8h39cq6sx6lymsa26gzx78qltvx"
+      },
+      "selected_terminal_preview": {
+        "action": "refund",
+        "fee_sompi": 2000000,
+        "transaction_id": "d9c64151a50608dcd93f5f64cfd396e6174d882c6b882cf62ebb8f0e213f0088"
+      },
+      "source": {
+        "amount": 24000000,
+        "index": 0,
+        "transaction_id": "85c37bf022a167e1deca3d557b041cae2936460027c1671eccdcef7d3519c3b0"
+      },
+      "source_recheck": [
+        {
+          "endpoint": "wss://vector-10.kaspa.green/kaspa/testnet-10/wrpc/borsh",
+          "from": "34c6ea224992b503d604281c924d1740fb57901b595874b0f7083d1b07884ab5",
+          "node": {
+            "hasUtxoIndex": true,
+            "isSynced": true,
+            "networkId": "testnet-10",
+            "rpcApiRevision": 0,
+            "rpcApiVersion": 1,
+            "serverVersion": "2.1.0",
+            "virtualDaaScore": 603369435
+          },
+          "source": {
+            "address": "kaspatest:qqqew97ku8t28r3d73nfqt72t7x4weptgsuz78ucz47u05rwapz57m99asxns",
+            "outpoint": {
+              "index": 0,
+              "transactionId": "85c37bf022a167e1deca3d557b041cae2936460027c1671eccdcef7d3519c3b0"
+            },
+            "utxoEntry": {
+              "amount": 24000000,
+              "blockDaaScore": 603321737,
+              "covenantId": null,
+              "isCoinbase": false,
+              "scriptPublicKey": "000020019717d6e1d6a38e2df466902fca5f8d57642b44382f1f98157dc7d06ee8454fac"
+            }
+          },
+          "target": "6d4116f41699766ce359b26761cbadb021a9e99db4543a42f12a3889e9afc6e7"
+        },
+        {
+          "endpoint": "wss://muon-10.kaspa.blue/kaspa/testnet-10/wrpc/borsh",
+          "from": "cdcd203b3696d3734c08271e7a34e557c57d0e6ca42167a28773210e8a06d22f",
+          "node": {
+            "hasUtxoIndex": true,
+            "isSynced": true,
+            "networkId": "testnet-10",
+            "rpcApiRevision": 0,
+            "rpcApiVersion": 1,
+            "serverVersion": "2.1.0",
+            "virtualDaaScore": 603369391
+          },
+          "source": {
+            "address": "kaspatest:qqqew97ku8t28r3d73nfqt72t7x4weptgsuz78ucz47u05rwapz57m99asxns",
+            "outpoint": {
+              "index": 0,
+              "transactionId": "85c37bf022a167e1deca3d557b041cae2936460027c1671eccdcef7d3519c3b0"
+            },
+            "utxoEntry": {
+              "amount": 24000000,
+              "blockDaaScore": 603321737,
+              "covenantId": null,
+              "isCoinbase": false,
+              "scriptPublicKey": "000020019717d6e1d6a38e2df466902fca5f8d57642b44382f1f98157dc7d06ee8454fac"
+            }
+          },
+          "target": "dff80dface61230ca0bfe22e07d01730796b2c702824a013bb94b23c7caf7bb7"
+        }
+      ],
+      "terminal_branch_chosen": false
+    }
+  },
+  "scope": "Local signed issuance records with fresh trusted-node funding reads; no network ticket acceptance, authorization or data-key release",
+  "source_claims": 2,
+  "submission_calls": 0,
+  "submission_intents": 0,
+  "terminal_signatures": 0,
+  "tested_commit": "ccfdf663783d55d99bbde489d329504efb68828e",
+  "tested_tree": "b6d20607a9d4d2b311209ff84d5b91a35fb52390",
+  "verification": {
+    "ci_runs": [
+      39774376135,
+      39774370260
+    ],
+    "python_tests": 695,
+    "rust_tests": 140
+  }
+}
