@@ -110,6 +110,15 @@ resampled after slow operations. Tests are synthetic; a change after the final
 sample can still precede signing. Direct key/worker use bypasses the local gate.
 There is no submission, real authorization or independent signer isolation.
 
+The later [P0 submission journal experiment](TICKET-PILOT-SUBMISSION.md) adds
+one durable intent before a simulated transport effect, immutable normalized
+reply history and current two-node read-only reconciliation. A timeout, reject
+or crash never permits a repeat send. Reorgs revoke observations without erasing
+attempts, branches or outboxes. Its transport has no live adapter. Post-sample
+changes and joint trusted-store restore have explicit counterexamples; no
+global exactly-once effect, authorization or production anti-rollback claim is
+made. No P0 network submission or real data key is connected.
+
 The separate [P0 observer](TICKET-PILOT-OBSERVER.md) now verifies native public
 review pins, compute/storage fields, exact funding/ticket UTXO metadata and
 fresh reversible accepted-chain views from two hosts. Tests are synthetic, and

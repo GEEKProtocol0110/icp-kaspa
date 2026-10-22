@@ -65,6 +65,7 @@ these vault rules no longer protect their later transfers.
 | Recording a data commitment on Kaspa | One testnet transaction observed through two node endpoints | [Transfer anchor run](docs/ICP-Transfer-Anchor-Live-Proof.md) |
 | A message encrypted for one recipient | Local HPKE encryption, delivery-key possession checks, sender approval and signed receipts; no network delivery | [Recipient-encryption lab](docs/RECIPIENT-ENCRYPTION-LAB.md) |
 | Delivery-key checks and signed response records | Encrypted enrollment challenge plus exact saved signatures over dummy responses; no real key delivery | [Bound response lab](docs/BOUND-RESPONSE-LAB.md) |
+| P0 submission recovery | Durable attempts before simulated sends; timeouts/crashes reconcile without retry, with revocable two-node observations | [Submission journal](docs/TICKET-PILOT-SUBMISSION.md) |
 | Observation-gated P0 preparation | Fresh two-node entries gate new signing while permanent branch/outbox history survives recovery; synthetic evidence | [P0 binding](docs/TICKET-PILOT-BINDING.md) |
 | P0 observation | Exact funding/ticket entries and native transaction fields through two configured node views; synthetic tests, read-only CLI | [P0 observer](docs/TICKET-PILOT-OBSERVER.md) |
 | Private P0 preparation | Offline signing with supplied keys, permanent local branch/source claims and exact saved-outbox recovery; no node or submission | [Private preparation](docs/TICKET-PILOT-PRIVATE.md) |
@@ -77,7 +78,7 @@ these vault rules no longer protect their later transfers.
 | Coordinated release recovery | Synthetic vault/ledger/delivery failures, stale-writer fencing and backup continuity; no real keys | [Coordinator model](docs/RELEASE-COORDINATOR-MODEL.md) |
 | Encrypted messages and release accounting | Local experiments; the release model uses simulated chain data and a non-secret placeholder | [Transfer lab](docs/TRANSFER-LAB.md) · [Release model](docs/RELEASE-LEDGER-MODEL.md) |
 
-The automated suite contains **726 tests: 126 Rust + 600 Python**.
+The automated suite contains **764 tests: 126 Rust + 638 Python**.
 [GitHub Actions](.github/workflows/verify.yml) checks the build, tests and demos.
 Individual testnet runs are dated evidence, not performance or security
 guarantees; later software changes also have their own offline checks.
@@ -139,7 +140,9 @@ Interrupted signing stops for reconciliation. The new [P0 observer](docs/TICKET-
 checks current node-reported entries and transaction fields through a read-only
 path. The separate [bound preparer](docs/TICKET-PILOT-BINDING.md) now requires
 these fresh observations for new signing. Its tests use simulated node pages
-and temporary keys. Live submission and actual authorization remain ahead.
+and temporary keys. The [submission journal](docs/TICKET-PILOT-SUBMISSION.md)
+now records attempts before simulated sends and reconciles uncertain outcomes
+without retrying. Live submission and actual authorization remain ahead.
 
 ## Explore or build
 
@@ -168,7 +171,7 @@ move funds. For live testnet instructions, use the developer setup guide.
 
 | Priority | Next work |
 | --- | --- |
-| Private data access | Build a separate private P0 preparer/journal and profile-aware observation; verify key backup before any funding request |
+| Private data access | Add a bounded TN10 live transport, verify operational key backups and run independent P0 pilots before connecting actual authorization/key delivery |
 | Reliable operation | Select and validate independent fencing/storage and recovery enforcement; validate separate signer hosts and alerts |
 | Stronger custody | Specify key replacement and recovery from the cold stage, then test and independently review the design |
 | Longer-term research | Proof systems and broader data-access enforcement, with separate specifications and evidence |

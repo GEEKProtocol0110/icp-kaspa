@@ -90,8 +90,9 @@ journal, grant, source claim, signed outbox or evidence of acceptance.
    signing recovery, source claims and permanent branch choice with the fixture
    restrictions intact. The separate [P0 observer](TICKET-PILOT-OBSERVER.md) now
    checks node views, and the [bound variant](TICKET-PILOT-BINDING.md) gates new
-   preparation with synthetic test evidence. Implement a separate live submission
-   journal next. Ambiguous attempts
+   preparation with synthetic test evidence. The [submission journal experiment](TICKET-PILOT-SUBMISSION.md)
+   now records attempts and reconciles simulated sends without retrying.
+   Implement a separately pinned live TN10 transport next. Ambiguous attempts
    must reconcile without replacement.
 2. Generate separate fresh F/T/R roles for each run, back up their private key
    files and verify possession/restore before publishing a funding request.

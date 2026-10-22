@@ -118,6 +118,8 @@ Do not delete any store to clear a halt or claim.
 The separate [bound variant](TICKET-PILOT-BINDING.md) now requires fresh
 [P0 observations](TICKET-PILOT-OBSERVER.md) before new preparation, with synthetic
 test evidence and a distinct policy identity. This standalone offline API
-retains its original behavior. Next add a separate live submission journal. Verify operational key backup/possession
+retains its original behavior. The later [submission journal experiment](TICKET-PILOT-SUBMISSION.md)
+adds durable attempts and reconciliation with a simulated transport; a live
+TN10 adapter remains future work. Verify operational key backup/possession
 before any funding request. See the [pilot sequence](TICKET-PILOT-PREPARATION.md)
 and [verification record](../evidence/ticket-pilot-private-verification.md).

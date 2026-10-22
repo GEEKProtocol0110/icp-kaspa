@@ -1,5 +1,21 @@
 # ICP continuation checkpoint
 
+Current milestone: [P0 submission journal](TICKET-PILOT-SUBMISSION.md). The
+distinct controller journals one intent before a simulated send and refuses
+every repeat submission call. It rechecks native outboxes, fresh paired input
+metadata and writer generation before the effect. Separate private preparation
+and submission components share the independently stored checkpoint authority;
+the permanent source registry remains shared across variants.
+
+Coverage is 764 tests (126 Rust + 638 Python), with 38 new submission tests.
+Actual process deaths, unknown replies, restored components, stale writers and
+revocable reconciliation are exercised with simulated node/transport evidence
+and temporary unfunded keys. No live P0 transaction was submitted. A post-sample
+reorg can precede the effect; jointly restoring all trusted stores can repeat it.
+Next: a separately pinned, bounded TN10 native transport without automatic retry,
+then operational role-key backup/possession checks and independent funded pilots.
+[Verification](../evidence/ticket-pilot-submission-verification.md).
+
 Current milestone: [P0 observation/private binding](TICKET-PILOT-BINDING.md).
 The new pair/controller variant pins two exact P0 trackers and requires current
 unspent source/ticket observations and matching entry metadata before new

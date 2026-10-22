@@ -117,3 +117,8 @@ Next implement separately durable submission intent, one authorized effect and
 read-only reconciliation for unknown network outcomes. Verify operational role
 key backup/possession before funding independent consume and unused-refund
 Testnet-10 pilots. See [verification](../evidence/ticket-pilot-binding-verification.md).
+
+The later [submission journal experiment](TICKET-PILOT-SUBMISSION.md) now
+implements the durable attempt and reconciliation boundary with a closed
+simulated transport under a distinct policy. A live adapter and actual
+authorization remain separate work; this preparation variant exposes neither.

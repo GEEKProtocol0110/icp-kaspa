@@ -116,7 +116,8 @@ Native RPC decoding and subprocess capture happen before local output-size
 checks; this is not an upstream memory-isolation boundary.
 
 The bound variant now checks a current policy-pinned P0 pair under the private
-journal lease. Next add a separate live submission-intent and reconciliation
-journal. Verify fresh operational role-key backup and possession
+journal lease. The later [submission experiment](TICKET-PILOT-SUBMISSION.md)
+adds durable intent and reconciliation for simulated sends. Next add a live TN10
+transport adapter. Verify fresh operational role-key backup and possession
 before a funding request; execute independent consume and unused-refund pilots
 only after those gates. See [the verification record](../evidence/ticket-pilot-observer-verification.md).
