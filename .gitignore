@@ -2,6 +2,8 @@
 /tools/
 /.secrets/
 *.key
+# Recipient adapter private test-key bundles, regardless of chosen endpoint path.
+keys.json
 *.env
 /runtime/
 

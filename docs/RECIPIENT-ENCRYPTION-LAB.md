@@ -7,6 +7,11 @@ key. The recipient checks the sender and message integrity before recording a
 signed acknowledgment. It uses real cryptographic operations on one local host.
 It performs **no network delivery, Kaspa transaction or chain-gated key release**.
 
+The later [file/bytes adapter](RECIPIENT-FILE-ADAPTER.md) exposes the same
+cryptographic flow to separate role processes, with endpoint-owned test-key files,
+authenticated policy pins and a ciphertext-only loopback HTTP handoff. It retains
+this namespace and limits; one-host processes do not establish device isolation.
+
 The new `icp-recipient-lab-v0` namespace is separate from the old transfer lab,
 the simulated release ledger and the proposed R0 service. No existing signature,
 anchor or model grant becomes permission to release a real key.
