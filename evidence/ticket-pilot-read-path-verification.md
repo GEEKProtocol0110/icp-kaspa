@@ -33,7 +33,9 @@ The [recorded probe](ticket-pilot-read-path-live.json) used the exact funded
 consume-run source and two configured TN10 hosts. Both reported matching ordinary
 UTXO metadata, and both source sample brackets occurred in order on the scanned
 branch. The existing P0 observer returned `TWO_NODE_SOURCE_UNSPENT_OBSERVED` on
-the first poll. The paired read took 13.989 seconds, using thirty-second observer
+a subsequent read-only poll. The first parallel poll correctly stayed blocked
+because one before bracket was absent from the scanned branch. No database or
+bootstrap was reset. The successful concurrent paired read took 6.521 seconds, using thirty-second observer
 age and ten required successors. The later private binding policy was already
 selected at thirty seconds; no running five-second policy was widened.
 
@@ -44,7 +46,7 @@ independent node operation or consensus verification.
 
 ## Regression verification
 
-Final inventory: **833 tests — 140 Rust and 693 Python**, including four new
+Final inventory: **835 tests — 140 Rust and 695 Python**, including four new
 Rust and sixteen new Python tests. Validation includes:
 
 ```sh
@@ -54,7 +56,8 @@ cargo build --locked --features live --example native_ticket_worker --example ti
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-Coverage includes canonical/closed native requests, invalid/private extra fields,
+Coverage includes concurrent paired reads with SQLite access confined to the
+caller thread, a common request-start time, canonical/closed native requests, invalid/private extra fields,
 address routing, mixed node/role/bracket/cursor envelopes, elapsed sample age,
 partial pages, removed anchors, read-profile pinning, bootstrap CLI separation,
 relay failures/cancellation and a hung peer close. Existing exact-entry, reorg,

@@ -61,7 +61,10 @@ observer database or private journal. This is a trusted-node candidate, not
 finality or an independent consensus proof. A later reorg across that bootstrap
 still halts the observer; never silently reset it under an existing policy.
 
-Use the candidate with the existing `observe` CLI or trusted P0 harness. Keep
+Use the candidate with the existing `observe` CLI or trusted P0 harness. Paired
+polls collect both native replies concurrently, then apply them on the SQLite
+caller thread. Both views are invalidated on failure; worker threads never touch
+observer databases. Keep
 the complete public review, bootstrap, node endpoints, binary/relay hashes,
 freshness and successor settings pinned. The read profile participates in the
 policy identity, so older databases and private policies cannot be silently
@@ -69,7 +72,8 @@ reopened with the new reader.
 
 The live read-only probe used ten required successors, thirty-second observer
 age and the already selected thirty-second binding freshness policy. The two
-node calls took about fourteen seconds together. The five-second binding default
+node calls ran concurrently, with all SQLite application on the caller thread,
+and the successful paired sample took 6.521 seconds. The five-second binding default
 was not widened under an existing policy. Use a newly reviewed policy when
 availability measurements require different supported settings.
 

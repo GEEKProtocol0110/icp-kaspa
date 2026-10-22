@@ -12,7 +12,7 @@ engineering checkpoint first, followed by earlier milestones.
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
-| Automated coverage | 833 tests: 140 Rust + 693 Python |
+| Automated coverage | 835 tests: 140 Rust + 695 Python |
 | Next engineering work | Complete independent funded consume/refund P0 acceptance pilots after the repaired reader passed live funding-source checks |
 
 ## P0 live read-path checkpoint
@@ -30,8 +30,8 @@ engineering checkpoint first, followed by earlier milestones.
   bounds peer closure. New profile/build identities require new observer and
   private policies; no old journal was silently migrated or widened.
 - The [live read-only probe](evidence/ticket-pilot-read-path-live.json) passed
-  `TWO_NODE_SOURCE_UNSPENT_OBSERVED` in about fourteen seconds, with no signature
-  or submission. Four Rust and sixteen Python additions bring coverage to 833.
+  `TWO_NODE_SOURCE_UNSPENT_OBSERVED` in about seven seconds, with no signature
+  or submission. Four Rust and eighteen Python additions bring coverage to 833.
   Ticket acceptance, real authorization and data-key delivery remain ahead.
 
 ## P0 test-key setup checkpoint

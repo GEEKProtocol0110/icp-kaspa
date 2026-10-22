@@ -161,13 +161,18 @@ class Tracker(base.TicketTracker):
             # Use the caller's request-start clock for every part, never receipt time.
             started = base.integer(clock())
             value = native.snapshot_p0(self.tip, self.funding_key, self.ticket_key)
-            self.apply_source_utxos(value['source'], started); source_sample = self.source_sample
-            self.apply_utxos(value['ticket'], started); ticket_sample = self.utxo_sample
-            self.apply(value['scan'], started)
-            self.source_sample, self.utxo_sample = source_sample, ticket_sample
+            self._accept_snapshot(value, started)
             return self.status(clock())
         except BaseException:
             self.unavailable(); raise
+
+    def _accept_snapshot(self, value, started):
+        # Run only on the caller's SQLite-owning thread, after native validation.
+        self._check()
+        self.apply_source_utxos(value['source'], started); source_sample = self.source_sample
+        self.apply_utxos(value['ticket'], started); ticket_sample = self.utxo_sample
+        self.apply(value['scan'], started)
+        self.source_sample, self.utxo_sample = source_sample, ticket_sample
 
 
 def combined(first, second, now):
@@ -188,13 +193,28 @@ def combined(first, second, now):
 
 
 def poll_pair(first, second, clock):
-    """Sequential bounded reads; any failed node invalidates both cached views."""
+    """Concurrent bounded network reads; apply SQLite changes on the caller thread."""
+    from concurrent.futures import ThreadPoolExecutor
     if any(type(t) is not Tracker for t in (first,second)): raise Error('Exact P0 trackers required')
     try:
         # Validate pair identity before any network call.
         if first.path == second.path or first.host == second.host or first.pin_id != second.pin_id:
             raise Error('Distinct matching P0 node pair required')
-        for tracker in (first,second): tracker.poll(tracker.reader,clock)
+        requests=[]
+        for tracker in (first,second):
+            tracker.unavailable();tracker._check()
+            if (type(tracker.reader) is not base.Reader or tracker.reader.endpoint != tracker.endpoint
+                or tracker.reader.fingerprint != tracker._descriptor()['reader']):
+                raise Error('Wrong P0 read-only endpoint/adapter')
+            # Capture every DB-derived value before handing work to the threads.
+            requests.append((tracker.reader,tracker.tip,tracker.funding_key,tracker.ticket_key))
+        started=base.integer(clock())
+        def fetch(request):
+            reader,cursor,funding,ticket=request
+            return reader.snapshot_p0(cursor,funding,ticket)
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            values=list(pool.map(fetch,requests))
+        for tracker,value in zip((first,second),values):tracker._accept_snapshot(value,started)
         return combined(first,second,clock())
     except BaseException:
         for tracker in (first,second): tracker.unavailable()

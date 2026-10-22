@@ -7,7 +7,7 @@ outboxes and submissions. The new native snapshot reads both roles and history
 on one bounded connection while preserving the existing eligibility checks.
 The live two-node source probe passed; it did not sign or submit anything.
 
-Inventory is 833 tests (140 Rust + 693 Python). Native request/row routing,
+Inventory is 835 tests (140 Rust + 695 Python). Native request/row routing,
 snapshot identities, request-start age, partial history, branch brackets and
 relay failure/cleanup have regression coverage. The new read profile and binary
 hashes change policy identities; never relabel old journals or rebuild their

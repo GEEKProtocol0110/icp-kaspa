@@ -342,10 +342,29 @@ class PilotObserverTests(unittest.TestCase):
 
     def test_pair_poll_failure_invalidates_both_and_wrong_adapter_is_blocked(self):
         self.preflight(self.t);self.preflight(self.u)
-        with patch.object(self.t,'poll'),patch.object(self.u,'poll',side_effect=p.Error('second failed')):
+        with patch.object(self.t.reader,'snapshot_p0',return_value=self.snapshot(self.t)),patch.object(self.u.reader,'snapshot_p0',side_effect=p.Error('second failed')):
             with self.assertRaises(p.Error):p.poll_pair(self.t,self.u,lambda:100)
         self.assertEqual(self.state(),'SCAN_REQUIRED');self.assertEqual(self.state(self.u),'SCAN_REQUIRED')
         with self.assertRaises(p.Error):self.t.poll(self.u.reader,lambda:100)
+
+    def test_pair_fetches_concurrently_without_moving_sqlite_to_worker_threads(self):
+        import threading
+        barrier=threading.Barrier(2)
+        def fetch(t):
+            barrier.wait(timeout=2)
+            return self.snapshot(t)
+        with patch.object(self.t.reader,'snapshot_p0',side_effect=lambda *args:fetch(self.t)),patch.object(self.u.reader,'snapshot_p0',side_effect=lambda *args:fetch(self.u)):
+            report=p.poll_pair(self.t,self.u,lambda:100)
+        self.assertEqual(report['state'],'TWO_NODE_SOURCE_UNSPENT_OBSERVED')
+        self.assertEqual(self.t.tip,o.fake_id(3));self.assertEqual(self.u.tip,o.fake_id(3))
+
+    def test_pair_uses_common_request_start_not_each_reply_time(self):
+        times=iter([100,111])
+        with patch.object(self.t.reader,'snapshot_p0',return_value=self.snapshot(self.t)),patch.object(self.u.reader,'snapshot_p0',return_value=self.snapshot(self.u)):
+            report=p.poll_pair(self.t,self.u,lambda:next(times))
+        self.assertEqual(report['state'],'TWO_NODE_GATE_BLOCKED')
+        self.assertEqual([v['state'] for v in report['observations']],['STALE','STALE'])
+        self.assertEqual([v['source_sample']['at'] for v in report['observations']],[100,100])
 
     def test_read_only_cli_rejects_effect_commands_and_closes_on_node_failure(self):
         for command in ('sign','prepare','submit','broadcast','keygen'):
