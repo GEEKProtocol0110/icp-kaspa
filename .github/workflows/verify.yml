@@ -23,6 +23,8 @@ jobs:
       - run: python3 scripts/release_ledger_model.py
       - run: python3 scripts/recipient_lab.py
       - run: python3 examples/recipient_file_exchange.py
+      - run: python3 scripts/pq_recipient_lab.py
+      - run: python3 examples/pq_recipient_file_exchange.py
       - run: python3 scripts/release_coordinator_model.py
       - run: python3 scripts/signed_coordinator_lab.py
       - run: python3 scripts/bound_response_lab.py

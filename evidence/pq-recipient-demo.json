@@ -1,0 +1,18 @@
+{
+  "ciphertext_relay_processes": 1,
+  "endpoint_processes": 15,
+  "envelope_excludes_plaintext": true,
+  "independent_host_isolation_tested": false,
+  "mode": "LOCAL_PQ_RECIPIENT_EXPERIMENT_NO_CHAIN",
+  "network_delivery_tested": true,
+  "network_scope": "LOOPBACK_SINGLE_HOST",
+  "plaintext_bytes": 72,
+  "private_keys_exchanged": false,
+  "real_transactions": 0,
+  "receipt_recovered_after_restart": true,
+  "receipt_signature_verified": true,
+  "recipient_bytes_match": true,
+  "replay_rejected": true,
+  "scenario": "FICTIONAL_PQ_BINARY_FILE_SEPARATE_PROCESSES_ONE_HOST",
+  "wrong_role_rejected": true
+}

@@ -1,5 +1,23 @@
 # ICP continuation checkpoint
 
+Current milestone: [experimental PQ recipient profile](POST-QUANTUM-RECIPIENT-PROFILE.md).
+The separate `pq_recipient_lab.py` and `pq_recipient_adapter.py` use library
+ML-KEM-768/X25519 HPKE and ML-DSA-65 signatures with SHA-384 commitments.
+Its distinct keys/namespace/fixed suite/96-character policy pin reject classical
+fallback and implicit migration. Fifty new tests and the separate-process
+fictional PQ binary exchange pass locally; all 71 conventional recipient tests
+also pass. Inventory is 930 tests (142 Rust + 788 Python). Rust and native
+workers are unavailable locally; complete CI remains required before merge.
+This does not upgrade Kaspa's native signatures, vaults or R0 release suite.
+No overall quantum-safety, FIPS certification or audit completion is claimed.
+Maintain owner-only TEST keys/state, policy authentication, 64 KiB payload cap
+and receipt-before-export behavior. Static-key compromise exposes history;
+copied stores can accept again. Next: reviewed device keystores/recovery,
+authenticated transport/identity, rotation and independent protocol review.
+No saved funded journal, pinned worker, source claim or private outbox changed.
+
+Earlier milestone checkpoints follow.
+
 Current milestone: [recipient file/bytes adapter](RECIPIENT-FILE-ADAPTER.md).
 The recipient HPKE lab now has a Python API and file CLI with separate sender,
 approver and recipient test-key endpoints. The separate-process fictional binary
