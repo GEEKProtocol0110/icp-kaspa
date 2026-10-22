@@ -1,5 +1,24 @@
 # ICP continuation checkpoint
 
+Current milestone: [bounded historical catch-up](TICKET-HISTORY-CATCHUP.md).
+The user explicitly approved four TN10 transactions with an 8,000,000-sompi fee
+ceiling, but refreshed reads hit an oversized history frame. Operators stopped
+with the two saved issuances intact and zero submission intents. A separate
+helper advances full historical pages through the existing observer validator,
+then invalidates readiness. Copied-store live probes advance without eligibility.
+
+Run catch-up only with old live operators closed, and retain the original
+observer configurations/bootstrap, binary pins, source claims, authorities and
+private journals. Pin the auxiliary helper separately in the trusted operator
+gate. Never rebuild old pinned workers, relabel a database or replace historical
+acceptance lists with partial transaction bodies. Catch-up is not a UTXO sample
+and cannot authorize a send. Reopen/reconcile the original live controller with
+fresh original pinned snapshots before any effect. Explicit approval is already
+recorded privately; do not ask again for the same four-transaction scope.
+Inventory is 846 tests (142 Rust + 704 Python).
+
+Earlier milestone checkpoints follow.
+
 Current milestone: [funded P0 preparation](TICKET-PILOT-FUNDED.md). Two issuance
 outboxes are signed and natively verified, with two permanent source claims.
 Both signing intents were checkpointed before key access and the final private

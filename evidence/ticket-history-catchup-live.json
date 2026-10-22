@@ -1,0 +1,77 @@
+{
+  "copied_databases_only": true,
+  "date": "2026-10-22",
+  "existing_issuance_outboxes": 2,
+  "first_pages": [
+    {
+      "caught_up": false,
+      "cursor": "114c4d4f3a3808d746506939f502862bc8ff537f198157269736886e16a0d850",
+      "elapsed": 8.419704635000016,
+      "eligibility": false,
+      "from_cursor": "34f993ac1b213340b2d0f98106f86b5e192533a5820e90e8a7b8156be4b37381",
+      "mode": "TN10_P0_HISTORY_CATCHUP_V1",
+      "node": 0,
+      "page": 1,
+      "run": "consume",
+      "sampled_target": "2068b6799bd3164132aed097fc5ece9c6d4f98b1a5a35c66eabfd05df4647f42",
+      "scope": "HISTORY_ONLY_REQUIRES_FRESH_PINNED_SNAPSHOT",
+      "window": 1024
+    },
+    {
+      "caught_up": false,
+      "cursor": "d31facd25e6b3a28286d1eab4929fd16cdb2222a7a416b7520d52b3a33680e0c",
+      "elapsed": 8.515054120000059,
+      "eligibility": false,
+      "from_cursor": "b6d9808dff1c53026980049d28b8c3b85c8b223eed8a9253d9e80ad5c889df7f",
+      "mode": "TN10_P0_HISTORY_CATCHUP_V1",
+      "node": 0,
+      "page": 1,
+      "run": "refund",
+      "sampled_target": "2068b6799bd3164132aed097fc5ece9c6d4f98b1a5a35c66eabfd05df4647f42",
+      "scope": "HISTORY_ONLY_REQUIRES_FRESH_PINNED_SNAPSHOT",
+      "window": 1024
+    },
+    {
+      "caught_up": false,
+      "cursor": "fbe2d65d51404fc9fe19f946653ecf14bc15a1aab43ecdb6c44eff35b7e349d4",
+      "elapsed": 9.327135637000538,
+      "eligibility": false,
+      "from_cursor": "604f01dd908cf8bed9de18fe1e7e5e4c6ec2bdeacdda7b88524b1b9771c2bf1e",
+      "mode": "TN10_P0_HISTORY_CATCHUP_V1",
+      "node": 1,
+      "page": 1,
+      "run": "consume",
+      "sampled_target": "e18cb746cde1aebc3366f81c731dc7cdfd80093d56844a5db4e3d0836cdc8625",
+      "scope": "HISTORY_ONLY_REQUIRES_FRESH_PINNED_SNAPSHOT",
+      "window": 1024
+    },
+    {
+      "caught_up": false,
+      "cursor": "b321e9a57c6c59ba532f82f3b7c20ec771e4f825013bdfa54e803d1904034f18",
+      "elapsed": 9.620429964001232,
+      "eligibility": false,
+      "from_cursor": "d5bfbfcaba3e98b4ed9db246e60b476102d50dd30ee9cf4173175742d8307503",
+      "mode": "TN10_P0_HISTORY_CATCHUP_V1",
+      "node": 1,
+      "page": 1,
+      "run": "refund",
+      "sampled_target": "e18cb746cde1aebc3366f81c731dc7cdfd80093d56844a5db4e3d0836cdc8625",
+      "scope": "HISTORY_ONLY_REQUIRES_FRESH_PINNED_SNAPSHOT",
+      "window": 1024
+    }
+  ],
+  "helper_sha256": "a33184791f0abce80c9c5476f51101a402f304223428672c17bcbf9529a5fdde",
+  "live_observer_databases_changed": false,
+  "mode": "TN10_P0_COPIED_HISTORY_PAGE_PROBE_V1",
+  "new_signatures": 0,
+  "oversized_original_response": {
+    "close_code": 1009,
+    "frame_bytes": 19644270,
+    "frame_limit_bytes": 8388608
+  },
+  "profile": "TN10_P0_HISTORY_CATCHUP_V1",
+  "scope": "Historical page progress only; every returned report remains ineligible and requires a fresh original pinned snapshot before effects",
+  "source_claims_changed": false,
+  "submission_calls": 0,
+  "submission_intents": 0
+}

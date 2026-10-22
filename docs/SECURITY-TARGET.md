@@ -1,5 +1,11 @@
 # Security target and paper alignment
 
+The later [history catch-up helper](TICKET-HISTORY-CATCHUP.md) imports smaller
+full accepted-history pages through the existing P0 validator. Every import
+invalidates eligibility and supplies no UTXO sample. The original pinned reader
+and live controller still require fresh paired observations before effects.
+This trusted-host recovery helper adds no consensus proof or new permission.
+
 The later [funded P0 preparation](TICKET-PILOT-FUNDED.md) saved two signed
 issuances after live paired funding checks. Both operators stopped before
 submission; no terminal branch or signature exists. Native VM verification is

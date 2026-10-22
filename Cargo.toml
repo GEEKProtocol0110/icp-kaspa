@@ -72,3 +72,9 @@ debug = 0
 
 [profile.test]
 debug = 0
+
+[[example]]
+name = "ticket_history_catchup"
+path = "examples/ticket_history_catchup.rs"
+required-features = ["live"]
+test = true
