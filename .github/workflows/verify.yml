@@ -17,7 +17,7 @@ jobs:
       - run: cargo test --locked --features live
       - run: cargo build --locked --features live --example native_ticket_worker --example ticket_read --example ticket_pilot_review --example ticket_pilot_private --example ticket_pilot_submit --example ticket_history_catchup
       - run: 'python3 -m pip install --only-binary=:all: -r requirements-lab.txt'
-      - run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+      - run: python3 -m unittest discover -s tests -p 'test_*.py' -f -v
       - run: python3 scripts/transfer_lab.py
       - run: python3 scripts/transfer_anchor.py
       - run: python3 scripts/release_ledger_model.py
@@ -25,6 +25,7 @@ jobs:
       - run: python3 examples/recipient_file_exchange.py
       - run: python3 scripts/pq_recipient_lab.py
       - run: python3 examples/pq_recipient_file_exchange.py
+      - run: python3 examples/pq_locked_file_exchange.py
       - run: python3 scripts/release_coordinator_model.py
       - run: python3 scripts/signed_coordinator_lab.py
       - run: python3 scripts/bound_response_lab.py

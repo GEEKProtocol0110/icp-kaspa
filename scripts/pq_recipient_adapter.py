@@ -218,10 +218,11 @@ class Endpoint:
             receiver.close()
 
 
-def parser():
-    result = argparse.ArgumentParser(description=__doc__)
+def parser(*, keygen_help='Create unencrypted TEST keys; never use sensitive data',
+           parser_class=argparse.ArgumentParser):
+    result = parser_class(description=__doc__)
     commands = result.add_subparsers(dest='command', required=True)
-    keygen = commands.add_parser('keygen', help='Create unencrypted TEST keys; never use sensitive data')
+    keygen = commands.add_parser('keygen', help=keygen_help)
     keygen.add_argument('--endpoint', required=True)
     keygen.add_argument('--role', choices=ROLES, required=True)
     keygen.add_argument('--output', required=True, help='Public role record only')
@@ -248,7 +249,10 @@ def parser():
     return result
 
 
-def run(args):
+def run(args, *, open_endpoint=None):
+    # Explicit storage injection lets the locked adapter reuse wire/acceptance
+    # semantics without changing this test-key adapter's default storage.
+    open_endpoint = Endpoint if open_endpoint is None else open_endpoint
     if args.command == 'keygen':
         endpoint = Endpoint.create(args.endpoint, args.role)
         write_json(args.output, endpoint.public())
@@ -261,7 +265,7 @@ def run(args):
     if args.command == 'verify-receipt':
         lab.verify_receipt(read_json(args.receipt), read_json(args.input), policy)
         return dict(mode=lab.MODE, recipient_signature_verified=True, proof_of_reading=False)
-    endpoint = Endpoint(args.endpoint)
+    endpoint = open_endpoint(args.endpoint)
     now = lab.number(int(time.time()))
     if args.command == 'receive':
         # Catch obvious output errors before committing local acceptance. Publication
