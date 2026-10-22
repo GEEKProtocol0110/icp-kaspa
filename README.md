@@ -147,6 +147,11 @@ now records attempts before simulated sends and reconciles uncertain outcomes
 without retrying. A distinct [live adapter](docs/TICKET-PILOT-LIVE.md) now adds
 TN10 network submission capability with exact native/input/deadline checks.
 Its tests are offline; funded P0 acceptance and actual authorization remain ahead.
+The [test-key setup helper](docs/TICKET-PILOT-KEYS.md) now prepares independent
+consume/refund roles and verifies backup restoration before funding. Two fresh
+test-only sessions have passed those checks, with their backup saved privately.
+The [public funding record](evidence/ticket-pilot-keys-verification.md) gives
+the exact next step; no P0 transaction has been submitted.
 
 ## Explore or build
 
@@ -175,7 +180,7 @@ move funds. For live testnet instructions, use the developer setup guide.
 
 | Priority | Next work |
 | --- | --- |
-| Private data access | Verify operational key backups and complete independent funded P0 pilots before connecting actual authorization/key delivery |
+| Private data access | Fund the two backed-up TN10 P0 sessions and complete independent consume/refund pilots before connecting actual authorization/key delivery |
 | Reliable operation | Select and validate independent fencing/storage and recovery enforcement; validate separate signer hosts and alerts |
 | Stronger custody | Specify key replacement and recovery from the cold stage, then test and independently review the design |
 | Longer-term research | Proof systems and broader data-access enforcement, with separate specifications and evidence |
