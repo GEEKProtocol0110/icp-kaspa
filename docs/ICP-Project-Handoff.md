@@ -1,5 +1,23 @@
 # ICP continuation checkpoint
 
+Current milestone: [recipient file/bytes adapter](RECIPIENT-FILE-ADAPTER.md).
+The recipient HPKE lab now has a Python API and file CLI with separate sender,
+approver and recipient test-key endpoints. The separate-process fictional binary
+demo passes locally through a ciphertext-only loopback HTTP relay, with 34 new
+Python tests. Inventory is 880 tests (142 Rust and 738 Python); full native/build
+verification must pass CI before merge.
+This is a one-host exchange, not remote delivery, independent-device
+isolation, reviewed R0 key release or quantum protection. Maintain the existing
+64 KiB limit, authenticated policy pin, owner-only test keys and replay DB.
+File export is not atomic with receipt acceptance; recover saved receipts on
+failure without deleting/reinitializing state. The next data integration needs
+authenticated transport and reviewed device keystore/recovery boundaries.
+No saved P0 worker, policy, private journal, source claim or outbox was changed.
+The historical catch-up/funded continuation below retains its recorded approval
+and reconciliation requirements; do not infer that a new funded run occurred.
+
+Earlier milestone checkpoints follow.
+
 Current milestone: [bounded historical catch-up](TICKET-HISTORY-CATCHUP.md).
 The user explicitly approved four TN10 transactions with an 8,000,000-sompi fee
 ceiling, but refreshed reads hit an oversized history frame. Operators stopped

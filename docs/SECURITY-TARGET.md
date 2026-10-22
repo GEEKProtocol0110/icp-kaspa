@@ -1,5 +1,15 @@
 # Security target and paper alignment
 
+The [recipient file/bytes adapter](RECIPIENT-FILE-ADAPTER.md) now makes the
+existing HPKE experiment callable from separate role processes. Only public
+records and encrypted envelopes cross the file boundary; the recipient endpoint
+owns its delivery private key. This is a one-host file/loopback-HTTP experiment using
+ordinary test-key files, not independent device isolation, remote delivery,
+chain-gated release, a reviewed R0 suite or post-quantum protection. Policy pins
+need authenticated out-of-band distribution. Local acceptance commits before
+file output; export failure can leave a recoverable receipt without plaintext
+output and does not permit a repeat receive. Funded P0 journals are unchanged.
+
 The later [history catch-up helper](TICKET-HISTORY-CATCHUP.md) imports smaller
 full accepted-history pages through the existing P0 validator. Every import
 invalidates eligibility and supplies no UTXO sample. The original pinned reader
