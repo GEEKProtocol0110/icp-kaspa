@@ -66,6 +66,7 @@ these vault rules no longer protect their later transfers.
 | A message encrypted for one recipient | Local HPKE encryption, delivery-key possession checks, sender approval and signed receipts; no network delivery | [Recipient-encryption lab](docs/RECIPIENT-ENCRYPTION-LAB.md) |
 | Delivery-key checks and signed response records | Encrypted enrollment challenge plus exact saved signatures over dummy responses; no real key delivery | [Bound response lab](docs/BOUND-RESPONSE-LAB.md) |
 | P0 native submission adapter | TN10-only sender checks exact saved records, node/input metadata and deadlines; tested offline, funded P0 acceptance pending | [Live adapter](docs/TICKET-PILOT-LIVE.md) |
+| P0 test-key setup | Six independent keys, possession checks and exact backup restoration for separate consume/refund runs | [Key setup](docs/TICKET-PILOT-KEYS.md) |
 | P0 submission recovery | Durable attempts before simulated sends; timeouts/crashes reconcile without retry, with revocable two-node observations | [Submission journal](docs/TICKET-PILOT-SUBMISSION.md) |
 | Observation-gated P0 preparation | Fresh two-node entries gate new signing while permanent branch/outbox history survives recovery; synthetic evidence | [P0 binding](docs/TICKET-PILOT-BINDING.md) |
 | P0 observation | Exact funding/ticket entries and native transaction fields through two configured node views; synthetic tests, read-only CLI | [P0 observer](docs/TICKET-PILOT-OBSERVER.md) |
@@ -79,7 +80,7 @@ these vault rules no longer protect their later transfers.
 | Coordinated release recovery | Synthetic vault/ledger/delivery failures, stale-writer fencing and backup continuity; no real keys | [Coordinator model](docs/RELEASE-COORDINATOR-MODEL.md) |
 | Encrypted messages and release accounting | Local experiments; the release model uses simulated chain data and a non-secret placeholder | [Transfer lab](docs/TRANSFER-LAB.md) · [Release model](docs/RELEASE-LEDGER-MODEL.md) |
 
-The automated suite contains **799 tests: 134 Rust + 665 Python**.
+The automated suite contains **813 tests: 136 Rust + 677 Python**.
 [GitHub Actions](.github/workflows/verify.yml) checks the build, tests and demos.
 Individual testnet runs are dated evidence, not performance or security
 guarantees; later software changes also have their own offline checks.
@@ -146,6 +147,11 @@ now records attempts before simulated sends and reconciles uncertain outcomes
 without retrying. A distinct [live adapter](docs/TICKET-PILOT-LIVE.md) now adds
 TN10 network submission capability with exact native/input/deadline checks.
 Its tests are offline; funded P0 acceptance and actual authorization remain ahead.
+The [test-key setup helper](docs/TICKET-PILOT-KEYS.md) now prepares independent
+consume/refund roles and verifies backup restoration before funding. Two fresh
+test-only sessions have passed those checks, with their backup saved privately.
+The [public funding record](evidence/ticket-pilot-keys-verification.md) gives
+the exact next step; no P0 transaction has been submitted.
 
 ## Explore or build
 
@@ -174,7 +180,7 @@ move funds. For live testnet instructions, use the developer setup guide.
 
 | Priority | Next work |
 | --- | --- |
-| Private data access | Verify operational key backups and complete independent funded P0 pilots before connecting actual authorization/key delivery |
+| Private data access | Fund the two backed-up TN10 P0 sessions and complete independent consume/refund pilots before connecting actual authorization/key delivery |
 | Reliable operation | Select and validate independent fencing/storage and recovery enforcement; validate separate signer hosts and alerts |
 | Stronger custody | Specify key replacement and recovery from the cold stage, then test and independently review the design |
 | Longer-term research | Proof systems and broader data-access enforcement, with separate specifications and evidence |

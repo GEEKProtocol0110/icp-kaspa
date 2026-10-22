@@ -116,8 +116,13 @@ proving a live ticket lifecycle are still ahead.
 
 The [pilot preparation tool](TICKET-PILOT-PREPARATION.md) now shows the exact
 proposed transactions before they are signed. It uses public information only.
-The next step is a separate private signing and recovery journal before any
-funding request; the public demo addresses must never be funded.
+Separate tools now keep private signing/recovery records and record an attempt
+before sending a testnet transaction. The [key setup tool](TICKET-PILOT-KEYS.md)
+has prepared two fresh test sessions and verified their private backups: one
+session will use a ticket, and the other will return an unused ticket's coins.
+The next step is funding and checking those exact sources, then proving both
+paths on Testnet-10. Public demo addresses must never be funded. Real permission
+checks and private data-key delivery still need to be built and tested.
 
 The older model allows copied databases to accept separate claims. The new
 simulation adds a trusted witness, but restoring that witness with every

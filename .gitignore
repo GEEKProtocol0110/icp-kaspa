@@ -12,3 +12,4 @@ __pycache__/
 *.sqlite-*
 
 /ICP-Testnet-Private-Session*.zip
+/ICP-P0-Private-Session*.zip

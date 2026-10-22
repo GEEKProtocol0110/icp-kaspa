@@ -97,6 +97,8 @@ journal, grant, source claim, signed outbox or evidence of acceptance.
    without replacement; a funded P0 lifecycle remains to be demonstrated.
 2. Generate separate fresh F/T/R roles for each run, back up their private key
    files and verify possession/restore before publishing a funding request.
+   The later [test-key setup helper](TICKET-PILOT-KEYS.md) implements this
+   offline check; its archive must also be preserved in durable private storage.
    No operational keys or funding addresses were generated in this milestone.
 3. Use two independent lifecycles: one consumes a ticket; the other refunds an
    unused ticket. They need distinct sources and run nonces. The combined

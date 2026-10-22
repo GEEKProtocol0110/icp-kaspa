@@ -1,5 +1,26 @@
 # ICP continuation checkpoint
 
+Current milestone: [P0 test-key setup](TICKET-PILOT-KEYS.md). Two new consume and
+refund sessions have six distinct test-only keys. Exact backup restoration,
+domain-separated possession proofs and fresh restored-key challenges passed.
+The private archive was saved durably before public funding details; no keys,
+private journals or outboxes are in Git. The
+[public setup receipt](../evidence/ticket-pilot-key-preparation.json) pins the
+session and backup digest, with zero transaction signatures/RPC calls/broadcasts.
+
+Inventory is 813 tests (136 Rust + 677 Python). The reviewer's new public-only
+`addresses` command changes its binary hash; new plans/observers must pin the
+current build. Restore files to new private paths, verify the trusted archive
+digest, and do not treat a key backup as current live-state recovery.
+
+Next obtain one 24,000,000-sompi output per session on TN10, inspect exact
+source entries through both configured nodes, then separately exercise consume
+and unused refund with durable journals and read-only reconciliation. No live
+P0 handshake, funded acceptance, actual authorization or data delivery is
+demonstrated. [Verification/funding](../evidence/ticket-pilot-keys-verification.md).
+
+Earlier milestone checkpoints follow.
+
 Current milestone: [P0 native submission adapter](TICKET-PILOT-LIVE.md). A
 distinct live policy connects durable attempts to the TN10 sender. Its endpoint
 must match the first observer. Native verification, connected-node gates, exact
