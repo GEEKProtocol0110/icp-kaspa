@@ -122,8 +122,10 @@ fn exact_input(
     Ok(())
 }
 async fn send(r: Request) -> Result<serde_json::Value> {
+    let started_monotonic = tokio::time::Instant::now();
     let started = now()?;
     let remaining = window(r.not_before, r.not_after, started)?;
+    let deadline = started_monotonic + remaining;
     let url = std::env::var("ICP_RPC_URL").unwrap_or_else(|_| r.endpoint.clone());
     let upstream = std::env::var("ICP_UPSTREAM_URL").ok();
     route(&r.endpoint, &url, upstream.as_deref())?;
@@ -135,7 +137,7 @@ async fn send(r: Request) -> Result<serde_json::Value> {
         None,
     )
     .map_err(|_| "Native client failed")?;
-    let result = tokio::time::timeout(remaining, async {
+    let result = tokio::time::timeout_at(deadline, async {
         client
             .connect(Some(ConnectOptions {
                 block_async_connect: true,
