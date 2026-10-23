@@ -13,6 +13,7 @@ Technical guides below describe the exact behavior and its limits.
 | [ICP in plain English](PLAIN-ENGLISH.md) | The idea, an example, common questions and terminology |
 | [Architecture](ARCHITECTURE.md) | How contracts, monitoring, signing and experiments fit together |
 | [Security target](SECURITY-TARGET.md) | Implemented protections, assumptions and comparison with the source paper |
+| [Core integration and continued-custody draft](CORE-GAP-AND-CUSTODY-DRAFT.md) | C0 candidate authority, replacement transitions and adversarial test plan; no implementation or demonstrated core gap |
 | [Project status](../PROJECT-STATUS.md) | Latest checkpoint followed by earlier engineering milestones |
 | [Developer handoff](ICP-Project-Handoff.md) | Operational context and remaining work for the next contributor |
 
