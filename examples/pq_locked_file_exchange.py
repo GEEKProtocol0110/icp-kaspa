@@ -13,7 +13,7 @@ import pq_locked_adapter as locked
 from pq_recipient_file_exchange import relay_handoff
 
 
-def demo():
+def demo(*, handoff=relay_handoff):
     with tempfile.TemporaryDirectory() as temporary:
         folder = Path(temporary)
         # Fresh secrets for fictional keys, kept in this trusted test process only.
@@ -68,7 +68,7 @@ def demo():
         raw = (folder / 'envelope.json').read_bytes()
         if plaintext in raw:
             raise AssertionError('Plaintext appeared in envelope')
-        locked.base.write_new(folder / 'transport.json', relay_handoff(raw))
+        locked.base.write_new(folder / 'transport.json', handoff(raw))
         # Failed unlock must not consume the message or create acceptance state.
         operation('receive', 'recipient', 'wrong-password.bin', '--input', folder / 'transport.json',
                   '--receipt', folder / 'wrong-password-receipt.json', password=os.urandom(32).hex().encode(), succeeds=False)

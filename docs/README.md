@@ -62,6 +62,7 @@ Tests are offline/simulated; funded P0 acceptance remains pending. The preceding
 | [Recipient-encryption lab](RECIPIENT-ENCRYPTION-LAB.md) | Local real encryption to a pinned delivery key with possession checks and signed receipts; no remote service |
 | [Recipient file/bytes adapter](RECIPIENT-FILE-ADAPTER.md) | Separate-role Python API/CLI and ciphertext-only loopback HTTP handoff; one host, no key exchange or chain gate |
 | [Experimental PQ recipient profile](POST-QUANTUM-RECIPIENT-PROFILE.md) | Separate hybrid ML-KEM-768/X25519 encryption and ML-DSA-65 signatures; explicit pin, no downgrade fallback or native-chain change |
+| [Authenticated PQ-envelope transport](PQ-AUTHENTICATED-TRANSPORT.md) | Pinned mutual TLS 1.3 and separate upload/download certificates; one-host fictional exchange, conventional TLS authentication |
 | [Encrypted PQ software keys](PQ-ENCRYPTED-KEYSTORE.md) | Argon2id/AES-256-GCM storage, hidden/FD unlock, encrypted key backup checks and missing-state rejection; no hardware isolation or full-state restore |
 | [Transfer anchor observer](TRANSFER-ANCHOR.md) | Trusted-node observation code, a synthetic demo and links to the later testnet run |
 | [Release-ledger model](RELEASE-LEDGER-MODEL.md) | Local accounting/crash/reorg experiment; simulated chain data, no real key delivery |
