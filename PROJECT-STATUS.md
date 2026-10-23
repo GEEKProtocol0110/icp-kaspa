@@ -1,4 +1,4 @@
-# ICP checkpoint - October 22, 2026 UTC
+# ICP checkpoint - October 23, 2026 UTC
 
 **Experimental Kaspa Testnet-10 prototype.** Vault withdrawals and protected
 recovery have been tested with test coins. Real data-key delivery is still being
@@ -11,9 +11,30 @@ engineering checkpoint first, followed by earlier milestones.
 | At a glance | Current position |
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
-| Data access | Conventional/PQ recipient profiles and optional encrypted software keys; local file/loopback exchange, remote transport/release remains ahead |
-| Automated coverage | 970 tests: 142 Rust + 828 Python |
-| Next engineering work | Review authenticated remote transport/identity and hardware keystore integration; resume saved funded pilots only under their existing pinned journals and recorded scope |
+| Data access | Encrypted PQ endpoints plus pinned mutual TLS delivery tested on loopback; independent devices and chain-gated release remain ahead |
+| Automated coverage | 1,002 tests: 142 Rust + 860 Python |
+| Next engineering work | Review independent-device transport, enrollment/rotation and hardware keystore integration; resume saved funded pilots only under their existing pinned journals and recorded scope |
+
+## Authenticated PQ-envelope transport checkpoint
+
+- The new [transport](docs/PQ-AUTHENTICATED-TRANSPORT.md) requires explicit CA,
+  hostname validation and an exact relay certificate pin before HTTP delivery.
+  Required client certificates and separate upload/download pins enforce roles.
+  It has TLS 1.3 only, no HTTP/proxy/redirect fallback and no implicit key logging.
+- The local relay retains one bounded immutable opaque envelope in RAM. It has
+  no PQ private keys, endpoint paths, public bind or filesystem routes. TLS
+  private PEM files are encrypted; hidden/FD input supplies their passwords.
+- Thirty-two new handshake/adversarial tests, 90 PQ endpoint regressions and
+  71 conventional recipient tests pass locally. The full fictional demo uses
+  17 endpoint CLI operations, two TLS clients and one separate TLS relay process.
+  The required workflow also runs this demo and all native/Rust/Python checks.
+  See the [verification record](evidence/pq-authenticated-transport-verification.md).
+- This remains one trusted host with conventional TLS certificate authentication,
+  not post-quantum TLS authentication, independent-device isolation, public-server
+  hardening, durable messaging, reviewed PKI or an audit. No native Kaspa
+  cryptography, custody rule, saved funded journal or pinned worker changed.
+
+Earlier milestone checkpoints follow.
 
 ## Encrypted PQ software keystore checkpoint
 

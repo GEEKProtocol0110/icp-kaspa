@@ -1,5 +1,16 @@
 # Security target and paper alignment
 
+The new [authenticated transport](PQ-AUTHENTICATED-TRANSPORT.md) wraps the
+unchanged PQ envelope with pinned TLS 1.3 mutual certificate authentication.
+The relay holds opaque bytes only; separate upload/download certificate pins
+authorize each route. Explicit CA/hostname validation and the exact relay pin
+precede HTTP delivery. Thirty-two new tests and a separate-process demo cover
+actual loopback TLS handshakes and hostile framing. TLS authentication uses
+conventional certificates, not a post-quantum authentication guarantee. This
+single-host fixture adds no production PKI, durable mailbox, independent-device
+isolation or public service. Independent-host transport, enrollment/rotation,
+hardware key integration and protocol review remain ahead.
+
 The [encrypted PQ software keystore](PQ-ENCRYPTED-KEYSTORE.md) now stores fresh
 endpoint seeds using fixed-parameter Argon2id and authenticated AES-256-GCM.
 Private operations unlock through a hidden terminal prompt or bounded owner-only
@@ -23,7 +34,7 @@ reviewed R0 suite. It does not change Kaspa's native signatures or custody.
 The original PQ adapter still uses unencrypted TEST keys; the optional encrypted
 adapter above changes storage only. Host/policy/clock/store trust, static-key history exposure,
 copied-store replay and non-atomic acceptance/export remain. Authenticated
-remote transport, device keystores, rotation/recovery and chain-gated release
+independent-host transport, device keystores, rotation/recovery and chain-gated release
 are still future work. The conventional recipient profile below is unchanged.
 
 The [recipient file/bytes adapter](RECIPIENT-FILE-ADAPTER.md) now makes the

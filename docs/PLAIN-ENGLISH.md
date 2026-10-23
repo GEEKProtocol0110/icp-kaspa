@@ -144,7 +144,7 @@ original document is factually true.
 | Simulation or model | Invented chain observations or placeholders exercise the rules; they are not live-chain evidence |
 | Proposal or research | A direction being specified; a working, secure deployment has not been established |
 
-There are **970 automated tests** in the current inventory. Passing tests helps catch mistakes; it
+There are **1,002 automated tests** in the current inventory. Passing tests helps catch mistakes; it
 does not replace an independent security review or prove production readiness.
 The project is still an experimental Testnet-10 prototype.
 
@@ -176,6 +176,12 @@ native transaction keys retain their existing cryptography. An optional
 behind a passphrase. Compromised devices, weak passwords and copied replay
 stores remain important limits;
 the experiment does not promise protection if every accepted secret is stolen.
+
+The latest [delivery experiment](PQ-AUTHENTICATED-TRANSPORT.md) also checks
+the relay's certificate and uses different certificates to send and retrieve
+the encrypted file. The relay cannot decrypt the message. This still runs on
+one computer; separate-device testing remains ahead. Its TLS certificates use
+conventional cryptography, so this is not an overall quantum-safety claim.
 
 ## A few terms you may see
 

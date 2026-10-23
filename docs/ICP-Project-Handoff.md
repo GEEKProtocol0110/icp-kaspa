@@ -1,5 +1,27 @@
 # ICP continuation checkpoint
 
+Current milestone: [authenticated PQ-envelope transport](PQ-AUTHENTICATED-TRANSPORT.md).
+`pq_authenticated_transport.py` requires pinned mutual TLS 1.3, explicit CA and
+hostname validation, plus separate upload/download certificate pins. Exact
+relay pin verification precedes HTTP bytes. The relay stores one bounded
+immutable opaque object in RAM, with loopback binding and no PQ private keys.
+TLS PEM keys are encrypted; the existing hidden/FD password input is reused.
+Conventional certificate authentication supplies no PQ TLS guarantee.
+Thirty-two new tests, 90 existing PQ/locked tests and 71 conventional recipient
+tests pass locally. The full fictional demo combines 17 endpoint CLI operations,
+two separate TLS client processes and a separate relay on ONE host. The old
+locked example retains its original HTTP default through an optional handoff
+callback. Inventory is 1,002 tests (142 Rust + 860 Python); native/full checks
+require current-head CI because cargo is unavailable locally. Do not merge
+stacked milestones without their required checks.
+Next: authenticated role enrollment/rotation, independent-device testing,
+reviewed hardware keystores and independent protocol review. This is no public
+server, durable mailbox, real-world identity service or hostile-host protection.
+Preserve all endpoint policy databases and state guards; local replay and
+receipt-before-export limits remain. Funded sessions were not accessed.
+
+Earlier milestone checkpoints follow.
+
 Current milestone: [encrypted PQ software keys](PQ-ENCRYPTED-KEYSTORE.md).
 `pq_locked_adapter.py` uses Argon2id/AES-256-GCM to protect fresh endpoint
 seeds before writing files. Hidden/FD unlock preserves the PQ wire profile;
