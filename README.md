@@ -64,6 +64,7 @@ these vault rules no longer protect their later transfers.
 | Automated recovery monitoring | An earlier testnet run recovered an unapproved withdrawal | [Watchtower run](docs/ICP-Watchtower-Live-Proof.md) |
 | Recording a data commitment on Kaspa | One testnet transaction observed through two node endpoints | [Transfer anchor run](docs/ICP-Transfer-Anchor-Live-Proof.md) |
 | A message encrypted for one recipient | Local HPKE encryption, delivery-key possession checks, sender approval and signed receipts; no network delivery | [Recipient-encryption lab](docs/RECIPIENT-ENCRYPTION-LAB.md) |
+| Reusable encrypted file/bytes interface | Separate role endpoints and CLI processes exchange a binary envelope through a ciphertext-only loopback HTTP relay; one host, no private-key exchange | [Recipient file adapter](docs/RECIPIENT-FILE-ADAPTER.md) |
 | Delivery-key checks and signed response records | Encrypted enrollment challenge plus exact saved signatures over dummy responses; no real key delivery | [Bound response lab](docs/BOUND-RESPONSE-LAB.md) |
 | P0 native submission adapter | TN10-only sender checks exact saved records, node/input metadata and deadlines; tested offline, funded P0 acceptance pending | [Live adapter](docs/TICKET-PILOT-LIVE.md) |
 | Funded P0 preparation | Two signed issuances saved privately; no submissions or terminal signatures; 0.48 test KAS still unspent at recheck | [Funded preparation](docs/TICKET-PILOT-FUNDED.md) |
@@ -82,7 +83,7 @@ these vault rules no longer protect their later transfers.
 | Coordinated release recovery | Synthetic vault/ledger/delivery failures, stale-writer fencing and backup continuity; no real keys | [Coordinator model](docs/RELEASE-COORDINATOR-MODEL.md) |
 | Encrypted messages and release accounting | Local experiments; the release model uses simulated chain data and a non-secret placeholder | [Transfer lab](docs/TRANSFER-LAB.md) · [Release model](docs/RELEASE-LEDGER-MODEL.md) |
 
-The automated suite contains **846 tests: 142 Rust + 704 Python**.
+The automated suite contains **880 tests: 142 Rust + 738 Python**.
 [GitHub Actions](.github/workflows/verify.yml) checks the build, tests and demos.
 Individual testnet runs are dated evidence, not performance or security
 guarantees; later software changes also have their own offline checks.
@@ -98,6 +99,14 @@ The [recipient-encryption lab](docs/RECIPIENT-ENCRYPTION-LAB.md) now demonstrate
 real encryption of a fictional message to one verified delivery key. It checks
 separate sender/approver signatures and a recipient acknowledgment. This is a
 local cryptographic experiment; a remote release service is still future work.
+
+The [file/bytes adapter](docs/RECIPIENT-FILE-ADAPTER.md) now exposes that flow to
+separate endpoint processes. Its Python API and CLI encrypt binary payloads up
+to 64 KiB, transfer public/ciphertext files, and export recipient plaintext and
+signed receipts. Recipient private keys stay in the recipient endpoint directory.
+The example uses a separate ciphertext-only HTTP relay on one host; remote
+delivery and independent-device isolation remain unproven. This adapter does
+not connect real keys to simulated grants.
 
 The local release model already tests duplicate requests, release limits,
 crashes and blockchain reorganizations. It delivers **no real decryption keys**.
@@ -172,6 +181,7 @@ the repository root:
 ```bash
 python3 -m pip install --only-binary=:all: -r requirements-lab.txt
 python3 scripts/recipient_lab.py
+python3 examples/recipient_file_exchange.py
 ```
 
 It prints public ciphertext and signed records, with no plaintext or private

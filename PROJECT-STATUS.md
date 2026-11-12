@@ -11,9 +11,38 @@ engineering checkpoint first, followed by earlier milestones.
 | At a glance | Current position |
 | --- | --- |
 | Vault and recovery | Dated testnet runs and automated verification |
-| Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
-| Automated coverage | 846 tests: 142 Rust + 704 Python |
-| Next engineering work | Obtain explicit submission approval, then recover the two saved issuances and run the separate consume/refund acceptance pilots |
+| Data access | Recipient-owned test keys, separate-process binary file exchange and local receipts; remote transport/release remains ahead |
+| Automated coverage | 880 tests: 142 Rust + 738 Python |
+| Next engineering work | Review authenticated transport/device key storage for the recipient adapter; resume saved funded pilots only under their existing pinned journals and recorded scope |
+
+## Recipient file/bytes adapter checkpoint
+
+- `scripts/recipient_adapter.py` exposes the existing HPKE/signature experiment
+  through a Python API and separate role CLI processes. Only the recipient
+  endpoint has the X25519 private key. Public policy records, possession proofs,
+  certificates and encrypted envelopes can cross a file boundary.
+- A separately authenticated policy fingerprint is mandatory at every command.
+  Test-key/state files are owner-only; bounded reads reject symlinks/special
+  files and output publication is atomic/no-clobber. Local replay receipts
+  survive endpoint restart and resolve concurrent acceptance to one claim.
+- The fictional binary-file example verifies byte recovery, recipient signatures,
+  replay/wrong-role rejection and exact receipt recovery using separate processes
+  and a ciphertext-only HTTP relay on one host. The relay has no key/path inputs,
+  public bind, filesystem serving or durable storage. Remote delivery and
+  independent-device isolation remain unproven.
+- Thirty-four added Python tests pass locally. The full local Python attempt
+  discovers 738 tests but native-dependent tests cannot run without built Rust
+  workers on this host. Rust formatting, locked tests, required binaries and the
+  complete Python suite remain required in GitHub CI before merge. See the
+  [verification record](evidence/recipient-file-adapter-verification.md).
+- Limits remain 64 KiB, trusted policy/clock/host/store, plaintext in normal
+  memory, static-key history exposure and copied-store replay. Receipt commit
+  precedes file export: a crash may leave a claim without plaintext output;
+  recover the receipt without resetting state or repeating acceptance.
+- Read [the adapter guide](docs/RECIPIENT-FILE-ADAPTER.md). This adds no wallet
+  signing, network submission, chain permission, protected key-release service,
+  R0 adoption, quantum protection or independent audit. Existing private funded
+  sessions and pinned workers were not opened or modified.
 
 ## Historical catch-up checkpoint
 

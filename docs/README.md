@@ -60,6 +60,7 @@ Tests are offline/simulated; funded P0 acceptance remains pending. The preceding
 | [P0 test-key setup](TICKET-PILOT-KEYS.md) | Offline fresh roles, domain-separated possession checks and exact private archive restoration before funding |
 | [Encrypted transfer lab](TRANSFER-LAB.md) | Local encrypted-message and receipt experiment; keys supplied separately |
 | [Recipient-encryption lab](RECIPIENT-ENCRYPTION-LAB.md) | Local real encryption to a pinned delivery key with possession checks and signed receipts; no remote service |
+| [Recipient file/bytes adapter](RECIPIENT-FILE-ADAPTER.md) | Separate-role Python API/CLI and ciphertext-only loopback HTTP handoff; one host, no key exchange or chain gate |
 | [Transfer anchor observer](TRANSFER-ANCHOR.md) | Trusted-node observation code, a synthetic demo and links to the later testnet run |
 | [Release-ledger model](RELEASE-LEDGER-MODEL.md) | Local accounting/crash/reorg experiment; simulated chain data, no real key delivery |
 | [Bound response lab](BOUND-RESPONSE-LAB.md) | Encryption-key possession check and durable service signatures over exact dummy responses; no content keys |
