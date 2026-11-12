@@ -1,5 +1,13 @@
 # ICP continuation checkpoint
 
+Separate research track: the [C0 core/custody draft](CORE-GAP-AND-CUSTODY-DRAFT.md)
+now records proposed independent guardian approval, role-key replacement and
+continued protection after recovery. It is not an implemented contract or an
+approved production policy. Read its tradeoffs and acceptance table before the
+next offline abstract model; encoding, native enforceability and a core gap are
+not established. Do not reinterpret it as a change to existing v0/v1 deposits,
+signer policies, funded P0 authorization or private operational journals.
+
 Current milestone: [bounded historical catch-up](TICKET-HISTORY-CATCHUP.md).
 The user explicitly approved four TN10 transactions with an 8,000,000-sompi fee
 ceiling, but refreshed reads hit an oversized history frame. Operators stopped

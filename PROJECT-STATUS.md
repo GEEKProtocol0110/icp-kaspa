@@ -1,4 +1,4 @@
-# ICP checkpoint - October 22, 2026 UTC
+# ICP checkpoint - October 23, 2026 UTC
 
 **Experimental Kaspa Testnet-10 prototype.** Vault withdrawals and protected
 recovery have been tested with test coins. Real data-key delivery is still being
@@ -14,6 +14,20 @@ engineering checkpoint first, followed by earlier milestones.
 | Data access | Local key-possession checks, signed requests/response records and synthetic recovery; no remote release service |
 | Automated coverage | 846 tests: 142 Rust + 704 Python |
 | Next engineering work | Obtain explicit submission approval, then recover the two saved issuances and run the separate consume/refund acceptance pilots |
+
+## Core integration design checkpoint
+
+- The separate [C0 custody/core draft](docs/CORE-GAP-AND-CUSTODY-DRAFT.md) records
+  a candidate independent guardian authority, exact replacement transitions,
+  continued protected recovery custody and an adversarial acceptance matrix.
+- This is a design proposal only. Guardian quorum compromise, quorum loss,
+  uncancelable bad plans and exhausted lifetime fee budgets remain explicit
+  failure cases. Encoding, successor-template enforcement and native feasibility
+  are unresolved; the security-target design gates remain open.
+- No missing Kaspa core primitive has been demonstrated. The next step in this
+  separate research track is an offline abstract state model, followed by native
+  enforcement experiments. Existing v0/v1 custody, pending P0 journals, test
+  inventory and funded-submission scope are unchanged. No live action occurred.
 
 ## Historical catch-up checkpoint
 
